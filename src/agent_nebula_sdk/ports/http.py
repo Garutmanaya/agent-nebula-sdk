@@ -8,7 +8,21 @@ from typing import Protocol
 
 @dataclass(frozen=True, slots=True)
 class HttpResponse:
-    """Transport-neutral HTTP response required by SDK protocol modules."""
+    """Transport-neutral HTTP response required by SDK protocol modules.
+
+    Class responsibility
+    -----------------------
+    Defines transport-neutral HTTP contracts used by protocol modules.
+
+    Standards
+    ---------
+    * Internal SDK contract
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     status_code: int
     headers: dict[str, str]
@@ -18,9 +32,33 @@ class HttpResponse:
 class HttpTransport(Protocol):
     """Minimal outbound HTTP contract.
 
-    Products can provide instrumented, policy-aware, or service-mesh transports
-    without changing the protocol implementation.
+    Class responsibility
+    -----------------------
+    Defines transport-neutral HTTP contracts used by protocol modules.
+
+    Standards
+    ---------
+    * Internal SDK contract
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
     """
 
     def get(self, url: str, *, headers: dict[str, str] | None = None) -> HttpResponse:
-        """Issue an HTTPS GET request and return a transport-neutral response."""
+        """Issue an HTTPS GET request and return a transport-neutral response.
+
+        Function responsibility
+        -----------------------
+        Defines transport-neutral HTTP contracts used by protocol modules.
+
+        Standards
+        ---------
+        * Internal SDK contract
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """

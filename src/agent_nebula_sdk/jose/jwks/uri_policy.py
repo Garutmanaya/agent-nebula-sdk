@@ -13,16 +13,41 @@ DnsResolver = Callable[[str], list[str]]
 
 
 def system_dns_resolver(hostname: str) -> list[str]:
-    """Resolve a hostname to unique textual IP addresses."""
+    """Resolve a hostname to unique textual IP addresses.
+
+    Function responsibility
+    -----------------------
+    Provides one focused SDK responsibility behind a stable public contract.
+
+    Standards
+    ---------
+    * RFC 7517
+    * RFC 7517
+
+    Operational notes
+    -----------------
+    The function does not retain mutable protocol state unless explicitly documented.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
     return sorted({str(entry[4][0]) for entry in socket.getaddrinfo(hostname, 443)})
 
 
 class JwksUriPolicy:
     """Validate remote JWKS URIs and reduce SSRF exposure.
 
-    RFC 7591 permits a client to register ``jwks_uri``. Because the value is
-    attacker-controlled in an open-registration profile, the authorization
-    server must apply deployment policy before fetching it.
+    Class responsibility
+    -----------------------
+    Provides one focused SDK responsibility behind a stable public contract.
+
+    Standards
+    ---------
+    * RFC 7517
+    * RFC 7517
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
     """
 
     def __init__(
@@ -32,13 +57,43 @@ class JwksUriPolicy:
         allow_private_networks: bool = False,
         dns_resolver: DnsResolver = system_dns_resolver,
     ) -> None:
-        """Configure transport and network-range restrictions."""
+        """Configure transport and network-range restrictions.
+
+        Function responsibility
+        -----------------------
+        Provides one focused SDK responsibility behind a stable public contract.
+
+        Standards
+        ---------
+        * RFC 7517
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         self._allow_http_for_loopback = allow_http_for_loopback
         self._allow_private_networks = allow_private_networks
         self._dns_resolver = dns_resolver
 
     def validate(self, uri: str) -> str:
-        """Return the URI when safe or raise a stable validation error."""
+        """Return the URI when safe or raise a stable validation error.
+
+        Function responsibility
+        -----------------------
+        Provides one focused SDK responsibility behind a stable public contract.
+
+        Standards
+        ---------
+        * RFC 7517
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         parsed = urlsplit(uri)
         if parsed.username is not None or parsed.password is not None:
             self._reject("jwks_uri must not contain user information", uri)
@@ -74,7 +129,22 @@ class JwksUriPolicy:
 
     @staticmethod
     def _reject(message: str, uri: str, **details: str) -> None:
-        """Raise one consistent URI-policy failure."""
+        """Raise one consistent URI-policy failure.
+
+        Function responsibility
+        -----------------------
+        Provides one focused SDK responsibility behind a stable public contract.
+
+        Standards
+        ---------
+        * RFC 7517
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         raise KeyValidationError(
             message,
             code="unsafe_jwks_uri",

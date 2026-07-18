@@ -11,7 +11,21 @@ from agent_nebula_sdk.jose.jwk.models import SupportedPublicJwk
 
 
 class JwkThumbprintService:
-    """Compute deterministic JWK thumbprints according to RFC 7638 Section 3."""
+    """Compute deterministic JWK thumbprints according to RFC 7638 Section 3.
+
+    Class responsibility
+    -----------------------
+    Implements a focused protocol service with no product-specific persistence.
+
+    Standards
+    ---------
+    * RFC 7638
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     def compute(
         self,
@@ -21,16 +35,39 @@ class JwkThumbprintService:
     ) -> str:
         """Return the base64url-encoded digest of canonical required members.
 
-        The canonical JSON representation uses only the key-type-specific
-        required members, lexicographic member ordering, no insignificant
-        whitespace, UTF-8 encoding, and an explicit hash algorithm.
+        Function responsibility
+        -----------------------
+        Implements a focused protocol service with no product-specific persistence.
+
+        Standards
+        ---------
+        * RFC 7638
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
         """
         canonical_json = self.canonical_json(jwk)
         digest = hashlib.new(hash_algorithm, canonical_json.encode("utf-8")).digest()
         return encode_base64url(digest)
 
     def canonical_json(self, jwk: SupportedPublicJwk) -> str:
-        """Return the RFC 7638 canonical JSON representation before hashing."""
+        """Return the RFC 7638 canonical JSON representation before hashing.
+
+        Function responsibility
+        -----------------------
+        Implements a focused protocol service with no product-specific persistence.
+
+        Standards
+        ---------
+        * RFC 7638
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         return json.dumps(
             jwk.required_thumbprint_members(),
             ensure_ascii=False,

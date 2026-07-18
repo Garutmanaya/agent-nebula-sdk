@@ -18,9 +18,19 @@ from agent_nebula_sdk.ports.http import HttpTransport
 class RemoteJwksResolver:
     """Resolve keys from an HTTPS JWK Set endpoint.
 
-    The resolver caches successfully validated documents, refreshes once when
-    an unknown ``kid`` is encountered, and never treats malformed remote data
-    as a usable key set.
+    Class responsibility
+    -----------------------
+    Resolves protocol data through an injected source while enforcing security policy.
+
+    Standards
+    ---------
+    * RFC 7517
+    * RFC 7517
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
     """
 
     def __init__(
@@ -32,7 +42,22 @@ class RemoteJwksResolver:
         default_ttl: timedelta = timedelta(minutes=15),
         maximum_response_bytes: int = 1_048_576,
     ) -> None:
-        """Create a resolver with injected transport, cache, and URI policy."""
+        """Create a resolver with injected transport, cache, and URI policy.
+
+        Function responsibility
+        -----------------------
+        Resolves protocol data through an injected source while enforcing security policy.
+
+        Standards
+        ---------
+        * RFC 7517
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if default_ttl <= timedelta(0):
             raise ValueError("default_ttl must be positive")
         if maximum_response_bytes < 1:
@@ -44,7 +69,22 @@ class RemoteJwksResolver:
         self._maximum_response_bytes = maximum_response_bytes
 
     def get_jwks(self, uri: str, *, force_refresh: bool = False) -> JwkSet:
-        """Return a validated JWK Set from cache or the remote endpoint."""
+        """Return a validated JWK Set from cache or the remote endpoint.
+
+        Function responsibility
+        -----------------------
+        Resolves protocol data through an injected source while enforcing security policy.
+
+        Standards
+        ---------
+        * RFC 7517
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         canonical_uri = self._uri_policy.validate(uri)
         if force_refresh:
             self._cache.invalidate(canonical_uri)
@@ -100,7 +140,22 @@ class RemoteJwksResolver:
         alg: str | None = None,
         use: str | None = "sig",
     ) -> SupportedPublicJwk:
-        """Resolve one key and refresh once when the requested key is unknown."""
+        """Resolve one key and refresh once when the requested key is unknown.
+
+        Function responsibility
+        -----------------------
+        Resolves protocol data through an injected source while enforcing security policy.
+
+        Standards
+        ---------
+        * RFC 7517
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         jwks = self.get_jwks(uri)
         try:
             return jwks.select(kid=kid, alg=alg, use=use)

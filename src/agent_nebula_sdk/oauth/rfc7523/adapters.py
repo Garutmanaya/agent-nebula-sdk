@@ -19,7 +19,23 @@ from agent_nebula_sdk.ports.clock import Clock, SystemClock
 
 @dataclass(frozen=True, slots=True)
 class InMemoryRegisteredClient:
-    """Immutable registered-client record used by reference adapters."""
+    """Immutable registered-client record used by reference adapters.
+
+    Class responsibility
+    -----------------------
+    Provides reference infrastructure adapters for tests and local development.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     client_id: str
     is_active: bool = True
@@ -28,30 +44,142 @@ class InMemoryRegisteredClient:
 
 
 class InMemoryRegisteredClientStore:
-    """Store registered clients in process memory for tests and examples."""
+    """Store registered clients in process memory for tests and examples.
+
+    Class responsibility
+    -----------------------
+    Provides reference infrastructure adapters for tests and local development.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     def __init__(self, clients: tuple[InMemoryRegisteredClient, ...] = ()) -> None:
-        """Initialize the store from immutable client records."""
+        """Initialize the store from immutable client records.
+
+        Function responsibility
+        -----------------------
+        Provides reference infrastructure adapters for tests and local development.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         self._clients = {client.client_id: client for client in clients}
 
     def get_client(self, client_id: str) -> InMemoryRegisteredClient | None:
-        """Return one client without exposing mutable internal state."""
+        """Return one client without exposing mutable internal state.
+
+        Function responsibility
+        -----------------------
+        Provides reference infrastructure adapters for tests and local development.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         return self._clients.get(client_id)
 
     def put(self, client: InMemoryRegisteredClient) -> None:
-        """Insert or replace a client record for local development."""
+        """Insert or replace a client record for local development.
+
+        Function responsibility
+        -----------------------
+        Provides reference infrastructure adapters for tests and local development.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         self._clients[client.client_id] = client
 
 
 class InMemoryClientKeyResolver:
-    """Resolve registered client keys from an in-memory mapping."""
+    """Resolve registered client keys from an in-memory mapping.
+
+    Class responsibility
+    -----------------------
+    Provides reference infrastructure adapters for tests and local development.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     def __init__(self) -> None:
-        """Create an empty client-key mapping."""
+        """Create an empty client-key mapping.
+
+        Function responsibility
+        -----------------------
+        Provides reference infrastructure adapters for tests and local development.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         self._keys: dict[tuple[str, str], SupportedPublicJwk] = {}
 
     def put(self, *, client_id: str, key: SupportedPublicJwk) -> None:
-        """Register a public JWK for one client and key identifier."""
+        """Register a public JWK for one client and key identifier.
+
+        Function responsibility
+        -----------------------
+        Provides reference infrastructure adapters for tests and local development.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if key.kid is None:
             raise ValueError("registered client key requires kid")
         self._keys[(client_id, key.kid)] = key
@@ -63,7 +191,23 @@ class InMemoryClientKeyResolver:
         key_id: str,
         algorithm: str,
     ) -> SupportedPublicJwk:
-        """Resolve a key and enforce its declared algorithm when present."""
+        """Resolve a key and enforce its declared algorithm when present.
+
+        Function responsibility
+        -----------------------
+        Provides reference infrastructure adapters for tests and local development.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         key = self._keys.get((client_id, key_id))
         if key is None or (key.alg is not None and key.alg != algorithm):
             raise KeyResolutionError(
@@ -75,14 +219,62 @@ class InMemoryClientKeyResolver:
 
 
 class InMemoryAuthorizationGrantKeyResolver:
-    """Resolve authorization-grant issuer keys from process memory."""
+    """Resolve authorization-grant issuer keys from process memory.
+
+    Class responsibility
+    -----------------------
+    Provides reference infrastructure adapters for tests and local development.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     def __init__(self) -> None:
-        """Create an empty issuer-key mapping."""
+        """Create an empty issuer-key mapping.
+
+        Function responsibility
+        -----------------------
+        Provides reference infrastructure adapters for tests and local development.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         self._keys: dict[tuple[str, str], SupportedPublicJwk] = {}
 
     def put(self, *, issuer: str, key: SupportedPublicJwk) -> None:
-        """Register a public JWK for one assertion issuer."""
+        """Register a public JWK for one assertion issuer.
+
+        Function responsibility
+        -----------------------
+        Provides reference infrastructure adapters for tests and local development.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if key.kid is None:
             raise ValueError("authorization-grant key requires kid")
         self._keys[(issuer, key.kid)] = key
@@ -94,7 +286,23 @@ class InMemoryAuthorizationGrantKeyResolver:
         key_id: str,
         algorithm: str,
     ) -> SupportedPublicJwk:
-        """Resolve an issuer key and enforce its algorithm declaration."""
+        """Resolve an issuer key and enforce its algorithm declaration.
+
+        Function responsibility
+        -----------------------
+        Provides reference infrastructure adapters for tests and local development.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         key = self._keys.get((issuer, key_id))
         if key is None or (key.alg is not None and key.alg != algorithm):
             raise KeyResolutionError(
@@ -106,10 +314,42 @@ class InMemoryAuthorizationGrantKeyResolver:
 
 
 class InMemoryAssertionReplayStore:
-    """Atomically reject repeated assertion identifiers within one process."""
+    """Atomically reject repeated assertion identifiers within one process.
+
+    Class responsibility
+    -----------------------
+    Provides reference infrastructure adapters for tests and local development.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     def __init__(self, *, clock: Clock | None = None) -> None:
-        """Create an empty replay store protected by a process-local lock."""
+        """Create an empty replay store protected by a process-local lock.
+
+        Function responsibility
+        -----------------------
+        Provides reference infrastructure adapters for tests and local development.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         self._entries: dict[tuple[str, str, str], datetime] = {}
         self._lock = Lock()
         self._clock = clock or SystemClock()
@@ -122,7 +362,23 @@ class InMemoryAssertionReplayStore:
         assertion_id: str,
         expires_at: datetime,
     ) -> bool:
-        """Record an assertion exactly once and return whether it was accepted."""
+        """Record an assertion exactly once and return whether it was accepted.
+
+        Function responsibility
+        -----------------------
+        Provides reference infrastructure adapters for tests and local development.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         key = (namespace, subject, assertion_id)
         with self._lock:
             self._remove_expired(now=self._clock.now())
@@ -132,7 +388,23 @@ class InMemoryAssertionReplayStore:
             return True
 
     def _remove_expired(self, *, now: datetime) -> None:
-        """Remove expired identifiers before evaluating a new assertion."""
+        """Remove expired identifiers before evaluating a new assertion.
+
+        Function responsibility
+        -----------------------
+        Provides reference infrastructure adapters for tests and local development.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         expired = [key for key, expires_at in self._entries.items() if expires_at <= now]
         for key in expired:
             del self._entries[key]

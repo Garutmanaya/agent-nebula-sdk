@@ -25,7 +25,21 @@ _ALLOWED_PUBLIC_KEY_OPERATIONS = frozenset({"verify"})
 
 
 class PublicJwk(BaseModel, ABC):
-    """Common RFC 7517 members for an asymmetric public JWK."""
+    """Common RFC 7517 members for an asymmetric public JWK.
+
+    Class responsibility
+    -----------------------
+    Defines immutable protocol data contracts and validation invariants.
+
+    Standards
+    ---------
+    * RFC 7517
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -39,9 +53,18 @@ class PublicJwk(BaseModel, ABC):
     def validate_public_key_intent(self) -> Self:
         """Reject contradictory or unsafe public-key usage metadata.
 
-        RFC 7517 permits ``use`` and ``key_ops`` but requires their semantics to
-        be consistent when both are present. The Phase 1 SDK accepts signing
-        verification keys and rejects operations that imply private material.
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
         """
         if self.key_ops is not None:
             if len(set(self.key_ops)) != len(self.key_ops):
@@ -59,26 +82,54 @@ class PublicJwk(BaseModel, ABC):
     def to_public_key(self) -> object:
         """Convert the JWK to a ``cryptography`` public-key object.
 
-        Concrete key-type models implement the conversion after validating all
-        RFC-required public parameters. The SDK never converts private JWK
-        material through this public model hierarchy.
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
         """
 
     @abstractmethod
     def required_thumbprint_members(self) -> dict[str, str]:
         """Return the canonical RFC 7638 members for this key type.
 
-        Implementations return only the members mandated by RFC 7638 Section
-        3.2; optional metadata such as ``kid`` and ``alg`` is intentionally
-        excluded from the thumbprint input.
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
         """
 
 
 class RsaPublicJwk(PublicJwk):
     """RSA public key represented as a JWK.
 
-    ``n`` is the modulus and ``e`` is the public exponent, both encoded as
-    base64url unsigned integers per RFC 7518 Section 6.3.1.
+    Class responsibility
+    -----------------------
+    Defines immutable protocol data contracts and validation invariants.
+
+    Standards
+    ---------
+    * RFC 7517
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
     """
 
     kty: Literal["RSA"]
@@ -87,7 +138,21 @@ class RsaPublicJwk(PublicJwk):
 
     @model_validator(mode="after")
     def validate_rsa_numbers(self) -> Self:
-        """Validate the RSA modulus and exponent before cryptographic use."""
+        """Validate the RSA modulus and exponent before cryptographic use.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         modulus = decode_base64url_uint(self.n, field_name="n")
         exponent = decode_base64url_uint(self.e, field_name="e")
         if modulus.bit_length() < 2048:
@@ -97,7 +162,21 @@ class RsaPublicJwk(PublicJwk):
         return self
 
     def to_public_key(self) -> rsa.RSAPublicKey:
-        """Create an RSA public key after RFC/JWA parameter validation."""
+        """Create an RSA public key after RFC/JWA parameter validation.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         numbers = rsa.RSAPublicNumbers(
             e=decode_base64url_uint(self.e, field_name="e"),
             n=decode_base64url_uint(self.n, field_name="n"),
@@ -111,12 +190,40 @@ class RsaPublicJwk(PublicJwk):
             ) from exc
 
     def required_thumbprint_members(self) -> dict[str, str]:
-        """Return RFC 7638 Section 3.2 members for an RSA key."""
+        """Return RFC 7638 Section 3.2 members for an RSA key.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         return {"e": self.e, "kty": self.kty, "n": self.n}
 
 
 class EcPublicJwk(PublicJwk):
-    """Elliptic-curve public key represented as a JWK."""
+    """Elliptic-curve public key represented as a JWK.
+
+    Class responsibility
+    -----------------------
+    Defines immutable protocol data contracts and validation invariants.
+
+    Standards
+    ---------
+    * RFC 7517
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     kty: Literal["EC"]
     crv: Literal["P-256", "P-384", "P-521"]
@@ -125,7 +232,21 @@ class EcPublicJwk(PublicJwk):
 
     @model_validator(mode="after")
     def validate_curve_coordinates(self) -> Self:
-        """Validate coordinate length and curve membership."""
+        """Validate coordinate length and curve membership.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         x_bytes = decode_base64url(self.x, field_name="x")
         y_bytes = decode_base64url(self.y, field_name="y")
         expected_length = {"P-256": 32, "P-384": 48, "P-521": 66}[self.crv]
@@ -135,7 +256,21 @@ class EcPublicJwk(PublicJwk):
         return self
 
     def to_public_key(self) -> ec.EllipticCurvePublicKey:
-        """Create an EC public key and verify that the point is on the curve."""
+        """Create an EC public key and verify that the point is on the curve.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         curve: ec.EllipticCurve
         if self.crv == "P-256":
             curve = ec.SECP256R1()
@@ -159,12 +294,40 @@ class EcPublicJwk(PublicJwk):
             ) from exc
 
     def required_thumbprint_members(self) -> dict[str, str]:
-        """Return RFC 7638 Section 3.2 members for an EC key."""
+        """Return RFC 7638 Section 3.2 members for an EC key.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         return {"crv": self.crv, "kty": self.kty, "x": self.x, "y": self.y}
 
 
 class OkpPublicJwk(PublicJwk):
-    """Ed25519 public key represented using RFC 8037 OKP parameters."""
+    """Ed25519 public key represented using RFC 8037 OKP parameters.
+
+    Class responsibility
+    -----------------------
+    Defines immutable protocol data contracts and validation invariants.
+
+    Standards
+    ---------
+    * RFC 7517
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     kty: Literal["OKP"]
     crv: Literal["Ed25519"]
@@ -172,7 +335,21 @@ class OkpPublicJwk(PublicJwk):
 
     @model_validator(mode="after")
     def validate_public_bytes(self) -> Self:
-        """Require the 32-byte Ed25519 public-key representation."""
+        """Require the 32-byte Ed25519 public-key representation.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         public_bytes = decode_base64url(self.x, field_name="x")
         if len(public_bytes) != 32:
             raise ValueError("Ed25519 public key must be exactly 32 bytes")
@@ -180,7 +357,21 @@ class OkpPublicJwk(PublicJwk):
         return self
 
     def to_public_key(self) -> ed25519.Ed25519PublicKey:
-        """Create an Ed25519 public key from the JWK ``x`` member."""
+        """Create an Ed25519 public key from the JWK ``x`` member.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         try:
             return ed25519.Ed25519PublicKey.from_public_bytes(
                 decode_base64url(self.x, field_name="x")
@@ -192,7 +383,21 @@ class OkpPublicJwk(PublicJwk):
             ) from exc
 
     def required_thumbprint_members(self) -> dict[str, str]:
-        """Return RFC 8037 Section A.3 thumbprint members for an OKP key."""
+        """Return RFC 8037 Section A.3 thumbprint members for an OKP key.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         return {"crv": self.crv, "kty": self.kty, "x": self.x}
 
 

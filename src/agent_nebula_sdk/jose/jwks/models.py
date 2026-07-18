@@ -11,7 +11,22 @@ from agent_nebula_sdk.jose.jwk.models import SupportedPublicJwk
 
 
 class JwkSet(BaseModel):
-    """RFC 7517 Section 5 JWK Set containing validated public keys."""
+    """RFC 7517 Section 5 JWK Set containing validated public keys.
+
+    Class responsibility
+    -----------------------
+    Defines immutable protocol data contracts and validation invariants.
+
+    Standards
+    ---------
+    * RFC 7517
+    * RFC 7517
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -19,7 +34,22 @@ class JwkSet(BaseModel):
 
     @model_validator(mode="after")
     def reject_duplicate_key_identifiers(self) -> Self:
-        """Reject ambiguous duplicate non-empty ``kid`` values."""
+        """Reject ambiguous duplicate non-empty ``kid`` values.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         key_ids = [key.kid for key in self.keys if key.kid is not None]
         duplicates = sorted({key_id for key_id in key_ids if key_ids.count(key_id) > 1})
         if duplicates:
@@ -32,7 +62,22 @@ class JwkSet(BaseModel):
 
     @classmethod
     def from_untrusted_mapping(cls, value: dict[str, Any]) -> JwkSet:
-        """Parse an untrusted RFC 7517 JWK Set document."""
+        """Parse an untrusted RFC 7517 JWK Set document.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         return cls.model_validate(value)
 
     def select(
@@ -44,8 +89,19 @@ class JwkSet(BaseModel):
     ) -> SupportedPublicJwk:
         """Select exactly one key matching JOSE header and usage constraints.
 
-        A missing ``kid`` is accepted only when the filtered JWK Set contains a
-        single unambiguous candidate. This prevents arbitrary first-key selection.
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7517
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
         """
         candidates = list(self.keys)
         if kid is not None:

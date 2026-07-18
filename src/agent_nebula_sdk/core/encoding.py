@@ -14,9 +14,18 @@ _BASE64URL_PATTERN = re.compile(r"^[A-Za-z0-9_-]*$")
 def decode_base64url_uint(value: str, *, field_name: str) -> int:
     """Decode an unpadded base64url-encoded unsigned integer.
 
-    RFC 7517 key parameters use the base64url encoding rules from JWS/JWA.
-    Empty values, padding, non-alphabet characters, and zero-length integers
-    are rejected instead of being silently normalized.
+    Function responsibility
+    -----------------------
+    Implements strict encoding helpers used by JOSE protocols.
+
+    Standards
+    ---------
+    * Internal SDK contract
+
+    Operational notes
+    -----------------
+    The function does not retain mutable protocol state unless explicitly documented.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
     """
     decoded = decode_base64url(value, field_name=field_name)
     if not decoded:
@@ -29,7 +38,21 @@ def decode_base64url_uint(value: str, *, field_name: str) -> int:
 
 
 def decode_base64url(value: str, *, field_name: str) -> bytes:
-    """Decode strict, unpadded base64url text into bytes."""
+    """Decode strict, unpadded base64url text into bytes.
+
+    Function responsibility
+    -----------------------
+    Implements strict encoding helpers used by JOSE protocols.
+
+    Standards
+    ---------
+    * Internal SDK contract
+
+    Operational notes
+    -----------------
+    The function does not retain mutable protocol state unless explicitly documented.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
     if not value:
         raise ProtocolValidationError(
             f"{field_name} must not be empty",
@@ -55,5 +78,19 @@ def decode_base64url(value: str, *, field_name: str) -> bytes:
 
 
 def encode_base64url(value: bytes) -> str:
-    """Encode bytes using unpadded base64url representation."""
+    """Encode bytes using unpadded base64url representation.
+
+    Function responsibility
+    -----------------------
+    Implements strict encoding helpers used by JOSE protocols.
+
+    Standards
+    ---------
+    * Internal SDK contract
+
+    Operational notes
+    -----------------
+    The function does not retain mutable protocol state unless explicitly documented.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
     return base64.urlsafe_b64encode(value).rstrip(b"=").decode("ascii")

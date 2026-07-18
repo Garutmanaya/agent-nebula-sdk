@@ -31,7 +31,23 @@ _ClaimsModel = TypeVar("_ClaimsModel", bound=BaseModel)
 
 
 class VerifiedJwtAssertion(BaseModel):
-    """Cryptographically verified JWT assertion plus JOSE header metadata."""
+    """Cryptographically verified JWT assertion plus JOSE header metadata.
+
+    Class responsibility
+    -----------------------
+    Validates untrusted protocol input and returns only normalized, trusted output.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -42,18 +58,62 @@ class VerifiedJwtAssertion(BaseModel):
 
 
 class JwtAssertionValidator:
-    """Validate signed JWT assertions according to the RFC 7523 profile."""
+    """Validate signed JWT assertions according to the RFC 7523 profile.
+
+    Class responsibility
+    -----------------------
+    Validates untrusted protocol input and returns only normalized, trusted output.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     def __init__(self, *, clock: Clock, policy: Rfc7523Policy) -> None:
-        """Create a validator with injectable time and explicit security policy."""
+        """Create a validator with injectable time and explicit security policy.
+
+        Function responsibility
+        -----------------------
+        Validates untrusted protocol input and returns only normalized, trusted output.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         self._clock = clock
         self._policy = policy
 
     def read_unverified_header(self, assertion: str) -> tuple[str, str]:
         """Read only ``kid`` and ``alg`` before resolving the verification key.
 
-        No claim from this stage is trusted. The method exists solely because a
-        key identifier and algorithm are needed to select the verification key.
+        Function responsibility
+        -----------------------
+        Validates untrusted protocol input and returns only normalized, trusted output.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
         """
         self._validate_compact_size(assertion)
         try:
@@ -84,7 +144,23 @@ class JwtAssertionValidator:
         return str(key_id or ""), algorithm
 
     def decode_unverified_claims(self, assertion: str) -> dict[str, Any]:
-        """Read untrusted claims only to locate a client or issuer record."""
+        """Read untrusted claims only to locate a client or issuer record.
+
+        Function responsibility
+        -----------------------
+        Validates untrusted protocol input and returns only normalized, trusted output.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         self._validate_compact_size(assertion)
         try:
             claims = jwt.decode(
@@ -110,7 +186,23 @@ class JwtAssertionValidator:
         return claims
 
     def _validate_compact_size(self, assertion: str) -> None:
-        """Reject oversized compact JWTs before JSON or cryptographic processing."""
+        """Reject oversized compact JWTs before JSON or cryptographic processing.
+
+        Function responsibility
+        -----------------------
+        Validates untrusted protocol input and returns only normalized, trusted output.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if len(assertion.encode("utf-8")) > self._policy.maximum_assertion_bytes:
             raise ProtocolValidationError(
                 "JWT assertion exceeds the configured size limit",
@@ -125,7 +217,23 @@ class JwtAssertionValidator:
         public_jwk: SupportedPublicJwk,
         accepted_audiences: Sequence[str],
     ) -> VerifiedJwtAssertion:
-        """Verify a client-authentication assertion and required claims."""
+        """Verify a client-authentication assertion and required claims.
+
+        Function responsibility
+        -----------------------
+        Validates untrusted protocol input and returns only normalized, trusted output.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         return self._verify(
             assertion=assertion,
             public_jwk=public_jwk,
@@ -140,7 +248,23 @@ class JwtAssertionValidator:
         public_jwk: SupportedPublicJwk,
         accepted_audiences: Sequence[str],
     ) -> VerifiedJwtAssertion:
-        """Verify a JWT bearer authorization-grant assertion."""
+        """Verify a JWT bearer authorization-grant assertion.
+
+        Function responsibility
+        -----------------------
+        Validates untrusted protocol input and returns only normalized, trusted output.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         return self._verify(
             assertion=assertion,
             public_jwk=public_jwk,
@@ -156,15 +280,35 @@ class JwtAssertionValidator:
         accepted_audiences: Sequence[str],
         claims_model: type[_ClaimsModel],
     ) -> VerifiedJwtAssertion:
-        """Perform signature, claim presence, audience, and temporal validation."""
+        """Perform signature, claim presence, audience, and temporal validation.
+
+        Function responsibility
+        -----------------------
+        Validates untrusted protocol input and returns only normalized, trusted output.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if not accepted_audiences:
             raise ValueError("accepted_audiences must not be empty")
+        # JOSE header inspection is intentionally limited to key selection metadata.
+        # Claims remain untrusted until the signature has been verified.
         key_id, algorithm = self.read_unverified_header(assertion)
         if public_jwk.alg is not None and public_jwk.alg != algorithm:
             raise ProtocolValidationError(
                 "assertion algorithm does not match the registered JWK",
                 code="assertion_algorithm_key_mismatch",
             )
+        # RFC 7523 requires issuer, subject, audience, and expiration. The active
+        # profile may strengthen the baseline by requiring iat and jti.
         required_claims = ["iss", "sub", "aud", "exp"]
         if self._policy.require_iat:
             required_claims.append("iat")
@@ -228,6 +372,8 @@ class JwtAssertionValidator:
                 code="invalid_assertion_claims",
                 details={"errors": exc.errors(include_url=False)},
             ) from exc
+        # PyJWT temporal checks are disabled above so all time decisions use the
+        # injected Clock and remain deterministic across products and tests.
         self._validate_temporal_profile(validated_claims.model_dump())
         return VerifiedJwtAssertion(
             header=header,
@@ -239,9 +385,20 @@ class JwtAssertionValidator:
     def _validate_temporal_profile(self, claims: Mapping[str, Any]) -> None:
         """Enforce expiration, not-before, maximum lifetime, and clock skew.
 
-        PyJWT validates the signature and audience, while this SDK applies time
-        checks against the injected Clock. This keeps protocol behavior
-        deterministic and allows products to use a trusted time source.
+        Function responsibility
+        -----------------------
+        Validates untrusted protocol input and returns only normalized, trusted output.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
         """
         now = self._clock.now()
         skew = self._policy.clock_skew

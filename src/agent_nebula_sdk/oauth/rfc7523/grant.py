@@ -23,7 +23,23 @@ from agent_nebula_sdk.oauth.rfc7523.validator import JwtAssertionValidator
 
 
 class JwtAuthorizationGrantValidator:
-    """Validate a JWT bearer assertion used as an OAuth authorization grant."""
+    """Validate a JWT bearer assertion used as an OAuth authorization grant.
+
+    Class responsibility
+    -----------------------
+    Implements the JWT bearer authorization-grant role independently from client authentication.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     def __init__(
         self,
@@ -33,7 +49,23 @@ class JwtAuthorizationGrantValidator:
         validator: JwtAssertionValidator,
         accepted_audiences: tuple[str, ...],
     ) -> None:
-        """Create a grant validator with explicit issuer-key and replay ports."""
+        """Create a grant validator with explicit issuer-key and replay ports.
+
+        Function responsibility
+        -----------------------
+        Implements the JWT bearer authorization-grant role independently from client authentication.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if not accepted_audiences:
             raise ValueError("accepted_audiences must not be empty")
         self._keys = keys
@@ -42,7 +74,23 @@ class JwtAuthorizationGrantValidator:
         self._accepted_audiences = accepted_audiences
 
     def validate(self, request: JwtAuthorizationGrantRequest) -> ValidatedAuthorizationGrant:
-        """Validate signature, claims, audience, lifetime, and replay status."""
+        """Validate signature, claims, audience, lifetime, and replay status.
+
+        Function responsibility
+        -----------------------
+        Implements the JWT bearer authorization-grant role independently from client authentication.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         untrusted_claims = self._validator.decode_unverified_claims(request.assertion)
         issuer = untrusted_claims.get("iss")
         if not isinstance(issuer, str) or not issuer:

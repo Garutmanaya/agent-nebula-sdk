@@ -9,7 +9,21 @@ from agent_nebula_sdk.ports.http import HttpResponse
 
 
 class HttpxTransport:
-    """Verified-TLS HTTP transport with explicit timeout and redirect policy."""
+    """Verified-TLS HTTP transport with explicit timeout and redirect policy.
+
+    Class responsibility
+    -----------------------
+    Adapts HTTPX to the SDK transport port with verified TLS and normalized failures.
+
+    Standards
+    ---------
+    * Internal SDK contract
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     def __init__(
         self,
@@ -20,10 +34,18 @@ class HttpxTransport:
     ) -> None:
         """Create a transport that never follows redirects automatically.
 
-        Args:
-            timeout_seconds: Total HTTP timeout applied by HTTPX.
-            verify: TLS verification policy or CA bundle path.
-            transport: Optional HTTPX transport for tests or custom networking.
+        Function responsibility
+        -----------------------
+        Adapts HTTPX to the SDK transport port with verified TLS and normalized failures.
+
+        Standards
+        ---------
+        * Internal SDK contract
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
         """
         if timeout_seconds <= 0:
             raise ValueError("timeout_seconds must be positive")
@@ -35,7 +57,21 @@ class HttpxTransport:
         )
 
     def get(self, url: str, *, headers: dict[str, str] | None = None) -> HttpResponse:
-        """Issue a GET request and normalize network failures."""
+        """Issue a GET request and normalize network failures.
+
+        Function responsibility
+        -----------------------
+        Adapts HTTPX to the SDK transport port with verified TLS and normalized failures.
+
+        Standards
+        ---------
+        * Internal SDK contract
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         try:
             response = self._client.get(url, headers=headers)
         except httpx.HTTPError as exc:
@@ -51,5 +87,19 @@ class HttpxTransport:
         )
 
     def close(self) -> None:
-        """Release the underlying connection pool."""
+        """Release the underlying connection pool.
+
+        Function responsibility
+        -----------------------
+        Adapts HTTPX to the SDK transport port with verified TLS and normalized failures.
+
+        Standards
+        ---------
+        * Internal SDK contract
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         self._client.close()

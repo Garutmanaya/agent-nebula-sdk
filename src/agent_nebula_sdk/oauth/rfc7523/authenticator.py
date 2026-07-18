@@ -27,7 +27,23 @@ from agent_nebula_sdk.oauth.rfc7523.validator import JwtAssertionValidator
 
 
 class PrivateKeyJwtAuthenticator:
-    """Authenticate registered OAuth clients using ``private_key_jwt``."""
+    """Authenticate registered OAuth clients using ``private_key_jwt``.
+
+    Class responsibility
+    -----------------------
+    Coordinates client authentication while delegating storage and key lookup through ports.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     def __init__(
         self,
@@ -38,7 +54,23 @@ class PrivateKeyJwtAuthenticator:
         validator: JwtAssertionValidator,
         accepted_audiences: tuple[str, ...],
     ) -> None:
-        """Create the authorization-server client-authentication service."""
+        """Create the authorization-server client-authentication service.
+
+        Function responsibility
+        -----------------------
+        Coordinates client authentication while delegating storage and key lookup through ports.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if not accepted_audiences:
             raise ValueError("accepted_audiences must not be empty")
         self._clients = clients
@@ -48,7 +80,25 @@ class PrivateKeyJwtAuthenticator:
         self._accepted_audiences = accepted_audiences
 
     def authenticate(self, request: ClientAuthenticationRequest) -> AuthenticatedClient:
-        """Validate a request and return a stable authenticated-client context."""
+        """Validate a request and return a stable authenticated-client context.
+
+        Function responsibility
+        -----------------------
+        Coordinates client authentication while delegating storage and key lookup through ports.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
+        # The issuer is read before signature verification only to locate the registered
+        # client record. No unverified claim is accepted as authenticated identity.
         untrusted_claims = self._validator.decode_unverified_claims(request.client_assertion)
         untrusted_client_id = untrusted_claims.get("iss")
         if not isinstance(untrusted_client_id, str) or not untrusted_client_id:
@@ -61,6 +111,8 @@ class PrivateKeyJwtAuthenticator:
                 "client_id does not match assertion issuer",
                 code="client_identifier_mismatch",
             )
+        # Resolve the product-owned client record through the SDK port. The SDK never
+        # assumes a database schema or persistence technology.
         client = self._clients.get_client(untrusted_client_id)
         if client is None:
             raise ProtocolValidationError(
@@ -77,6 +129,8 @@ class PrivateKeyJwtAuthenticator:
                 "OAuth client is not registered for private_key_jwt",
                 code="client_authentication_method_mismatch",
             )
+        # RFC 7523 relies on JOSE key selection. ``kid`` and ``alg`` are inspected
+        # only to resolve the candidate public key; signature verification follows.
         key_id, algorithm = self._validator.read_unverified_header(request.client_assertion)
         try:
             public_key = self._keys.resolve_client_key(
@@ -86,6 +140,8 @@ class PrivateKeyJwtAuthenticator:
             )
         except KeyResolutionError:
             raise
+        # The validator performs cryptographic and claim validation before the replay
+        # identifier is consumed. This avoids storing identifiers from invalid JWTs.
         verified = self._validator.verify_client_assertion(
             assertion=request.client_assertion,
             public_jwk=public_key,

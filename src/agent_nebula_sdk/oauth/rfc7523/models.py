@@ -26,9 +26,20 @@ from agent_nebula_sdk.oauth.rfc7523.constants import (
 class ClientAssertionClaims(BaseModel):
     """Claims carried by a JWT used for OAuth client authentication.
 
-    ``iss`` and ``sub`` identify the OAuth client. ``aud`` identifies the token
-    endpoint. ``exp`` limits assertion lifetime, while ``jti`` enables atomic
-    replay detection by the authorization server.
+    Class responsibility
+    -----------------------
+    Defines immutable protocol data contracts and validation invariants.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
     """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -43,7 +54,23 @@ class ClientAssertionClaims(BaseModel):
 
     @model_validator(mode="after")
     def validate_client_identity(self) -> ClientAssertionClaims:
-        """Require one client identifier in both issuer and subject claims."""
+        """Require one client identifier in both issuer and subject claims.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if self.iss != self.sub:
             raise ValueError("iss and sub must identify the same OAuth client")
         return self
@@ -52,10 +79,20 @@ class ClientAssertionClaims(BaseModel):
 class JwtAuthorizationGrantClaims(BaseModel):
     """Claims carried by a JWT used as an OAuth authorization grant.
 
-    RFC 7523 allows subject assertions to represent a resource owner or another
-    authorized principal. The SDK validates syntax and cryptographic properties;
-    the consuming authorization server remains responsible for mapping ``sub``
-    to local authorization policy.
+    Class responsibility
+    -----------------------
+    Defines immutable protocol data contracts and validation invariants.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
     """
 
     model_config = ConfigDict(extra="allow", frozen=True)
@@ -70,7 +107,23 @@ class JwtAuthorizationGrantClaims(BaseModel):
 
 
 class ClientAuthenticationRequest(BaseModel):
-    """OAuth token-endpoint parameters for JWT client authentication."""
+    """OAuth token-endpoint parameters for JWT client authentication.
+
+    Class responsibility
+    -----------------------
+    Defines immutable protocol data contracts and validation invariants.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -80,13 +133,45 @@ class ClientAuthenticationRequest(BaseModel):
 
     @model_validator(mode="after")
     def validate_assertion_type(self) -> ClientAuthenticationRequest:
-        """Reject assertion types other than the RFC 7523 JWT bearer value."""
+        """Reject assertion types other than the RFC 7523 JWT bearer value.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if self.client_assertion_type != JWT_BEARER_ASSERTION_TYPE:
             raise ValueError("unsupported client_assertion_type")
         return self
 
     def to_form_fields(self) -> dict[str, str]:
-        """Serialize this request into OAuth form parameters."""
+        """Serialize this request into OAuth form parameters.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         fields = {
             "client_assertion_type": self.client_assertion_type,
             "client_assertion": self.client_assertion,
@@ -97,7 +182,23 @@ class ClientAuthenticationRequest(BaseModel):
 
 
 class JwtAuthorizationGrantRequest(BaseModel):
-    """OAuth token-endpoint parameters for a JWT bearer authorization grant."""
+    """OAuth token-endpoint parameters for a JWT bearer authorization grant.
+
+    Class responsibility
+    -----------------------
+    Defines immutable protocol data contracts and validation invariants.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -107,13 +208,45 @@ class JwtAuthorizationGrantRequest(BaseModel):
 
     @model_validator(mode="after")
     def validate_grant_type(self) -> JwtAuthorizationGrantRequest:
-        """Reject grant types other than the RFC 7523 JWT bearer value."""
+        """Reject grant types other than the RFC 7523 JWT bearer value.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if self.grant_type != JWT_BEARER_GRANT_TYPE:
             raise ValueError("unsupported grant_type")
         return self
 
     def to_form_fields(self) -> dict[str, str]:
-        """Serialize this request into OAuth form parameters."""
+        """Serialize this request into OAuth form parameters.
+
+        Function responsibility
+        -----------------------
+        Defines immutable protocol data contracts and validation invariants.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         fields = {"grant_type": self.grant_type, "assertion": self.assertion}
         if self.scope is not None:
             fields["scope"] = self.scope
@@ -121,7 +254,23 @@ class JwtAuthorizationGrantRequest(BaseModel):
 
 
 class AuthenticatedClient(BaseModel):
-    """Stable result returned after successful private-key JWT authentication."""
+    """Stable result returned after successful private-key JWT authentication.
+
+    Class responsibility
+    -----------------------
+    Defines immutable protocol data contracts and validation invariants.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -135,7 +284,23 @@ class AuthenticatedClient(BaseModel):
 
 
 class ValidatedAuthorizationGrant(BaseModel):
-    """Validated RFC 7523 authorization-grant assertion context."""
+    """Validated RFC 7523 authorization-grant assertion context.
+
+    Class responsibility
+    -----------------------
+    Defines immutable protocol data contracts and validation invariants.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 

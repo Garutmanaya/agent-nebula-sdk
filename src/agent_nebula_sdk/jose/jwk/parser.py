@@ -15,14 +15,37 @@ _PRIVATE_PARAMETERS = frozenset({"d", "p", "q", "dp", "dq", "qi", "oth", "k"})
 
 
 class JwkParser:
-    """Parse untrusted mappings into validated public JWK objects."""
+    """Parse untrusted mappings into validated public JWK objects.
+
+    Class responsibility
+    -----------------------
+    Parses untrusted data into validated SDK models.
+
+    Standards
+    ---------
+    * RFC 7517
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     def parse_public_jwk(self, value: Mapping[str, Any]) -> SupportedPublicJwk:
         """Parse a Phase 1 public key while rejecting private material.
 
-        RFC 7517 permits both public and private JWK representations. Public
-        registration and JWKS publication endpoints MUST NOT accept or expose
-        private parameters, so this parser rejects them before model dispatch.
+        Function responsibility
+        -----------------------
+        Parses untrusted data into validated SDK models.
+
+        Standards
+        ---------
+        * RFC 7517
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
         """
         private_members = sorted(_PRIVATE_PARAMETERS.intersection(value))
         if private_members:

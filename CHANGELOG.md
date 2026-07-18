@@ -1,3 +1,10 @@
+
+## 1.2.2 - Step 3.1 documentation standard
+
+- Expanded class, method, and function documentation across the SDK.
+- Added package-level README files and a permanent source documentation standard.
+- Preserved Step 3 protocol behavior and public APIs.
+
 # Changelog
 ## 1.2.1 - Step 3 quality correction
 

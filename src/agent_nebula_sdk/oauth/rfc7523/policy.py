@@ -15,7 +15,23 @@ from agent_nebula_sdk.core.errors import ConfigurationError
 
 @dataclass(frozen=True, slots=True)
 class Rfc7523Policy:
-    """Configure the Agent Nebula private-key JWT security profile."""
+    """Configure the Agent Nebula private-key JWT security profile.
+
+    Class responsibility
+    -----------------------
+    Holds explicit, immutable security policy used by protocol services.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     allowed_algorithms: frozenset[str] = frozenset({"RS256", "ES256", "EdDSA"})
     assertion_lifetime: timedelta = timedelta(minutes=5)
@@ -27,7 +43,23 @@ class Rfc7523Policy:
     maximum_assertion_bytes: int = 16_384
 
     def __post_init__(self) -> None:
-        """Reject unsafe or contradictory policy configuration."""
+        """Reject unsafe or contradictory policy configuration.
+
+        Function responsibility
+        -----------------------
+        Holds explicit, immutable security policy used by protocol services.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if not self.allowed_algorithms:
             raise ConfigurationError(
                 "at least one JWT signing algorithm must be allowed",

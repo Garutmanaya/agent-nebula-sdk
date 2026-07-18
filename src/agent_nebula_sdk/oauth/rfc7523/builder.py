@@ -27,7 +27,23 @@ from agent_nebula_sdk.ports.clock import Clock
 
 
 class ClientAssertionBuilder:
-    """Build signed ``private_key_jwt`` client-authentication assertions."""
+    """Build signed ``private_key_jwt`` client-authentication assertions.
+
+    Class responsibility
+    -----------------------
+    Constructs protocol messages without performing persistence or network I/O.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     def __init__(
         self,
@@ -36,7 +52,23 @@ class ClientAssertionBuilder:
         policy: Rfc7523Policy,
         assertion_id_factory: Callable[[], str] | None = None,
     ) -> None:
-        """Create a deterministic, policy-driven client assertion builder."""
+        """Create a deterministic, policy-driven client assertion builder.
+
+        Function responsibility
+        -----------------------
+        Constructs protocol messages without performing persistence or network I/O.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         self._clock = clock
         self._policy = policy
         self._assertion_id_factory = assertion_id_factory or (lambda: str(uuid4()))
@@ -49,12 +81,30 @@ class ClientAssertionBuilder:
         signing_key: ClientSigningKey,
         include_client_id_parameter: bool = True,
     ) -> ClientAuthenticationRequest:
-        """Create an RFC 7523 assertion and token-endpoint request parameters."""
+        """Create an RFC 7523 assertion and token-endpoint request parameters.
+
+        Function responsibility
+        -----------------------
+        Constructs protocol messages without performing persistence or network I/O.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         self._validate_inputs(
             client_id=client_id,
             token_endpoint=token_endpoint,
             algorithm=signing_key.algorithm,
         )
+        # Assertions are deliberately short-lived. A fresh jti is generated for each
+        # request so the authorization server can enforce one-time use.
         now = self._clock.now()
         expires_at = now + self._policy.assertion_lifetime
         claims = ClientAssertionClaims(
@@ -75,7 +125,23 @@ class ClientAssertionBuilder:
         )
 
     def _validate_inputs(self, *, client_id: str, token_endpoint: str, algorithm: str) -> None:
-        """Validate assertion inputs before signing any data."""
+        """Validate assertion inputs before signing any data.
+
+        Function responsibility
+        -----------------------
+        Constructs protocol messages without performing persistence or network I/O.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if not client_id.strip():
             raise ProtocolValidationError(
                 "client_id must not be empty",
@@ -95,7 +161,23 @@ class ClientAssertionBuilder:
 
     @staticmethod
     def _encode(*, claims: Mapping[str, Any], signing_key: ClientSigningKey) -> str:
-        """Sign a JWT while explicitly setting ``kid``, ``alg``, and ``typ``."""
+        """Sign a JWT while explicitly setting ``kid``, ``alg``, and ``typ``.
+
+        Function responsibility
+        -----------------------
+        Constructs protocol messages without performing persistence or network I/O.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         try:
             return jwt.encode(
                 payload=dict(claims),
@@ -115,7 +197,23 @@ class ClientAssertionBuilder:
 
 
 class JwtAuthorizationGrantBuilder:
-    """Build signed JWT bearer authorization-grant assertions."""
+    """Build signed JWT bearer authorization-grant assertions.
+
+    Class responsibility
+    -----------------------
+    Constructs protocol messages without performing persistence or network I/O.
+
+    Standards
+    ---------
+    * RFC 7523
+    * RFC 7521
+    * RFC 7519
+
+    Operational notes
+    -----------------
+    Instances are safe to reuse when their injected collaborators are safe to reuse.
+    Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+    """
 
     def __init__(
         self,
@@ -124,7 +222,23 @@ class JwtAuthorizationGrantBuilder:
         policy: Rfc7523Policy,
         assertion_id_factory: Callable[[], str] | None = None,
     ) -> None:
-        """Create a deterministic authorization-grant assertion builder."""
+        """Create a deterministic authorization-grant assertion builder.
+
+        Function responsibility
+        -----------------------
+        Constructs protocol messages without performing persistence or network I/O.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         self._clock = clock
         self._policy = policy
         self._assertion_id_factory = assertion_id_factory or (lambda: str(uuid4()))
@@ -139,7 +253,23 @@ class JwtAuthorizationGrantBuilder:
         scope: str | None = None,
         additional_claims: Mapping[str, Any] | None = None,
     ) -> JwtAuthorizationGrantRequest:
-        """Create an RFC 7523 authorization-grant request."""
+        """Create an RFC 7523 authorization-grant request.
+
+        Function responsibility
+        -----------------------
+        Constructs protocol messages without performing persistence or network I/O.
+
+        Standards
+        ---------
+        * RFC 7523
+        * RFC 7521
+        * RFC 7519
+
+        Operational notes
+        -----------------
+        The function does not retain mutable protocol state unless explicitly documented.
+        Validation failures are reported through stable ``agent_nebula_sdk`` errors.
+        """
         if signing_key.algorithm not in self._policy.allowed_algorithms:
             raise UnsupportedAlgorithmError(
                 "authorization-grant signing algorithm is not allowed",
