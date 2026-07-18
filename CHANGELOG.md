@@ -1,4 +1,11 @@
 
+## 1.3.0 - Step 4 RFC 7591
+
+- Implement RFC 7591 dynamic client registration models, service, policies, software statements, and HTTP client.
+- Add open and controlled registration profiles without coupling the SDK to product persistence.
+- Add inline JWKS and JWKS URI validation, extension metadata support, duplicate software identity policy, and reference adapters.
+
+
 ## 1.2.2 - Step 3.1 documentation standard
 
 - Expanded class, method, and function documentation across the SDK.

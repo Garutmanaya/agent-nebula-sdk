@@ -62,3 +62,17 @@ class HttpTransport(Protocol):
         The function does not retain mutable protocol state unless explicitly documented.
         Validation failures are reported through stable ``agent_nebula_sdk`` errors.
         """
+
+    def post(
+        self,
+        url: str,
+        *,
+        headers: dict[str, str] | None = None,
+        body: bytes = b"",
+    ) -> HttpResponse:
+        """Issue an HTTPS POST request and return a transport-neutral response.
+
+        The SDK passes already serialized protocol bodies so transport adapters
+        do not need to understand OAuth, JOSE, A2A, or MCP payload semantics.
+        """
+        ...

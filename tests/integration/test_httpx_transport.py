@@ -65,3 +65,22 @@ def test_httpx_transport_rejects_non_positive_timeout() -> None:
     """A missing timeout is not permitted for security metadata retrieval."""
     with pytest.raises(ValueError):
         HttpxTransport(timeout_seconds=0)
+
+
+def test_httpx_transport_post_returns_transport_neutral_response() -> None:
+    """HTTPX POST requests preserve the serialized protocol body."""
+    import httpx
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        """Validate the serialized POST body and return a registration response."""
+        assert request.content == b'{"client":"metadata"}'
+        return httpx.Response(201, json={"client_id": "registered"})
+
+    transport = HttpxTransport(transport=httpx.MockTransport(handler))
+    response = transport.post(
+        "https://registry.example/oauth/register",
+        headers={"content-type": "application/json"},
+        body=b'{"client":"metadata"}',
+    )
+    transport.close()
+    assert response.status_code == 201

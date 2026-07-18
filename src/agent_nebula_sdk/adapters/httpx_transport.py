@@ -86,6 +86,32 @@ class HttpxTransport:
             body=response.content,
         )
 
+    def post(
+        self,
+        url: str,
+        *,
+        headers: dict[str, str] | None = None,
+        body: bytes = b"",
+    ) -> HttpResponse:
+        """Issue a POST request and normalize network failures.
+
+        The method intentionally accepts bytes rather than a Python mapping so
+        each protocol module controls its exact wire representation.
+        """
+        try:
+            response = self._client.post(url, headers=headers, content=body)
+        except httpx.HTTPError as exc:
+            raise ExternalServiceError(
+                "outbound HTTP request failed",
+                code="http_transport_error",
+                details={"exception_type": type(exc).__name__},
+            ) from exc
+        return HttpResponse(
+            status_code=response.status_code,
+            headers=dict(response.headers),
+            body=response.content,
+        )
+
     def close(self) -> None:
         """Release the underlying connection pool.
 
