@@ -22,6 +22,7 @@ class FixedClock(Clock):
         self.current = datetime(2026, 7, 18, tzinfo=UTC)
 
     def now(self) -> datetime:
+        """Return the deterministic current time used by cache tests."""
         return self.current
 
 
@@ -33,6 +34,7 @@ class RecordingTransport(HttpTransport):
         self.calls: list[tuple[str, dict[str, str] | None]] = []
 
     def get(self, url: str, *, headers: dict[str, str] | None = None) -> HttpResponse:
+        """Record one GET request and return the next scripted response."""
         self.calls.append((url, headers))
         return self.responses.pop(0)
 

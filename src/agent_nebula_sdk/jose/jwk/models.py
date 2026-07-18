@@ -12,6 +12,7 @@ service client or provider agent and are never registered with Agent Nebula.
 
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from typing import Annotated, Literal, Self
 
 from cryptography.hazmat.primitives.asymmetric import ec, ed25519, rsa
@@ -23,7 +24,7 @@ from agent_nebula_sdk.core.errors import KeyValidationError
 _ALLOWED_PUBLIC_KEY_OPERATIONS = frozenset({"verify"})
 
 
-class PublicJwk(BaseModel):
+class PublicJwk(BaseModel, ABC):
     """Common RFC 7517 members for an asymmetric public JWK."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -54,13 +55,23 @@ class PublicJwk(BaseModel):
             raise ValueError("signature use is inconsistent with key_ops")
         return self
 
+    @abstractmethod
     def to_public_key(self) -> object:
-        """Convert the JWK to a ``cryptography`` public-key object."""
-        raise NotImplementedError
+        """Convert the JWK to a ``cryptography`` public-key object.
 
+        Concrete key-type models implement the conversion after validating all
+        RFC-required public parameters. The SDK never converts private JWK
+        material through this public model hierarchy.
+        """
+
+    @abstractmethod
     def required_thumbprint_members(self) -> dict[str, str]:
-        """Return RFC 7638 required members for this key type."""
-        raise NotImplementedError
+        """Return the canonical RFC 7638 members for this key type.
+
+        Implementations return only the members mandated by RFC 7638 Section
+        3.2; optional metadata such as ``kid`` and ``alg`` is intentionally
+        excluded from the thumbprint input.
+        """
 
 
 class RsaPublicJwk(PublicJwk):

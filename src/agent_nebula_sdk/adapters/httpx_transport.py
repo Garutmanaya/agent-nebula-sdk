@@ -16,14 +16,22 @@ class HttpxTransport:
         *,
         timeout_seconds: float = 10.0,
         verify: bool | str = True,
+        transport: httpx.BaseTransport | None = None,
     ) -> None:
-        """Create a transport that never follows redirects automatically."""
+        """Create a transport that never follows redirects automatically.
+
+        Args:
+            timeout_seconds: Total HTTP timeout applied by HTTPX.
+            verify: TLS verification policy or CA bundle path.
+            transport: Optional HTTPX transport for tests or custom networking.
+        """
         if timeout_seconds <= 0:
             raise ValueError("timeout_seconds must be positive")
         self._client = httpx.Client(
             timeout=timeout_seconds,
             verify=verify,
             follow_redirects=False,
+            transport=transport,
         )
 
     def get(self, url: str, *, headers: dict[str, str] | None = None) -> HttpResponse:

@@ -16,3 +16,12 @@ This deliverable contains architecture and design only. It intentionally contain
 - Testing strategy and acceptance gates
 - ADRs for major decisions
 - Normative source list
+
+
+## Step 3 source additions
+
+- `src/agent_nebula_sdk/oauth/rfc7523/`
+- `tests/unit/oauth/rfc7523/`
+- `tests/integration/oauth/`
+- `docs/implementation/step-3-rfc7523-private-key-jwt.md`
+- `docs/standards/rfc7523-conformance.md`

@@ -33,3 +33,10 @@ Run Client → Authorization Server → Resource Server end to end without Agent
 1. Update Agent Nebula with PostgreSQL/Redis adapters.
 2. Update Agent Genesis Host with client role.
 3. Update Agent Genesis providers with client and resource-server roles.
+
+
+## Completed: Step 3 — RFC 7523
+
+- private_key_jwt client authentication
+- JWT bearer authorization grants
+- assertion replay prevention and strict validation policy

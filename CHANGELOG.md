@@ -1,4 +1,15 @@
 # Changelog
+## 1.2.1 - Step 3 quality correction
+
+- Formatted all source and test files with Ruff.
+- Resolved all Ruff lint failures in the RFC 7523 implementation and tests.
+- Replaced abstract `NotImplementedError` methods with explicit abstract methods.
+- Added missing test-helper documentation.
+- Added an automated source-quality audit for module, class, function, and method docstrings.
+- Added a check that rejects multiple Python statements on one source line.
+- Extended the verification gate to format, lint, and compile the `scripts` directory.
+- Removed environment-specific lock and generated runtime artifacts from the release archive.
+
 
 ## 1.1.0 — Step 2
 
@@ -13,3 +24,9 @@
 ## 1.0.0 — Step 1
 
 - Architecture-only baseline.
+
+## 1.2.0
+
+- Implement RFC 7523 private-key JWT client authentication.
+- Implement RFC 7523 JWT bearer authorization grants.
+- Add strict assertion policy, replay ports, reference adapters, tests, and docs.

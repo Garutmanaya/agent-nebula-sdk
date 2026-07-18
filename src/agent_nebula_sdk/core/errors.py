@@ -63,3 +63,15 @@ class ExternalServiceError(AgentNebulaSdkError):
 
 class UnsupportedProtocolError(AgentNebulaSdkError):
     """Raised by future protocol placeholders until their plugin is implemented."""
+
+
+class ClientAuthenticationError(ProtocolValidationError):
+    """Raised when OAuth client authentication cannot be established."""
+
+
+class AuthorizationGrantError(ProtocolValidationError):
+    """Raised when an assertion authorization grant is invalid."""
+
+
+class ReplayDetectedError(ProtocolValidationError):
+    """Raised when a one-time assertion or proof identifier is reused."""

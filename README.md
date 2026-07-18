@@ -1,4 +1,4 @@
-# Agent Nebula SDK — Step 1 Architecture Baseline
+# Agent Nebula SDK
 
 This repository is the frozen architecture and design baseline for a reusable security and protocol SDK consumed by **Agent Nebula** and **Agent Genesis**.
 
@@ -82,3 +82,16 @@ make verify
 ```
 
 See `docs/implementation/step-2-jose-foundation.md` for the exact supported profile and deferred work.
+
+
+## Step 3 implementation status
+
+Version 1.2.0 adds RFC 7523 JWT assertion support:
+
+- `private_key_jwt` client assertion creation and authentication;
+- JWT bearer authorization-grant creation and validation;
+- strict audience, algorithm, lifetime, and claim validation;
+- atomic assertion replay-store ports and reference adapters;
+- stable role-specific public APIs and detailed RFC documentation.
+
+See `docs/implementation/step-3-rfc7523-private-key-jwt.md`.

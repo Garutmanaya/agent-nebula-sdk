@@ -17,6 +17,7 @@ class MutableClock:
         self.current = datetime(2026, 7, 18, tzinfo=UTC)
 
     def now(self) -> datetime:
+        """Return the mutable deterministic time used by cache tests."""
         return self.current
 
 
