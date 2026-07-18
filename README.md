@@ -63,3 +63,22 @@ agent-nebula-sdk-step1/
 ## Hard rule
 
 Implementation may add code inside a module, but it may not bypass, merge, or reverse the dependencies defined in this baseline without a new Architecture Decision Record (ADR).
+
+## Step 2 implementation status
+
+Version 1.1.0 adds the JOSE key foundation defined by the Step 1 architecture:
+
+- RFC 7517 public JWK/JWK Set validation;
+- RFC 7638 JWK thumbprints;
+- RFC 8037 Ed25519 public keys;
+- secure remote JWKS resolution, caching, and rotation refresh;
+- stable ports and errors required by later protocol modules.
+
+Run the complete quality gate:
+
+```bash
+uv sync --group dev
+make verify
+```
+
+See `docs/implementation/step-2-jose-foundation.md` for the exact supported profile and deferred work.
