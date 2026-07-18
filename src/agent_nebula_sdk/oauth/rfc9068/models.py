@@ -44,6 +44,7 @@ class AccessTokenClaims(BaseModel):
     groups: tuple[str, ...] | None = None
     roles: tuple[str, ...] | None = None
     entitlements: tuple[str, ...] | None = None
+    cnf: dict[str, str] | None = None
 
     @field_validator("aud")
     @classmethod
@@ -129,6 +130,7 @@ class AccessTokenIssueRequest(BaseModel):
     groups: tuple[str, ...] | None = None
     roles: tuple[str, ...] | None = None
     entitlements: tuple[str, ...] | None = None
+    confirmation_jkt: str | None = Field(default=None, min_length=1, max_length=512)
     additional_claims: Mapping[str, Any] = Field(default_factory=dict)
 
 

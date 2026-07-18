@@ -73,6 +73,7 @@ class Rfc9068Policy(BaseModel):
             "groups",
             "roles",
             "entitlements",
+            "cnf",
         }
 
     def permits_private_claim(self, name: str) -> bool:

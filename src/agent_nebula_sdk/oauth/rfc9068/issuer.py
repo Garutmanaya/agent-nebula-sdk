@@ -87,6 +87,10 @@ class JwtAccessTokenIssuer:
             value = getattr(request, name)
             if value is not None:
                 claims_data[name] = value
+        if request.confirmation_jkt is not None:
+            # RFC 9449 Section 6 binds a DPoP access token to the client key
+            # through the standard confirmation claim member ``cnf.jkt``.
+            claims_data["cnf"] = {"jkt": request.confirmation_jkt}
         claims_data.update(dict(request.additional_claims))
 
         try:

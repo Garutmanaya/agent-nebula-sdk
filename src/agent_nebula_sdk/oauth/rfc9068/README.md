@@ -24,6 +24,6 @@ validation of OAuth 2.0 access tokens encoded as JWTs.
 
 The package does not own signing-key storage, JWKS publication, resource
 registration, HTTP routes, provider policy, or access-token revocation. RFC
-8707 supplies the audience. Step 7 will add RFC 9449 DPoP confirmation claims
-and sender-constrained request validation without changing this package's core
+8707 supplies the audience. RFC 9449 integration supplies the optional `cnf.jkt` confirmation claim and
+sender-constrained request validation without changing this package's core
 issuer and validator roles.

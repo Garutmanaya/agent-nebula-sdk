@@ -109,3 +109,23 @@ def test_issue_rejects_non_collision_resistant_private_claim() -> None:
             ),
         )
     assert captured.value.code == "invalid_private_claim_name"
+
+
+def test_issue_dpop_confirmation_claim() -> None:
+    """RFC 9449 integration emits a typed ``cnf.jkt`` confirmation claim."""
+    private_key, _ = build_rsa_key_pair()
+    issued = build_issuer().issue(
+        request=AccessTokenIssueRequest(
+            issuer="https://nebula.example",
+            subject="parking-host",
+            audience="https://metro.example/a2a",
+            client_id="parking-host",
+            confirmation_jkt="client-key-thumbprint",
+        ),
+        signing_key=AccessTokenSigningKey(
+            key_id="rsa-client-2026-01",
+            algorithm="RS256",
+            private_key=private_key,
+        ),
+    )
+    assert issued.claims.cnf == {"jkt": "client-key-thumbprint"}
