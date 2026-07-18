@@ -10,8 +10,8 @@
 | Step 3.1 | Documentation, comments, package READMEs, and quality gates | Complete |
 | Step 4 | RFC 7591 Dynamic Client Registration | Complete |
 | Step 5 | RFC 8707 Resource Indicators | Complete |
-| Step 6 | RFC 9068 JWT Access Token Profile | Next |
-| Step 7 | RFC 9449 DPoP | Pending |
+| Step 6 | RFC 9068 JWT Access Token Profile | Complete |
+| Step 7 | RFC 9449 DPoP | Next |
 | Step 8 | Client, authorization-server, and resource-server role facades | Pending |
 | Step 9 | A2A and MCP security adapters | Pending |
 | Step 10 | SDK-only Host → Registry → Provider acceptance flow | Pending |
@@ -25,8 +25,8 @@
 | RFC 7523 | JWT assertions and `private_key_jwt` | `oauth/rfc7523` | 1 | Implemented |
 | RFC 7591 | Dynamic Client Registration | `oauth/rfc7591` | 1 | Implemented |
 | RFC 8707 | Resource Indicators and audience selection | `oauth/rfc8707` | 1 | Implemented |
-| RFC 9068 | JWT Profile for OAuth 2.0 Access Tokens | `oauth/rfc9068` | 1 | Next |
-| RFC 9449 | DPoP sender-constrained tokens | `oauth/rfc9449` | 1 | Pending |
+| RFC 9068 | JWT Profile for OAuth 2.0 Access Tokens | `oauth/rfc9068` | 1 | Implemented |
+| RFC 9449 | DPoP sender-constrained tokens | `oauth/rfc9449` | 1 | Next |
 | RFC 8414 | Authorization Server Metadata | `metadata` | 1 | Pending |
 | RFC 9728 | Protected Resource Metadata | `metadata` | 1 | Pending |
 | A2A | Agent Card security and authenticated HTTP invocation | `a2a` | 1 | Pending |

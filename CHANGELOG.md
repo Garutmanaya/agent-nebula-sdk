@@ -54,3 +54,13 @@
 - Added the complete roadmap and standards mapping.
 - Reserved stable category-based package paths for future OAuth, metadata, A2A,
   MCP, TLS, SPIFFE, identity, and GNAP implementations.
+
+## 1.5.0 — Step 6 RFC 9068
+
+- Added RFC 9068 JWT access-token issuance and resource-server validation.
+- Enforced `at+jwt`, mandatory claims, RS256 interoperability, explicit
+  algorithm allowlists, exact issuer/audience validation, and stable
+  `invalid_token` errors.
+- Added optional authentication and authorization claims plus collision-resistant
+  private claim policy.
+- Integrated RFC 8707 audience resolution with RFC 9068 issuance tests.
