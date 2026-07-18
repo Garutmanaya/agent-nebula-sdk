@@ -44,3 +44,13 @@
 - Implement RFC 7523 private-key JWT client authentication.
 - Implement RFC 7523 JWT bearer authorization grants.
 - Add strict assertion policy, replay ports, reference adapters, tests, and docs.
+
+## 1.4.0 — Step 5 RFC 8707
+
+- Added RFC 8707 resource-indicator models, validation, codecs, registry ports,
+  reference adapters, audience mapping, and resource-server audience checks.
+- Added prior-grant subset enforcement for authorization-code and refresh-token
+  integrations.
+- Added the complete roadmap and standards mapping.
+- Reserved stable category-based package paths for future OAuth, metadata, A2A,
+  MCP, TLS, SPIFFE, identity, and GNAP implementations.
