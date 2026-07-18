@@ -1,3 +1,16 @@
+# Changelog
+
+## 1.6.0 - Step 7 RFC 9449 DPoP
+
+- Added client-side DPoP proof construction with request-specific `htm`, `htu`, `iat`, and `jti`.
+- Added token-endpoint and protected-resource proof validation.
+- Added RFC 7638 `cnf.jkt` access-token binding and RFC 9068 integration.
+- Added `ath` calculation and validation for protected-resource requests.
+- Added atomic replay-store and nonce-store ports with thread-safe in-memory adapters.
+- Added server nonce issuance and `DPoP-Nonce` header support.
+- Added `Authorization: DPoP` and `DPoP` HTTP header codecs.
+- Added SDK-only authorization-server to provider integration coverage and negative tests.
+
 
 ## 1.3.0 - Step 4 RFC 7591
 
