@@ -12,8 +12,8 @@
 | Step 5 | RFC 8707 Resource Indicators | Complete |
 | Step 6 | RFC 9068 JWT Access Token Profile | Complete |
 | Step 7 | RFC 9449 DPoP | Complete |
-| Step 8 | Client, authorization-server, and resource-server role facades | Next |
-| Step 9 | A2A and MCP security adapters | Pending |
+| Step 8 | Client, authorization-server, and resource-server role facades | Complete |
+| Step 9 | A2A and MCP security adapters | Next |
 | Step 10 | SDK-only Host → Registry → Provider acceptance flow | Pending |
 
 ## Standards mapping

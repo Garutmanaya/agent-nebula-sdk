@@ -57,8 +57,8 @@ def build_ec_key_pair() -> tuple[ec.EllipticCurvePrivateKey, SupportedPublicJwk]
             "use": "sig",
             "alg": "ES256",
             "crv": "P-256",
-            "x": integer_to_base64url(numbers.x),
-            "y": integer_to_base64url(numbers.y),
+            "x": encode_base64url(numbers.x.to_bytes(32, byteorder="big")),
+            "y": encode_base64url(numbers.y.to_bytes(32, byteorder="big")),
         }
     )
     return private_key, public_jwk

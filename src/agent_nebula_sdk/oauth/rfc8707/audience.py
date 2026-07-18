@@ -23,6 +23,11 @@ class ResourceAudienceValidator:
         self._expected_audience = expected_audience
         self._require_single_audience = require_single_audience
 
+    @property
+    def expected_audience(self) -> str:
+        """Return the configured protected-resource audience identifier."""
+        return self._expected_audience
+
     def validate(self, audience: str | Sequence[str]) -> AudienceValidationResult:
         """Validate a JWT-style string or string-array ``aud`` claim.
 

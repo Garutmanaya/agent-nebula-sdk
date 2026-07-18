@@ -1,3 +1,8 @@
+## 1.7.0
+
+- Added client, authorization-server, and resource-server role facades.
+- Added typed cross-RFC orchestration models and role documentation.
+
 # Changelog
 
 ## 1.6.0 - Step 7 RFC 9449 DPoP
