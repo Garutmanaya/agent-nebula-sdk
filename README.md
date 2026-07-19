@@ -1,109 +1,85 @@
 # Agent Nebula SDK
 
-This repository is the frozen architecture and design baseline for a reusable security and protocol SDK consumed by **Agent Nebula** and **Agent Genesis**.
+Agent Nebula SDK is a reusable, persistence-neutral security and protocol library shared by Agent Nebula, Agent Genesis, and future agent products. Phase 1 is complete and provides standards-based client onboarding, asymmetric authentication, provider-targeted access tokens, sender-constrained invocation, and HTTP security adapters for A2A and MCP.
 
-Step 1 intentionally contains no protocol implementation. It defines the public contracts, module boundaries, storage ports, extension model, standards profile, diagrams, testing strategy, and acceptance gates that implementation must follow.
+## Phase 1 status
 
-## Primary goals
-
-1. Every protocol is an independent, replaceable module.
-2. Products compose modules through interfaces and factories, never internal imports.
-3. The SDK owns protocol behavior but owns no product database or business policy.
-4. Agent Nebula and Agent Genesis remain independently deployable.
-5. Phase 2 and Phase 3 standards can be added without modifying stable Phase 1 modules.
-6. Every security-sensitive API is traceable to a standard, test, and failure contract.
-
-## Phase 1 standards profile
-
-- RFC 7517 — JSON Web Key (JWK)
-- RFC 7638 — JWK Thumbprint
-- RFC 7523 — JWT Profiles for OAuth 2.0 Client Authentication
-- RFC 7591 — OAuth 2.0 Dynamic Client Registration
-- RFC 8414 — OAuth 2.0 Authorization Server Metadata
-- RFC 8707 — Resource Indicators for OAuth 2.0
-- RFC 9068 — JWT Profile for OAuth 2.0 Access Tokens
-- RFC 9449 — Demonstrating Proof of Possession (DPoP)
-- RFC 9728 — OAuth 2.0 Protected Resource Metadata
-- A2A protocol security integration at the HTTP layer
-- MCP authorization integration through OAuth metadata
-
-## Repository map
+Phase 1 implements and verifies the complete SDK-only flow:
 
 ```text
-agent-nebula-sdk-step1/
-├── contracts/                 # Stable public port and model specifications
-├── diagrams/                  # Consolidated Mermaid diagrams
-├── docs/
-│   ├── architecture/
-│   ├── configuration/
-│   ├── database/
-│   ├── decisions/
-│   ├── flows/
-│   ├── roadmap/
-│   ├── security/
-│   ├── standards/
-│   └── testing/
-├── scripts/                   # Documentation validation only
-├── ARCHITECTURE.md
-├── CONTRIBUTING.md
-├── SECURITY.md
-└── ROADMAP.md
+Host
+→ RFC 7591 open registration
+→ RFC 7523 private_key_jwt authentication
+→ RFC 8707 resource selection
+→ RFC 9068 JWT access token
+→ RFC 9449 DPoP sender constraint
+→ A2A or MCP protected-resource invocation
+→ provider-local authorization
 ```
 
-## Required review order
+The SDK owns protocol models, validation, token construction, role facades, metadata, and extension ports. It does not own product databases, trust-score business rules, HTTP route composition, private-key custody, or provider business policy.
 
-1. `ARCHITECTURE.md`
-2. `docs/architecture/sdk-boundary.md`
-3. `docs/architecture/module-and-plugin-model.md`
-4. `docs/database/storage-contracts.md`
-5. `docs/database/agent-nebula-schema-blueprint.md`
-6. `docs/standards/phase-1-profile.md`
-7. `docs/testing/acceptance-gates.md`
+## Implemented standards
 
-## Hard rule
+| Standard | Purpose | Status |
+|---|---|---|
+| RFC 7517 | JWK and JWKS | Implemented |
+| RFC 7638 | JWK thumbprints | Implemented |
+| RFC 7523 | JWT assertions and `private_key_jwt` | Implemented |
+| RFC 7591 | Dynamic Client Registration | Implemented |
+| RFC 8707 | Resource Indicators | Implemented |
+| RFC 9068 | JWT access-token profile | Implemented |
+| RFC 9449 | DPoP | Implemented |
+| RFC 8414 | Authorization-server metadata | Implemented |
+| RFC 9728 | Protected-resource metadata | Implemented |
+| A2A security integration | HTTP-layer authentication and Agent Card metadata | Implemented |
+| MCP authorization integration | OAuth discovery and protected invocation | Implemented |
 
-Implementation may add code inside a module, but it may not bypass, merge, or reverse the dependencies defined in this baseline without a new Architecture Decision Record (ADR).
+See `docs/standards/STANDARDS_MAPPING.md` and `docs/phase1/PHASE1_COMPLETION_REPORT.md`.
 
-## Step 2 implementation status
+## Repository structure
 
-Version 1.1.0 adds the JOSE key foundation defined by the Step 1 architecture:
+```text
+src/agent_nebula_sdk/
+├── jose/                  # JWK, JWKS, thumbprints
+├── oauth/                 # RFC 7523, 7591, 8707, 9068, 9449
+├── metadata/              # RFC 8414 and RFC 9728
+├── client/                # Client role facade
+├── authorization_server/  # Authorization-server role facade
+├── resource_server/       # Resource-server role facade
+├── a2a/                   # A2A HTTP security adapters
+├── mcp/                   # MCP OAuth security adapters
+├── conformance/           # SDK-only Phase 1 harness
+├── ports/                 # Persistence and infrastructure contracts
+└── adapters/              # Reference adapters
+```
 
-- RFC 7517 public JWK/JWK Set validation;
-- RFC 7638 JWK thumbprints;
-- RFC 8037 Ed25519 public keys;
-- secure remote JWKS resolution, caching, and rotation refresh;
-- stable ports and errors required by later protocol modules.
-
-Run the complete quality gate:
+## Installation and verification
 
 ```bash
+uv lock --default-index https://pypi.org/simple
 uv sync --group dev
 make verify
 ```
 
-See `docs/implementation/step-2-jose-foundation.md` for the exact supported profile and deferred work.
-
-
-## Step 3 implementation status
-
-Version 1.2.0 adds RFC 7523 JWT assertion support:
-
-- `private_key_jwt` client assertion creation and authentication;
-- JWT bearer authorization-grant creation and validation;
-- strict audience, algorithm, lifetime, and claim validation;
-- atomic assertion replay-store ports and reference adapters;
-- stable role-specific public APIs and detailed RFC documentation.
-
-See `docs/implementation/step-3-rfc7523-private-key-jwt.md`.
-
-## Phase 1 conformance
-
-Run the complete SDK-only Host → authorization server → provider scenario:
+Run only the Phase 1 acceptance scenario:
 
 ```bash
 uv run python scripts/run_phase1_acceptance.py
 ```
 
-The scenario uses open RFC 7591 registration, RFC 7523 client authentication,
-RFC 8707 resource targeting, RFC 9068 access tokens, RFC 9449 DPoP, and the A2A
-HTTP security adapter.
+## Documentation
+
+Start with `docs/INDEX.md`. The most important documents are:
+
+1. `docs/architecture/sdk-overview.md`
+2. `docs/standards/STANDARDS_MAPPING.md`
+3. `docs/phase1/PHASE1_COMPLETION_REPORT.md`
+4. `docs/integration/agent-nebula.md`
+5. `docs/integration/agent-genesis.md`
+6. `docs/phase2/PHASE2_REQUIREMENTS.md`
+7. `docs/phase3/PHASE3_REQUIREMENTS.md`
+
+## Extension rule
+
+New standards must be added through independent modules, ports, adapters, and facade composition. Stable Phase 1 modules must not be modified merely to add Phase 2 or Phase 3 capabilities unless a standards correction or security defect requires it and is recorded in an ADR.

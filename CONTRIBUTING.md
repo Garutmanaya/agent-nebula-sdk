@@ -1,25 +1,25 @@
 # Contributing
 
-## Mandatory coding standards
+## Core rule
 
-- Python 3.12 or later.
-- Object-oriented design with focused classes and explicit composition.
-- One statement per line; no compressed functions.
-- Public classes, methods, functions, and models require docstrings.
-- Security-sensitive docstrings must identify the applicable standard and section.
-- No generic `Exception`, untyped dictionary contracts, silent fallback, or algorithm auto-selection.
-- No function longer than 50 lines without an approved ADR.
-- No module may import another module's internal package.
-- Every new external call requires success, timeout, TLS, malformed-response, 4xx, and 5xx tests.
+New functionality must be modular and additive. A new standard should normally add a package, public models, ports, adapters, documentation, and tests rather than modify unrelated protocol modules.
 
-## Required verification
+## Required quality gate
 
 ```bash
-uv run ruff format --check src tests
-uv run ruff check src tests
+uv run ruff format --check src tests scripts
+uv run ruff check src tests scripts
 uv run mypy --strict src
-uv run pytest --cov=agent_nebula_sdk --cov-fail-under=90
-python -m compileall src tests
+uv run pytest
+python -m compileall -q src tests scripts
 ```
 
-Security-critical modules require 100% branch coverage.
+## Required documentation
+
+Every new package requires a `README.md`. Every public class, method, and function requires a meaningful docstring. Security-sensitive decisions require the relevant RFC section and a concise explanation of the validation rule.
+
+## Architecture changes
+
+Changes to dependency direction, public facade ownership, persistence boundaries, or protocol responsibility require an Architecture Decision Record under `docs/decisions/`.
+
+See `docs/developer/` for detailed contribution guidance.

@@ -1,101 +1,21 @@
-## 1.9.0 - Step 10 SDK-only Phase 1 acceptance
-
-- Added the reusable `Phase1AcceptanceHarness`.
-- Added complete Host → authorization server → A2A provider composition.
-- Added open Host and Provider registration in the acceptance scenario.
-- Added provider-local policy enforcement through an in-process HTTP transport.
-- Added negative tests for assertion replay, DPoP key theft, method mismatch, and proof replay.
-- Added Phase 1 conformance and acceptance-flow documentation.
-- Marked the standalone Phase 1 SDK profile complete in `ROADMAP.md`.
-
-## 1.8.0 — Step 9
-
-- Added RFC 8414 authorization-server metadata models and discovery.
-- Added RFC 9728 protected-resource metadata, well-known discovery, and challenges.
-- Added A2A Agent Card OAuth2 security declarations and DPoP HTTP adapters.
-- Added MCP OAuth discovery, challenge, client, and server adapters.
-- Added Step 9 documentation and conformance tests.
-## 1.7.0
-
-- Added client, authorization-server, and resource-server role facades.
-- Added typed cross-RFC orchestration models and role documentation.
-
 # Changelog
 
-## 1.6.0 - Step 7 RFC 9449 DPoP
+## Phase 1 Documentation Freeze
 
-- Added client-side DPoP proof construction with request-specific `htm`, `htu`, `iat`, and `jti`.
-- Added token-endpoint and protected-resource proof validation.
-- Added RFC 7638 `cnf.jkt` access-token binding and RFC 9068 integration.
-- Added `ath` calculation and validation for protected-resource requests.
-- Added atomic replay-store and nonce-store ports with thread-safe in-memory adapters.
-- Added server nonce issuance and `DPoP-Nonce` header support.
-- Added `Authorization: DPoP` and `DPoP` HTTP header codecs.
-- Added SDK-only authorization-server to provider integration coverage and negative tests.
+Documentation-only release based on the completed Step 10 codebase.
 
+- Updated top-level project, roadmap, security, and contributor documentation.
+- Added a documentation index and normalized architecture documentation.
+- Added Phase 1 completion and release reports.
+- Added standards mapping and per-standard implementation summaries.
+- Added integration guides for Agent Nebula and Agent Genesis.
+- Added persistence and database-adapter guidance.
+- Added Phase 2 and Phase 3 requirements and extension maps.
+- No Python source, tests, package structure, or public APIs changed.
 
-## 1.3.0 - Step 4 RFC 7591
+## 1.9.0 — Phase 1 SDK Acceptance
 
-- Implement RFC 7591 dynamic client registration models, service, policies, software statements, and HTTP client.
-- Add open and controlled registration profiles without coupling the SDK to product persistence.
-- Add inline JWKS and JWKS URI validation, extension metadata support, duplicate software identity policy, and reference adapters.
-
-
-## 1.2.2 - Step 3.1 documentation standard
-
-- Expanded class, method, and function documentation across the SDK.
-- Added package-level README files and a permanent source documentation standard.
-- Preserved Step 3 protocol behavior and public APIs.
-
-# Changelog
-## 1.2.1 - Step 3 quality correction
-
-- Formatted all source and test files with Ruff.
-- Resolved all Ruff lint failures in the RFC 7523 implementation and tests.
-- Replaced abstract `NotImplementedError` methods with explicit abstract methods.
-- Added missing test-helper documentation.
-- Added an automated source-quality audit for module, class, function, and method docstrings.
-- Added a check that rejects multiple Python statements on one source line.
-- Extended the verification gate to format, lint, and compile the `scripts` directory.
-- Removed environment-specific lock and generated runtime artifacts from the release archive.
-
-
-## 1.1.0 — Step 2
-
-- Added production repository tooling and strict verification gates.
-- Added stable SDK error and HTTP transport contracts.
-- Implemented RFC 7517 public JWK and JWK Set validation.
-- Implemented RFC 7638 thumbprints.
-- Added RSA, EC, and RFC 8037 Ed25519 public-key conversion.
-- Added secure `jwks_uri` policy, remote resolution, caching, and key-rotation refresh.
-- Added unit, conformance, adversarial, and external HTTP tests.
-
-## 1.0.0 — Step 1
-
-- Architecture-only baseline.
-
-## 1.2.0
-
-- Implement RFC 7523 private-key JWT client authentication.
-- Implement RFC 7523 JWT bearer authorization grants.
-- Add strict assertion policy, replay ports, reference adapters, tests, and docs.
-
-## 1.4.0 — Step 5 RFC 8707
-
-- Added RFC 8707 resource-indicator models, validation, codecs, registry ports,
-  reference adapters, audience mapping, and resource-server audience checks.
-- Added prior-grant subset enforcement for authorization-code and refresh-token
-  integrations.
-- Added the complete roadmap and standards mapping.
-- Reserved stable category-based package paths for future OAuth, metadata, A2A,
-  MCP, TLS, SPIFFE, identity, and GNAP implementations.
-
-## 1.5.0 — Step 6 RFC 9068
-
-- Added RFC 9068 JWT access-token issuance and resource-server validation.
-- Enforced `at+jwt`, mandatory claims, RS256 interoperability, explicit
-  algorithm allowlists, exact issuer/audience validation, and stable
-  `invalid_token` errors.
-- Added optional authentication and authorization claims plus collision-resistant
-  private claim policy.
-- Integrated RFC 8707 audience resolution with RFC 9068 issuance tests.
+- Added SDK-only Host → Authorization Server → Provider conformance harness.
+- Added negative tests for assertion replay, DPoP replay, wrong key, and wrong HTTP method.
+- Completed RFC 7517, 7638, 7523, 7591, 8707, 9068, 9449, 8414, and 9728 Phase 1 profile.
+- Completed A2A and MCP HTTP security adapters.
