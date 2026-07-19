@@ -1,3 +1,11 @@
+
+## 1.8.0 — Step 9
+
+- Added RFC 8414 authorization-server metadata models and discovery.
+- Added RFC 9728 protected-resource metadata, well-known discovery, and challenges.
+- Added A2A Agent Card OAuth2 security declarations and DPoP HTTP adapters.
+- Added MCP OAuth discovery, challenge, client, and server adapters.
+- Added Step 9 documentation and conformance tests.
 ## 1.7.0
 
 - Added client, authorization-server, and resource-server role facades.

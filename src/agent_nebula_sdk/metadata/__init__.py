@@ -1,6 +1,19 @@
-"""METADATA extension package reserved by the Agent Nebula SDK roadmap.
+"""OAuth metadata publication, discovery, and challenge support."""
 
-This package is intentionally present before its implementation milestone so
-future protocol support can be added without reorganizing established modules.
-See the adjacent README for the planned standards and extension boundaries.
-"""
+from agent_nebula_sdk.metadata.challenge import OAuthChallenge, OAuthChallengeCodec
+from agent_nebula_sdk.metadata.discovery import (
+    OAuthMetadataClient,
+    authorization_server_metadata_url,
+    protected_resource_metadata_urls,
+)
+from agent_nebula_sdk.metadata.models import AuthorizationServerMetadata, ProtectedResourceMetadata
+
+__all__ = [
+    "AuthorizationServerMetadata",
+    "OAuthChallenge",
+    "OAuthChallengeCodec",
+    "OAuthMetadataClient",
+    "ProtectedResourceMetadata",
+    "authorization_server_metadata_url",
+    "protected_resource_metadata_urls",
+]

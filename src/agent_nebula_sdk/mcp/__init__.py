@@ -1,6 +1,15 @@
-"""MCP extension package reserved by the Agent Nebula SDK roadmap.
+"""MCP OAuth discovery and authenticated HTTP security adapters."""
 
-This package is intentionally present before its implementation milestone so
-future protocol support can be added without reorganizing established modules.
-See the adjacent README for the planned standards and extension boundaries.
-"""
+from agent_nebula_sdk.mcp.client import McpHttpSecurityClient
+from agent_nebula_sdk.mcp.discovery import McpAuthorizationDiscoveryClient
+from agent_nebula_sdk.mcp.models import McpAuthorizationDiscovery, McpHttpRequest, McpHttpResponse
+from agent_nebula_sdk.mcp.server import McpRequestAuthenticator
+
+__all__ = [
+    "McpAuthorizationDiscovery",
+    "McpAuthorizationDiscoveryClient",
+    "McpHttpRequest",
+    "McpHttpResponse",
+    "McpHttpSecurityClient",
+    "McpRequestAuthenticator",
+]

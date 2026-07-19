@@ -13,8 +13,8 @@
 | Step 6 | RFC 9068 JWT Access Token Profile | Complete |
 | Step 7 | RFC 9449 DPoP | Complete |
 | Step 8 | Client, authorization-server, and resource-server role facades | Complete |
-| Step 9 | A2A and MCP security adapters | Next |
-| Step 10 | SDK-only Host → Registry → Provider acceptance flow | Pending |
+| Step 9 | A2A and MCP security adapters | Complete |
+| Step 10 | SDK-only Host → Registry → Provider acceptance flow | Next |
 
 ## Standards mapping
 
@@ -27,10 +27,10 @@
 | RFC 8707 | Resource Indicators and audience selection | `oauth/rfc8707` | 1 | Implemented |
 | RFC 9068 | JWT Profile for OAuth 2.0 Access Tokens | `oauth/rfc9068` | 1 | Implemented |
 | RFC 9449 | DPoP sender-constrained tokens | `oauth/rfc9449` | 1 | Implemented |
-| RFC 8414 | Authorization Server Metadata | `metadata` | 1 | Pending |
-| RFC 9728 | Protected Resource Metadata | `metadata` | 1 | Pending |
-| A2A | Agent Card security and authenticated HTTP invocation | `a2a` | 1 | Pending |
-| MCP authorization | OAuth discovery and protected MCP invocation | `mcp` | 1 | Pending |
+| RFC 8414 | Authorization Server Metadata | `metadata` | 1 | Implemented |
+| RFC 9728 | Protected Resource Metadata | `metadata` | 1 | Implemented |
+| A2A | Agent Card security and authenticated HTTP invocation | `a2a` | 1 | Implemented |
+| MCP authorization | OAuth discovery and protected MCP invocation | `mcp` | 1 | Implemented |
 | RFC 7592 | Registration management | `oauth/rfc7592` | 2 | Package reserved |
 | RFC 8705 | OAuth mTLS and certificate-bound tokens | `oauth/rfc8705`, `tls` | 2 | Package reserved |
 | SPIFFE/SPIRE | Workload identity | `spiffe` | 2 | Package reserved |
