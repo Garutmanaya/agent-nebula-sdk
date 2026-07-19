@@ -1,4 +1,4 @@
-.PHONY: sync test coverage format format-check lint typecheck quality compile verify package
+.PHONY: sync test coverage acceptance format format-check lint typecheck quality compile verify package
 
 sync:
 	uv sync --group dev
@@ -8,6 +8,9 @@ test:
 
 coverage:
 	uv run pytest --cov=agent_nebula_sdk --cov-report=term-missing --cov-fail-under=90
+
+acceptance:
+	uv run python scripts/run_phase1_acceptance.py
 
 format:
 	uv run ruff format src tests scripts
@@ -27,7 +30,7 @@ quality:
 compile:
 	uv run python -m compileall -q src tests scripts
 
-verify: format-check lint typecheck quality coverage compile
+verify: format-check lint typecheck quality coverage compile acceptance
 
 package: verify
 	uv build

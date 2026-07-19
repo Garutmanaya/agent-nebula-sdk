@@ -95,3 +95,15 @@ Version 1.2.0 adds RFC 7523 JWT assertion support:
 - stable role-specific public APIs and detailed RFC documentation.
 
 See `docs/implementation/step-3-rfc7523-private-key-jwt.md`.
+
+## Phase 1 conformance
+
+Run the complete SDK-only Host → authorization server → provider scenario:
+
+```bash
+uv run python scripts/run_phase1_acceptance.py
+```
+
+The scenario uses open RFC 7591 registration, RFC 7523 client authentication,
+RFC 8707 resource targeting, RFC 9068 access tokens, RFC 9449 DPoP, and the A2A
+HTTP security adapter.

@@ -1,3 +1,12 @@
+## 1.9.0 - Step 10 SDK-only Phase 1 acceptance
+
+- Added the reusable `Phase1AcceptanceHarness`.
+- Added complete Host → authorization server → A2A provider composition.
+- Added open Host and Provider registration in the acceptance scenario.
+- Added provider-local policy enforcement through an in-process HTTP transport.
+- Added negative tests for assertion replay, DPoP key theft, method mismatch, and proof replay.
+- Added Phase 1 conformance and acceptance-flow documentation.
+- Marked the standalone Phase 1 SDK profile complete in `ROADMAP.md`.
 
 ## 1.8.0 — Step 9
 

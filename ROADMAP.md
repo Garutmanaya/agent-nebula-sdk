@@ -14,7 +14,7 @@
 | Step 7 | RFC 9449 DPoP | Complete |
 | Step 8 | Client, authorization-server, and resource-server role facades | Complete |
 | Step 9 | A2A and MCP security adapters | Complete |
-| Step 10 | SDK-only Host → Registry → Provider acceptance flow | Next |
+| Step 10 | SDK-only Host → Registry → Provider acceptance flow | Complete |
 
 ## Standards mapping
 
@@ -51,6 +51,10 @@ JWK/JWKS
 → A2A/MCP adapters
 → SDK-only end-to-end conformance
 ```
+
+## Phase 1 SDK result
+
+The SDK-only Phase 1 profile is complete. The conformance harness validates open registration, asymmetric client authentication, exact resource targeting, JWT access-token issuance, DPoP sender constraint, A2A request authentication, replay rejection, and provider-local authorization.
 
 ## Product integration after SDK conformance
 
