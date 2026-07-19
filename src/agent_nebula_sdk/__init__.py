@@ -13,8 +13,8 @@ __all__ = [
     "JwkSet",
     "JwkThumbprintService",
     "OkpPublicJwk",
-    "RsaPublicJwk",
     "ProtocolRuntime",
+    "RsaPublicJwk",
 ]
 
 from agent_nebula_sdk.runtime import ProtocolRuntime

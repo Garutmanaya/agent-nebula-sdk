@@ -168,6 +168,7 @@ def test_policy_rejects_fragment_and_insecure_redirects() -> None:
 
 def test_policy_wraps_dns_resolver_errors() -> None:
     """Convert operating-system DNS failures into stable protocol errors."""
+
     def failing_dns(_hostname: str) -> list[str]:
         """Simulate one resolver failure."""
         raise OSError("DNS unavailable")

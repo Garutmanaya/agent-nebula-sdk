@@ -9,7 +9,7 @@ and exact issuer/resource validation for A2A and current MCP clients.
 from __future__ import annotations
 
 import json
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import SplitResult, urlsplit, urlunsplit
 
 from pydantic import ValidationError
 
@@ -71,7 +71,7 @@ def protected_resource_metadata_urls(resource: str) -> tuple[str, ...]:
     return (first,) if first == root else (first, root)
 
 
-def _validate_issuer(issuer: str):
+def _validate_issuer(issuer: str) -> SplitResult:
     """Validate one authorization-server issuer URL before URL construction."""
     parsed = urlsplit(issuer)
     if parsed.scheme.lower() != "https" or not parsed.hostname:

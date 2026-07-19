@@ -190,9 +190,7 @@ def test_resolver_rejects_transport_and_payload_failures() -> None:
     for response, expected_code in zip(responses, expected_codes, strict=True):
         resolver = ClientIdMetadataResolver(
             transport=RecordingTransport([response]),
-            policy=ClientIdMetadataPolicy(
-                dns_resolver=lambda _hostname: ["93.184.216.34"]
-            ),
+            policy=ClientIdMetadataPolicy(dns_resolver=lambda _hostname: ["93.184.216.34"]),
             maximum_response_bytes=10,
         )
         with pytest.raises(ExternalServiceError) as exc_info:
@@ -204,15 +202,11 @@ def test_resolver_configuration_and_cache_ttl_bounds() -> None:
     """Validate configuration and cap server-provided cache durations."""
     client_id = "https://client.example.com/oauth/client.json"
     clock = FixedClock()
-    transport = RecordingTransport(
-        [metadata_response(client_id, cache_control="max-age=999999")]
-    )
+    transport = RecordingTransport([metadata_response(client_id, cache_control="max-age=999999")])
     cache = ClientIdMetadataCache(clock=clock)
     resolver = ClientIdMetadataResolver(
         transport=transport,
-        policy=ClientIdMetadataPolicy(
-            dns_resolver=lambda _hostname: ["93.184.216.34"]
-        ),
+        policy=ClientIdMetadataPolicy(dns_resolver=lambda _hostname: ["93.184.216.34"]),
         cache=cache,
         default_ttl=timedelta(minutes=1),
         maximum_ttl=timedelta(minutes=2),
@@ -246,14 +240,10 @@ def test_force_refresh_bypasses_valid_cache() -> None:
     """Allow products to refresh changed client metadata explicitly."""
     client_id = "https://client.example.com/oauth/client.json"
     clock = FixedClock()
-    transport = RecordingTransport(
-        [metadata_response(client_id), metadata_response(client_id)]
-    )
+    transport = RecordingTransport([metadata_response(client_id), metadata_response(client_id)])
     resolver = ClientIdMetadataResolver(
         transport=transport,
-        policy=ClientIdMetadataPolicy(
-            dns_resolver=lambda _hostname: ["93.184.216.34"]
-        ),
+        policy=ClientIdMetadataPolicy(dns_resolver=lambda _hostname: ["93.184.216.34"]),
         cache=ClientIdMetadataCache(clock=clock),
     )
 

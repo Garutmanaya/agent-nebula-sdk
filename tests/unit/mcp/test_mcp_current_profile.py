@@ -61,9 +61,7 @@ def test_mcp_discovery_falls_back_to_openid_configuration() -> None:
 
     assert discovery.authorization_server.client_id_metadata_document_supported is True
     assert discovery.authorization_server.code_challenge_methods_supported == ("S256",)
-    assert transport.urls[1].endswith(
-        "/.well-known/oauth-authorization-server/tenant"
-    )
+    assert transport.urls[1].endswith("/.well-known/oauth-authorization-server/tenant")
     assert transport.urls[2].endswith("/.well-known/openid-configuration/tenant")
 
 
@@ -79,16 +77,17 @@ def test_client_id_metadata_runtime_plugin_registration() -> None:
 
     resolver = ClientIdMetadataResolver(
         transport=OrderedTransport(),
-        policy=ClientIdMetadataPolicy(
-            dns_resolver=lambda _hostname: ["93.184.216.34"]
-        ),
+        policy=ClientIdMetadataPolicy(dns_resolver=lambda _hostname: ["93.184.216.34"]),
     )
     runtime = ProtocolRuntime(plugins=(McpClientIdMetadataPlugin(resolver),))
 
-    assert runtime.registry.resolve(
-        MCP_CLIENT_ID_METADATA_COMPONENT,
-        ClientIdMetadataResolver,
-    ) is resolver
+    assert (
+        runtime.registry.resolve(
+            MCP_CLIENT_ID_METADATA_COMPONENT,
+            ClientIdMetadataResolver,
+        )
+        is resolver
+    )
 
 
 def test_mcp_discovery_rejects_missing_current_profile_capabilities() -> None:
@@ -105,12 +104,10 @@ def test_mcp_discovery_rejects_missing_current_profile_capabilities() -> None:
         resource="https://mcp.example.com/mcp",
         authorization_servers=("https://auth.example.com",),
     )
-    metadata_client.fetch_authorization_server_for_mcp.return_value = (
-        AuthorizationServerMetadata(
-            issuer="https://auth.example.com",
-            response_types_supported=("code",),
-            code_challenge_methods_supported=("S256",),
-        )
+    metadata_client.fetch_authorization_server_for_mcp.return_value = AuthorizationServerMetadata(
+        issuer="https://auth.example.com",
+        response_types_supported=("code",),
+        code_challenge_methods_supported=("S256",),
     )
     with pytest.raises(ProtocolValidationError) as cimd_error:
         McpAuthorizationDiscoveryClient(metadata_client=metadata_client).discover(
@@ -118,12 +115,10 @@ def test_mcp_discovery_rejects_missing_current_profile_capabilities() -> None:
         )
     assert cimd_error.value.code == "client_id_metadata_document_not_supported"
 
-    metadata_client.fetch_authorization_server_for_mcp.return_value = (
-        AuthorizationServerMetadata(
-            issuer="https://auth.example.com",
-            response_types_supported=("code",),
-            client_id_metadata_document_supported=True,
-        )
+    metadata_client.fetch_authorization_server_for_mcp.return_value = AuthorizationServerMetadata(
+        issuer="https://auth.example.com",
+        response_types_supported=("code",),
+        client_id_metadata_document_supported=True,
     )
     with pytest.raises(ProtocolValidationError) as pkce_error:
         McpAuthorizationDiscoveryClient(metadata_client=metadata_client).discover(
