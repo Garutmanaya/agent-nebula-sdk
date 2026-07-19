@@ -1,6 +1,6 @@
 # Agent Nebula SDK
 
-Agent Nebula SDK is a reusable, persistence-neutral security and protocol library shared by Agent Nebula, Agent Genesis, and future agent products. Phase 1 is complete and provides standards-based client onboarding, asymmetric authentication, provider-targeted access tokens, sender-constrained invocation, and HTTP security adapters for A2A and MCP.
+Agent Nebula SDK is a reusable, persistence-neutral security and protocol library shared by Agent Nebula, Agent Genesis, and future agent products. Phase 1 is complete and provides standards-based client onboarding, asymmetric authentication, provider-targeted access tokens, sender-constrained invocation, a shared Protocol Runtime, and HTTP security adapters for A2A and the current MCP authorization profile.
 
 ## Phase 1 status
 
@@ -33,7 +33,7 @@ The SDK owns protocol models, validation, token construction, role facades, meta
 | RFC 8414 | Authorization-server metadata | Implemented |
 | RFC 9728 | Protected-resource metadata | Implemented |
 | A2A security integration | HTTP-layer authentication and Agent Card metadata | Implemented |
-| MCP authorization integration | OAuth discovery and protected invocation | Implemented |
+| MCP authorization integration | Client ID Metadata Documents, OAuth/OIDC discovery, and protected invocation | Implemented |
 
 See `docs/standards/STANDARDS_MAPPING.md` and `docs/phase1/PHASE1_COMPLETION_REPORT.md`.
 
@@ -48,7 +48,8 @@ src/agent_nebula_sdk/
 ├── authorization_server/  # Authorization-server role facade
 ├── resource_server/       # Resource-server role facade
 ├── a2a/                   # A2A HTTP security adapters
-├── mcp/                   # MCP OAuth security adapters
+├── mcp/                   # Current MCP OAuth security profile
+├── runtime/               # Protocol composition root and plugin registry
 ├── conformance/           # SDK-only Phase 1 harness
 ├── ports/                 # Persistence and infrastructure contracts
 └── adapters/              # Reference adapters
@@ -82,4 +83,4 @@ Start with `docs/INDEX.md`. The most important documents are:
 
 ## Extension rule
 
-New standards must be added through independent modules, ports, adapters, and facade composition. Stable Phase 1 modules must not be modified merely to add Phase 2 or Phase 3 capabilities unless a standards correction or security defect requires it and is recorded in an ADR.
+New standards must be added through independent modules, ports, adapters, runtime plugins, and facade composition. Stable Phase 1 modules must not be modified merely to add Phase 2 or Phase 3 capabilities unless a standards correction or security defect requires it and is recorded in an ADR.

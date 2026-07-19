@@ -15,10 +15,12 @@ def test_discovery_uses_challenge_metadata_and_authoritative_scope() -> None:
         resource="https://mcp.example.com/mcp",
         authorization_servers=("https://nebula.example.com",),
     )
-    metadata_client.fetch_authorization_server.return_value = AuthorizationServerMetadata(
+    metadata_client.fetch_authorization_server_for_mcp.return_value = AuthorizationServerMetadata(
         issuer="https://nebula.example.com",
         token_endpoint="https://nebula.example.com/oauth/token",
         response_types_supported=(),
+        client_id_metadata_document_supported=True,
+        code_challenge_methods_supported=("S256",),
     )
     discovery = McpAuthorizationDiscoveryClient(metadata_client=metadata_client).discover(
         resource="https://mcp.example.com/mcp",

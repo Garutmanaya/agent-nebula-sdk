@@ -39,11 +39,15 @@ flowchart TB
     ADAPTERS --> INFRA
 ```
 
+## Protocol Runtime
+
+`ProtocolRuntime` is the explicit product composition root. It stores configured role facades and additive protocol plugins under stable names while preserving the category-based package structure. It does not construct databases, HTTP transports, key stores, or global state.
+
 ## Role facades
 
-- `ClientSdk`: registration, RFC 7523 assertions, resource-token requests, DPoP request signing.
-- `AuthorizationServerSdk`: registration validation, client authentication, resource resolution, token issuance, DPoP token-endpoint validation.
-- `ResourceServerSdk`: RFC 9068 token validation, DPoP request validation, security-context construction.
+- `OAuthClientFacade`: registration, RFC 7523 assertions, resource-token requests, DPoP request signing.
+- `AuthorizationServerFacade`: registration validation, client authentication, resource resolution, token issuance, DPoP token-endpoint validation.
+- `ResourceServerFacade`: RFC 9068 token validation, DPoP request validation, security-context construction.
 - `A2ASecurityAdapter`: translates Agent Card security metadata and HTTP security context; identity never enters A2A payloads.
 - `McpSecurityAdapter`: protected-resource metadata and OAuth authorization integration.
 

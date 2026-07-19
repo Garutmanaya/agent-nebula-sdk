@@ -18,6 +18,7 @@ Phase 1 is complete. The SDK now provides an independently verified Host → Aut
 | Step 9 | A2A and MCP security adapters | Complete |
 | Step 10 | SDK-only Phase 1 acceptance flow | Complete |
 | Documentation Freeze | Phase 1 release and future-phase documentation | Complete |
+| Runtime/MCP Update | Protocol Runtime and current MCP Client ID Metadata profile | Complete |
 
 ## Standards mapping
 
@@ -33,7 +34,7 @@ Phase 1 is complete. The SDK now provides an independently verified Host → Aut
 | RFC 8414 | Authorization Server Metadata | `metadata` | 1 | Implemented |
 | RFC 9728 | Protected Resource Metadata | `metadata` | 1 | Implemented |
 | A2A | Agent Card security and authenticated HTTP invocation | `a2a` | 1 | Implemented |
-| MCP authorization | OAuth discovery and protected invocation | `mcp` | 1 | Implemented |
+| MCP authorization | Client ID Metadata Documents, OAuth/OIDC discovery, protected invocation | `mcp` | 1 | Implemented |
 | RFC 7592 | Dynamic Client Registration Management | `oauth/rfc7592` | 2 | Planned |
 | RFC 8705 | OAuth mTLS and certificate-bound tokens | `oauth/rfc8705`, `tls` | 2 | Planned |
 | SPIFFE/SPIRE | Workload identity and SVID lifecycle | `spiffe` | 2 | Planned |
@@ -53,6 +54,7 @@ JWK/JWKS
 → DPoP
 → role facades
 → A2A/MCP adapters
+→ protocol runtime
 → SDK-only acceptance
 → product adapters
 ```

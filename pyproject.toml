@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agent-nebula-sdk"
-version = "1.9.0"
+version = "1.10.0"
 description = "Standards-oriented security SDK for Agent Nebula and Agent Genesis"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"

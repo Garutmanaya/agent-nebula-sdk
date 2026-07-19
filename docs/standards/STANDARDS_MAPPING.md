@@ -12,7 +12,7 @@
 | RFC 8414 | Authorization-server metadata | `metadata` | Implemented | Additional advertised auth methods |
 | RFC 9728 | Protected-resource metadata | `metadata` | Implemented | Broader ecosystem interoperability |
 | A2A | HTTP authentication metadata and invocation | `a2a` | Implemented security layer | Complete A2A semantics remain external |
-| MCP authorization | OAuth discovery and protected calls | `mcp` | Implemented security layer | OIDC fallback and evolving MCP profiles |
+| MCP authorization | Client ID Metadata Documents, RFC 9728, RFC 8414/OIDC discovery, and protected calls | `mcp` | Implemented current profile | OAuth draft evolution and product authorization-code UX |
 | RFC 7592 | Registration management | `oauth/rfc7592` | Not implemented | Phase 2 |
 | RFC 8705 | OAuth mTLS | `oauth/rfc8705`, `tls` | Not implemented | Phase 2 |
 | SPIFFE/SPIRE | Workload identity | `spiffe` | Not implemented | Phase 2 |

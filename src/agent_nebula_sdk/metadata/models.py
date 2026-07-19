@@ -64,6 +64,8 @@ class AuthorizationServerMetadata(BaseModel):
     dpop_signing_alg_values_supported: tuple[str, ...] = ()
     protected_resources: tuple[str, ...] = ()
     service_documentation: str | None = None
+    client_id_metadata_document_supported: bool = False
+    code_challenge_methods_supported: tuple[str, ...] = ()
 
     @field_validator(
         "issuer",

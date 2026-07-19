@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.10.0 — Protocol Runtime and Current MCP Profile
+
+- Added `ProtocolRuntime` as the explicit composition root for client, authorization-server, and resource-server facades.
+- Added a namespaced, duplicate-safe component registry and additive plugin contract.
+- Added OAuth Client ID Metadata Document models, validation, SSRF policy, retrieval, caching, and runtime plugin support for MCP.
+- Updated MCP authorization-server discovery to try RFC 8414 and OpenID Connect metadata endpoints in the current MCP-required order.
+- Added `client_id_metadata_document_supported` and PKCE metadata fields to authorization-server metadata.
+- Kept RFC 7591 available for A2A and general OAuth while removing any MCP dependency on DCR.
+- Added unit and architecture tests for runtime composition and the current MCP profile.
+
 ## Phase 1 Documentation Freeze
 
 Documentation-only release based on the completed Step 10 codebase.

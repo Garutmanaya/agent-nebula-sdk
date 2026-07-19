@@ -14,6 +14,7 @@
 - [Dependency graph](architecture/dependency-graph.md)
 - [Plugin and extension model](architecture/plugin-architecture.md)
 - [Role facades](architecture/role-facades.md)
+- [Protocol Runtime](implementation/protocol-runtime.md)
 - [Ports and adapters](architecture/ports-and-adapters.md)
 - [Repository boundaries](architecture/repository-boundaries.md)
 
@@ -22,6 +23,7 @@
 - [Standards mapping](standards/STANDARDS_MAPPING.md)
 - [Phase 1 profile](standards/phase-1-profile.md)
 - [Phase 1 conformance summary](standards/phase-1-conformance-summary.md)
+- [Current MCP authorization profile](standards/mcp-current-authorization-profile.md)
 - Existing per-RFC conformance documents under `docs/standards/`
 
 ## Security and persistence
