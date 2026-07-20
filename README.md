@@ -2,6 +2,11 @@
 
 Agent Nebula SDK is a reusable, persistence-neutral security and protocol library shared by Agent Nebula, Agent Genesis, and future agent products. Phase 1 is complete and provides standards-based client onboarding, asymmetric authentication, provider-targeted access tokens, sender-constrained invocation, a shared Protocol Runtime, and HTTP security adapters for A2A and the current MCP authorization profile.
 
+
+## Secure onboarding
+
+`agent_nebula_sdk.onboarding` is the top-level composition API for authenticated Agent, OAuth client, and RFC 9728 protected-resource registration. It reuses the existing RFC modules and delegates atomic persistence to application-provided ports.
+
 ## Phase 1 status
 
 Phase 1 implements and verifies the complete SDK-only flow:

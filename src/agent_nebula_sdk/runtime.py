@@ -13,9 +13,13 @@ class ProtocolRuntimePlugin(Protocol):
     """Install one or more namespaced components into a protocol runtime."""
 
     @property
-    def name(self) -> str: ...
+    def name(self) -> str:
+        """Return the stable plugin name used for diagnostics."""
+        ...
 
-    def install(self, registry: "ProtocolComponentRegistry") -> None: ...
+    def install(self, registry: "ProtocolComponentRegistry") -> None:
+        """Install namespaced components without replacing prior registrations."""
+        ...
 
 
 class ProtocolComponentRegistry:
@@ -25,6 +29,7 @@ class ProtocolComponentRegistry:
         self._components: dict[str, object] = {}
 
     def register(self, name: str, component: object) -> None:
+        """Register one namespaced component and reject duplicate names."""
         if not name.strip():
             raise ConfigurationError("protocol component name must not be empty", code="invalid_component_name")
         if name in self._components:
@@ -36,6 +41,7 @@ class ProtocolComponentRegistry:
         self._components[name] = component
 
     def resolve(self, name: str, expected_type: type[T]) -> T:
+        """Resolve one component and enforce its expected runtime type."""
         component = self._components.get(name)
         if component is None:
             raise ConfigurationError(

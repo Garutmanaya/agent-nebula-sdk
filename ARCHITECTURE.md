@@ -64,3 +64,8 @@ Product route/controller
 ```
 
 No product may call SDK internal validators directly. No SDK module may import product code.
+
+
+## Onboarding composition
+
+The top-level `onboarding` package authenticates dynamic registration requests and composes Agent, RFC 7591 OAuth client, and RFC 9728 protected-resource profiles. Existing protocol modules remain independently usable. Product applications provide credential verifiers, audit adapters, and one atomic transaction port.

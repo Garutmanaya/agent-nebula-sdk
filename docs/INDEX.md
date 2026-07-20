@@ -44,6 +44,7 @@
 - [Client facade](api/client-facade.md)
 - [Authorization-server facade](api/authorization-server-facade.md)
 - [Resource-server facade](api/resource-server-facade.md)
+- [Onboarding API](api/onboarding.md)
 
 ## Developer guide
 

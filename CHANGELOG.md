@@ -1,3 +1,10 @@
+
+## 1.11.0
+
+- Added pluggable top-level onboarding orchestration.
+- Added open, API-key, initial-access-token, software-statement, and explicit mTLS-placeholder authenticators.
+- Added Agent, RFC 7591 OAuth-client, and RFC 9728 protected-resource profiles.
+- Added atomic product transaction and audit ports plus ProtocolRuntime integration.
 # Changelog
 
 ## 1.10.0 — Protocol Runtime and Current MCP Profile
