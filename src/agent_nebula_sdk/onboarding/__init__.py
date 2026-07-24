@@ -14,7 +14,9 @@ from agent_nebula_sdk.onboarding.constants import (
     RegistrationProfileType,
 )
 from agent_nebula_sdk.onboarding.models import (
+    AgentProfileResult,
     AgentRegistrationInput,
+    OAuthClientProfileResult,
     OAuthClientRegistrationInput,
     OnboardingAuthenticationInput,
     OnboardingCommitResult,
@@ -24,6 +26,7 @@ from agent_nebula_sdk.onboarding.models import (
     OnboardingResult,
     PreparedOnboardingRegistration,
     PreparedRegistration,
+    ProtectedResourceProfileResult,
     ProtectedResourceRegistrationInput,
 )
 from agent_nebula_sdk.onboarding.plugin import OnboardingRuntimePlugin
@@ -37,12 +40,14 @@ from agent_nebula_sdk.onboarding.registry import OnboardingComponentRegistry
 from agent_nebula_sdk.onboarding.service import OnboardingService
 
 __all__ = [
+    "AgentProfileResult",
     "AgentRegistrationInput",
     "AgentRegistrationProfile",
     "AgentRole",
     "ApiKeyOnboardingAuthenticator",
     "InitialAccessTokenOnboardingAuthenticator",
     "MtlsOnboardingAuthenticator",
+    "OAuthClientProfileResult",
     "OAuthClientRegistrationInput",
     "OAuthClientRegistrationProfile",
     "OnboardingAuthenticationInput",
@@ -59,6 +64,7 @@ __all__ = [
     "OpenOnboardingAuthenticator",
     "PreparedOnboardingRegistration",
     "PreparedRegistration",
+    "ProtectedResourceProfileResult",
     "ProtectedResourceRegistrationInput",
     "ProtectedResourceRegistrationProfile",
     "RegistrationProfile",

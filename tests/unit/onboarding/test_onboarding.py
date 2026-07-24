@@ -39,6 +39,11 @@ class Transaction:
     def __init__(self) -> None:
         self.calls = []
 
+    def resolve(self, registration):
+        """Return no existing registration for onboarding unit tests."""
+        del registration
+        return None
+
     def commit(self, registration):
         """Persist the prepared registration in the in-memory test adapter."""
         self.calls.append(registration)

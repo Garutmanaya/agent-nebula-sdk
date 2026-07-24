@@ -7,7 +7,7 @@ A2A, MCP, JOSE, and TLS data remains owned by the existing SDK modules.
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any
+from typing import Any, Literal
 from urllib.parse import urlsplit
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -169,14 +169,49 @@ class PreparedOnboardingRegistration(BaseModel):
     registrations: tuple[PreparedRegistration, ...]
 
 
+class AgentProfileResult(BaseModel):
+    """Return Agent database and stable external identifiers."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    agent_id: str = Field(min_length=1, max_length=255)
+    external_agent_id: str = Field(min_length=1, max_length=255)
+
+
+class OAuthClientProfileResult(BaseModel):
+    """Return internal and RFC-facing OAuth client identifiers distinctly."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    oauth_client_id: str = Field(min_length=1, max_length=255)
+    client_id: str = Field(min_length=1, max_length=255)
+
+
+class ProtectedResourceProfileResult(BaseModel):
+    """Return internal and RFC 8707 protected-resource identifiers."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    oauth_protected_resource_id: str = Field(min_length=1, max_length=255)
+    resource_identifier: str = Field(min_length=1)
+
+
+OnboardingProfileResult = (
+    AgentProfileResult | OAuthClientProfileResult | ProtectedResourceProfileResult
+)
+
+
 class OnboardingCommitResult(BaseModel):
-    """Represent application-assigned identifiers from one atomic commit."""
+    """Represent typed identifiers from one created or resolved registration."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     onboarding_id: str = Field(min_length=1, max_length=255)
     entity_id: str | None = None
-    profile_identifiers: dict[RegistrationProfileType, str] = Field(default_factory=dict)
+    profiles: dict[RegistrationProfileType, OnboardingProfileResult] = Field(
+        default_factory=dict
+    )
+    disposition: Literal["CREATED", "RESOLVED"] = "CREATED"
     committed_at: datetime
 
 

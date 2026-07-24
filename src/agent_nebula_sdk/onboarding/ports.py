@@ -38,8 +38,14 @@ class AgentCardResolver(Protocol):
 class OnboardingTransactionPort(Protocol):
     """Persist all prepared profiles as one product-owned atomic transaction."""
 
+    def resolve(
+        self, registration: PreparedOnboardingRegistration
+    ) -> OnboardingCommitResult | None:
+        """Resolve an existing registration without creating or mutating records."""
+        ...
+
     def commit(self, registration: PreparedOnboardingRegistration) -> OnboardingCommitResult:
-        """Commit every profile or fail without leaving partial registration state."""
+        """Resolve or commit every profile without leaving partial state."""
         ...
 
 

@@ -23,3 +23,16 @@ Open, API key, initial access token, and software statement strategies are plugg
 ## Product boundary
 
 The SDK contains no database, SQL, FastAPI route, configuration loader, approval workflow, or business policy. Agent Nebula and Agent Genesis supply adapters and composition.
+
+## Typed registration results and resolution
+
+Onboarding results distinguish internal persistence identifiers from protocol
+identifiers. The OAuth profile returns both `oauth_client_id` (Nebula's UUID)
+and the RFC-facing `client_id`. Protected-resource results similarly return the
+internal UUID and the RFC 8707 `resource_identifier`.
+
+The onboarding transaction port supports read-only resolution before creation.
+Matching Agent identity, Agent Card URI, roles, public-key identity, RFC 7591
+metadata, and protected-resource metadata resolve to the existing registration.
+Conflicting public keys or metadata fail closed rather than replacing a
+registration implicitly.
