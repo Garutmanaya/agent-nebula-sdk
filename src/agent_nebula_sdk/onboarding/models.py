@@ -130,6 +130,8 @@ class OnboardingRequest(BaseModel):
     agent: AgentRegistrationInput | None = None
     oauth_client: OAuthClientRegistrationInput | None = None
     protected_resource: ProtectedResourceRegistrationInput | None = None
+    declared_publisher: dict[str, Any] | None = None
+    declared_provider: dict[str, Any] | None = None
 
     @model_validator(mode="after")
     def validate_role_profile_consistency(self) -> OnboardingRequest:
@@ -167,6 +169,8 @@ class PreparedOnboardingRegistration(BaseModel):
     roles: frozenset[AgentRole]
     principal: OnboardingPrincipal
     registrations: tuple[PreparedRegistration, ...]
+    declared_publisher: dict[str, Any] | None = None
+    declared_provider: dict[str, Any] | None = None
 
 
 class AgentProfileResult(BaseModel):
@@ -211,7 +215,7 @@ class OnboardingCommitResult(BaseModel):
     profiles: dict[RegistrationProfileType, OnboardingProfileResult] = Field(
         default_factory=dict
     )
-    disposition: Literal["CREATED", "RESOLVED"] = "CREATED"
+    disposition: Literal["CREATED", "RESOLVED", "CLAIMED"] = "CREATED"
     committed_at: datetime
 
 

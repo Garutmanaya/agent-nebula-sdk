@@ -46,6 +46,8 @@ class OnboardingService:
             roles=request.roles,
             principal=principal,
             registrations=prepared,
+            declared_publisher=request.declared_publisher,
+            declared_provider=request.declared_provider,
         )
         commit = self._transaction.resolve(registration)
         if commit is None:
@@ -92,6 +94,8 @@ class OnboardingService:
             roles=request.roles,
             principal=principal,
             registrations=prepared,
+            declared_publisher=request.declared_publisher,
+            declared_provider=request.declared_provider,
         )
         commit = self._transaction.commit(registration)
         if self._audit_sink is not None:
