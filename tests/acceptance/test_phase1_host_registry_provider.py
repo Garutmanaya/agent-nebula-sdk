@@ -29,7 +29,7 @@ def test_replayed_client_assertion_is_rejected() -> None:
         authentication_key=authentication_key,
         dpop_key=harness.host_dpop_signing_key,
     )
-    from agent_nebula_sdk.authorization_server import TokenIssuanceRequest
+    from agent_nebula_sdk.oauth.authorization_server import TokenIssuanceRequest
 
     issuance_request = TokenIssuanceRequest(
         client_authentication=artifacts.client_authentication,

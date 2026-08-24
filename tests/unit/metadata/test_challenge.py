@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from agent_nebula_sdk.metadata import OAuthChallengeCodec
+from agent_nebula_sdk.oauth.rfc9728 import OAuthChallengeCodec
 
 
 def test_challenge_round_trip_preserves_resource_and_scopes() -> None:

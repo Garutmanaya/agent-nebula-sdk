@@ -1,7 +1,10 @@
 """OAuth client onboarding profile delegating metadata rules to RFC 7591 models."""
 
 from agent_nebula_sdk.oauth.rfc7591.models import RegistrationRequest
-from agent_nebula_sdk.onboarding.constants import OnboardingAuthenticationMethod, RegistrationProfileType
+from agent_nebula_sdk.onboarding.constants import (
+    OnboardingAuthenticationMethod,
+    RegistrationProfileType,
+)
 from agent_nebula_sdk.onboarding.errors import RegistrationProfileError
 from agent_nebula_sdk.onboarding.models import (
     OnboardingPrincipal,

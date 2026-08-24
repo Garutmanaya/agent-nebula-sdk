@@ -76,3 +76,22 @@ class HttpTransport(Protocol):
         do not need to understand OAuth, JOSE, A2A, or MCP payload semantics.
         """
         ...
+    def put(
+        self,
+        url: str,
+        *,
+        headers: dict[str, str] | None = None,
+        body: bytes = b"",
+    ) -> HttpResponse:
+        """Issue an HTTPS PUT request with a pre-serialized protocol body."""
+        ...
+
+    def delete(
+        self,
+        url: str,
+        *,
+        headers: dict[str, str] | None = None,
+    ) -> HttpResponse:
+        """Issue an HTTPS DELETE request and return a transport-neutral response."""
+        ...
+

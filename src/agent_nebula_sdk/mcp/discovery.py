@@ -1,19 +1,22 @@
 """MCP authorization-server discovery using current OAuth requirements.
 
-Current MCP authorization requires protected-resource metadata for locating
-candidate authorization servers. The client then validates RFC 8414 or OpenID
-Connect discovery metadata, Client ID Metadata Document support, and PKCE S256
-support before returning trusted endpoints to the application.
+Current MCP authorization requires RFC 9728 protected-resource metadata for
+locating candidate authorization servers. The client then validates RFC 8414
+or OpenID Connect discovery metadata, Client ID Metadata Document support, and
+PKCE S256 support before returning trusted endpoints to the application.
 """
 
 from __future__ import annotations
 
 from agent_nebula_sdk.core.errors import ProtocolValidationError
 from agent_nebula_sdk.mcp.models import McpAuthorizationDiscovery
-from agent_nebula_sdk.metadata import (
+from agent_nebula_sdk.oauth.rfc8414 import (
     AuthorizationServerMetadata,
+    AuthorizationServerMetadataClient,
+)
+from agent_nebula_sdk.oauth.rfc9728 import (
     OAuthChallengeCodec,
-    OAuthMetadataClient,
+    ProtectedResourceMetadataClient,
 )
 
 
@@ -28,13 +31,15 @@ class McpAuthorizationDiscoveryClient:
     def __init__(
         self,
         *,
-        metadata_client: OAuthMetadataClient,
+        protected_resource_client: ProtectedResourceMetadataClient,
+        authorization_server_client: AuthorizationServerMetadataClient,
         challenge_codec: OAuthChallengeCodec | None = None,
         require_client_id_metadata_document: bool = True,
         require_pkce_s256: bool = True,
     ) -> None:
-        """Inject shared metadata components and current-profile requirements."""
-        self._metadata_client = metadata_client
+        """Inject RFC-specific metadata clients and current-profile requirements."""
+        self._protected_resource_client = protected_resource_client
+        self._authorization_server_client = authorization_server_client
         self._challenge_codec = challenge_codec or OAuthChallengeCodec()
         self._require_client_id_metadata_document = require_client_id_metadata_document
         self._require_pkce_s256 = require_pkce_s256
@@ -46,20 +51,14 @@ class McpAuthorizationDiscoveryClient:
         www_authenticate: str | None = None,
         preferred_issuer: str | None = None,
     ) -> McpAuthorizationDiscovery:
-        """Discover RFC 9728 metadata and select one advertised issuer.
-
-        An explicit ``resource_metadata`` URL from a 401 challenge takes
-        precedence over constructed well-known locations. The selected
-        authorization server must advertise the capabilities required by the
-        active MCP profile before it is returned to product code.
-        """
+        """Discover RFC 9728 metadata and select one advertised issuer."""
         metadata_url: str | None = None
         challenged_scopes: tuple[str, ...] = ()
         if www_authenticate is not None:
             challenge = self._challenge_codec.parse(www_authenticate)
             metadata_url = challenge.resource_metadata
             challenged_scopes = challenge.scope
-        resource_metadata = self._metadata_client.fetch_protected_resource(
+        resource_metadata = self._protected_resource_client.fetch(
             resource,
             metadata_url=metadata_url,
         )
@@ -74,7 +73,7 @@ class McpAuthorizationDiscoveryClient:
                 "preferred authorization server is not advertised by the MCP resource",
                 code="authorization_server_not_allowed",
             )
-        authorization_server = self._metadata_client.fetch_authorization_server_for_mcp(issuer)
+        authorization_server = self._authorization_server_client.fetch_with_openid_fallback(issuer)
         self._validate_current_profile(authorization_server)
         return McpAuthorizationDiscovery(
             protected_resource=resource_metadata,

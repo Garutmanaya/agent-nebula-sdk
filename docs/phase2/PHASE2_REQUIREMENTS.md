@@ -6,7 +6,7 @@ Add enterprise-grade lifecycle, certificate, and workload-identity capabilities 
 
 ## Required standards and capabilities
 
-1. **RFC 7592 Dynamic Client Registration Management**: read, update, rotate metadata, and delete registrations with registration access tokens and auditable lifecycle rules.
+1. **RFC 7592 product integration**: use the implemented SDK read, update, delete, and registration access-token lifecycle with durable Authorization Server adapters and audit.
 2. **RFC 8705 OAuth mTLS**: mTLS client authentication and certificate-bound access tokens using `cnf.x5t#S256`.
 3. **SPIFFE/SPIRE**: workload identities, SVID validation, trust-domain mapping, bundle rotation, and Kubernetes/enterprise adapters.
 4. **Certificate lifecycle**: issuance, renewal, overlap, revocation, trust bundles, expiry monitoring, and key separation.
@@ -28,7 +28,7 @@ adapters/
 
 ## Acceptance criteria
 
-- registration metadata can be safely managed and rotated;
+- RFC 7592 registration metadata can be safely managed and rotated through durable product adapters;
 - mTLS clients authenticate without shared secrets;
 - certificate-bound tokens fail when presented over another client certificate;
 - SPIFFE identities map to registered clients and providers;

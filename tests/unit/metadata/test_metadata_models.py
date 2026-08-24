@@ -5,7 +5,8 @@ from __future__ import annotations
 import pytest
 
 from agent_nebula_sdk.core.errors import ProtocolValidationError
-from agent_nebula_sdk.metadata import AuthorizationServerMetadata, ProtectedResourceMetadata
+from agent_nebula_sdk.oauth.rfc8414 import AuthorizationServerMetadata
+from agent_nebula_sdk.oauth.rfc9728 import ProtectedResourceMetadata
 
 
 def test_authorization_server_metadata_accepts_phase1_profile() -> None:

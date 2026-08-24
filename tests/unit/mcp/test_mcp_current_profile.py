@@ -3,9 +3,20 @@
 from __future__ import annotations
 
 import json
+from unittest.mock import Mock
 
+import pytest
+
+from agent_nebula_sdk.core.errors import ProtocolValidationError
 from agent_nebula_sdk.mcp import McpAuthorizationDiscoveryClient
-from agent_nebula_sdk.metadata import OAuthMetadataClient
+from agent_nebula_sdk.oauth.rfc8414 import (
+    AuthorizationServerMetadata,
+    AuthorizationServerMetadataClient,
+)
+from agent_nebula_sdk.oauth.rfc9728 import (
+    ProtectedResourceMetadata,
+    ProtectedResourceMetadataClient,
+)
 from agent_nebula_sdk.ports.http import HttpResponse
 
 
@@ -56,7 +67,8 @@ def test_mcp_discovery_falls_back_to_openid_configuration() -> None:
     """Try RFC 8414 before OpenID Connect path insertion."""
     transport = OrderedTransport()
     discovery = McpAuthorizationDiscoveryClient(
-        metadata_client=OAuthMetadataClient(transport=transport)
+        protected_resource_client=ProtectedResourceMetadataClient(transport=transport),
+        authorization_server_client=AuthorizationServerMetadataClient(transport=transport),
     ).discover(resource="https://mcp.example.com/mcp")
 
     assert discovery.authorization_server.client_id_metadata_document_supported is True
@@ -92,36 +104,36 @@ def test_client_id_metadata_runtime_plugin_registration() -> None:
 
 def test_mcp_discovery_rejects_missing_current_profile_capabilities() -> None:
     """Fail when CIMD or PKCE S256 is not advertised by the authorization server."""
-    from unittest.mock import Mock
-
-    import pytest
-
-    from agent_nebula_sdk.core.errors import ProtocolValidationError
-    from agent_nebula_sdk.metadata import AuthorizationServerMetadata, ProtectedResourceMetadata
-
-    metadata_client = Mock()
-    metadata_client.fetch_protected_resource.return_value = ProtectedResourceMetadata(
+    protected_resource_client = Mock()
+    authorization_server_client = Mock()
+    protected_resource_client.fetch.return_value = ProtectedResourceMetadata(
         resource="https://mcp.example.com/mcp",
         authorization_servers=("https://auth.example.com",),
     )
-    metadata_client.fetch_authorization_server_for_mcp.return_value = AuthorizationServerMetadata(
-        issuer="https://auth.example.com",
-        response_types_supported=("code",),
-        code_challenge_methods_supported=("S256",),
+    authorization_server_client.fetch_with_openid_fallback.return_value = (
+        AuthorizationServerMetadata(
+            issuer="https://auth.example.com",
+            response_types_supported=("code",),
+            code_challenge_methods_supported=("S256",),
+        )
     )
     with pytest.raises(ProtocolValidationError) as cimd_error:
-        McpAuthorizationDiscoveryClient(metadata_client=metadata_client).discover(
-            resource="https://mcp.example.com/mcp"
-        )
+        McpAuthorizationDiscoveryClient(
+            protected_resource_client=protected_resource_client,
+            authorization_server_client=authorization_server_client,
+        ).discover(resource="https://mcp.example.com/mcp")
     assert cimd_error.value.code == "client_id_metadata_document_not_supported"
 
-    metadata_client.fetch_authorization_server_for_mcp.return_value = AuthorizationServerMetadata(
-        issuer="https://auth.example.com",
-        response_types_supported=("code",),
-        client_id_metadata_document_supported=True,
+    authorization_server_client.fetch_with_openid_fallback.return_value = (
+        AuthorizationServerMetadata(
+            issuer="https://auth.example.com",
+            response_types_supported=("code",),
+            client_id_metadata_document_supported=True,
+        )
     )
     with pytest.raises(ProtocolValidationError) as pkce_error:
-        McpAuthorizationDiscoveryClient(metadata_client=metadata_client).discover(
-            resource="https://mcp.example.com/mcp"
-        )
+        McpAuthorizationDiscoveryClient(
+            protected_resource_client=protected_resource_client,
+            authorization_server_client=authorization_server_client,
+        ).discover(resource="https://mcp.example.com/mcp")
     assert pkce_error.value.code == "pkce_s256_not_supported"

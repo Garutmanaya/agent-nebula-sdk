@@ -84,9 +84,9 @@ def test_registry_validates_names_types_and_iteration() -> None:
 
 def test_runtime_exposes_configured_standard_roles() -> None:
     """Return standard facades from one runtime composition root."""
-    from agent_nebula_sdk.authorization_server import AuthorizationServerFacade
-    from agent_nebula_sdk.client import OAuthClientFacade
-    from agent_nebula_sdk.resource_server import ResourceServerFacade
+    from agent_nebula_sdk.oauth.authorization_server import AuthorizationServerFacade
+    from agent_nebula_sdk.oauth.client import OAuthClientFacade
+    from agent_nebula_sdk.oauth.resource_server import ResourceServerFacade
 
     client = object.__new__(OAuthClientFacade)
     authorization_server = object.__new__(AuthorizationServerFacade)

@@ -112,6 +112,48 @@ class HttpxTransport:
             body=response.content,
         )
 
+    def put(
+        self,
+        url: str,
+        *,
+        headers: dict[str, str] | None = None,
+        body: bytes = b"",
+    ) -> HttpResponse:
+        """Issue a PUT request and normalize network failures."""
+        return self._request("PUT", url, headers=headers, body=body)
+
+    def delete(
+        self,
+        url: str,
+        *,
+        headers: dict[str, str] | None = None,
+    ) -> HttpResponse:
+        """Issue a DELETE request and normalize network failures."""
+        return self._request("DELETE", url, headers=headers)
+
+    def _request(
+        self,
+        method: str,
+        url: str,
+        *,
+        headers: dict[str, str] | None = None,
+        body: bytes = b"",
+    ) -> HttpResponse:
+        """Execute a generic HTTP method through the configured HTTPX client."""
+        try:
+            response = self._client.request(method, url, headers=headers, content=body)
+        except httpx.HTTPError as exc:
+            raise ExternalServiceError(
+                "outbound HTTP request failed",
+                code="http_transport_error",
+                details={"exception_type": type(exc).__name__},
+            ) from exc
+        return HttpResponse(
+            status_code=response.status_code,
+            headers=dict(response.headers),
+            body=response.content,
+        )
+
     def close(self) -> None:
         """Release the underlying connection pool.
 

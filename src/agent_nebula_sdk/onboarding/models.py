@@ -12,8 +12,8 @@ from urllib.parse import urlsplit
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from agent_nebula_sdk.metadata.models import ProtectedResourceMetadata
 from agent_nebula_sdk.oauth.rfc7591.models import ClientMetadata, RegistrationRequest
+from agent_nebula_sdk.oauth.rfc9728 import ProtectedResourceMetadata
 from agent_nebula_sdk.onboarding.constants import (
     AgentRole,
     OnboardingAuthenticationMethod,
@@ -144,7 +144,10 @@ class OnboardingRequest(BaseModel):
             raise ValueError("oauth_client profile requires OAUTH_CLIENT role")
         if AgentRole.OAUTH_PROTECTED_RESOURCE in self.roles and self.protected_resource is None:
             raise ValueError("OAUTH_PROTECTED_RESOURCE role requires protected_resource profile")
-        if AgentRole.OAUTH_PROTECTED_RESOURCE not in self.roles and self.protected_resource is not None:
+        if (
+            AgentRole.OAUTH_PROTECTED_RESOURCE not in self.roles
+            and self.protected_resource is not None
+        ):
             raise ValueError("protected_resource profile requires OAUTH_PROTECTED_RESOURCE role")
         if ({AgentRole.A2A_PROVIDER, AgentRole.A2A_CALLER} & self.roles) and self.agent is None:
             raise ValueError("A2A roles require an agent profile")

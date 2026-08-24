@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from typing import Any, Protocol, TypeVar
+from typing import Protocol, TypeVar
 
 from agent_nebula_sdk.core.errors import ConfigurationError
 
@@ -17,7 +17,7 @@ class ProtocolRuntimePlugin(Protocol):
         """Return the stable plugin name used for diagnostics."""
         ...
 
-    def install(self, registry: "ProtocolComponentRegistry") -> None:
+    def install(self, registry: ProtocolComponentRegistry) -> None:
         """Install namespaced components without replacing prior registrations."""
         ...
 
@@ -31,7 +31,10 @@ class ProtocolComponentRegistry:
     def register(self, name: str, component: object) -> None:
         """Register one namespaced component and reject duplicate names."""
         if not name.strip():
-            raise ConfigurationError("protocol component name must not be empty", code="invalid_component_name")
+            raise ConfigurationError(
+                "protocol component name must not be empty",
+                code="invalid_component_name",
+            )
         if name in self._components:
             raise ConfigurationError(
                 "protocol component is already registered",

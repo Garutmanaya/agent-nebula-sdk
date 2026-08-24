@@ -1,5 +1,43 @@
-"""Future RFC7592 OAuth extension package.
+"""Public RFC 7592 Dynamic Client Registration Management API."""
 
-The package location is reserved so the standard can be implemented as an
-additive module without changing existing RFC package paths.
-"""
+from agent_nebula_sdk.oauth.rfc7592.adapters import (
+    BaseUrlClientConfigurationUriFactory,
+    InMemoryClientConfigurationRepository,
+    Sha256RegistrationAccessTokenCodec,
+    UrlSafeRegistrationAccessTokenGenerator,
+)
+from agent_nebula_sdk.oauth.rfc7592.client import ClientRegistrationManagementClient
+from agent_nebula_sdk.oauth.rfc7592.models import (
+    ClientConfigurationCredentials,
+    ClientConfigurationRecord,
+    ClientConfigurationResponse,
+    ClientUpdateRequest,
+)
+from agent_nebula_sdk.oauth.rfc7592.ports import (
+    ClientConfigurationRepository,
+    ClientConfigurationUriFactory,
+    ClientRegistrationLifecycle,
+    ClientRegistrationUpdatePolicy,
+    RegistrationAccessTokenCodec,
+    RegistrationAccessTokenGenerator,
+)
+from agent_nebula_sdk.oauth.rfc7592.service import ClientRegistrationManagementService
+
+__all__ = [
+    "BaseUrlClientConfigurationUriFactory",
+    "ClientConfigurationCredentials",
+    "ClientConfigurationRecord",
+    "ClientConfigurationRepository",
+    "ClientConfigurationResponse",
+    "ClientConfigurationUriFactory",
+    "ClientRegistrationLifecycle",
+    "ClientRegistrationManagementClient",
+    "ClientRegistrationManagementService",
+    "ClientRegistrationUpdatePolicy",
+    "ClientUpdateRequest",
+    "InMemoryClientConfigurationRepository",
+    "RegistrationAccessTokenCodec",
+    "RegistrationAccessTokenGenerator",
+    "Sha256RegistrationAccessTokenCodec",
+    "UrlSafeRegistrationAccessTokenGenerator",
+]

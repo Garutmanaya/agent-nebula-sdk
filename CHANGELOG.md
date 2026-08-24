@@ -1,3 +1,14 @@
+# Changelog
+
+## 1.12.0 — OAuth Standards Normalization
+
+- Moved RFC 8414 Authorization Server Metadata into `oauth/rfc8414`.
+- Moved RFC 9728 Protected Resource Metadata into `oauth/rfc9728`.
+- Implemented RFC 7592 Dynamic Client Registration Management with read, update, delete, registration access-token rotation, and pluggable persistence/lifecycle ports.
+- Grouped OAuth client, Authorization Server, and Resource Server role facades under `oauth/`.
+- Retained compatibility re-exports for the previous top-level metadata and role package paths.
+- Extended the transport port with PUT and DELETE operations required by RFC 7592.
+- Added direct RFC 8414, RFC 9728, and RFC 7592 tests.
 
 ## 1.11.0
 
@@ -5,8 +16,6 @@
 - Added open, API-key, initial-access-token, software-statement, and explicit mTLS-placeholder authenticators.
 - Added Agent, RFC 7591 OAuth-client, and RFC 9728 protected-resource profiles.
 - Added atomic product transaction and audit ports plus ProtocolRuntime integration.
-# Changelog
-
 ## 1.10.0 — Protocol Runtime and Current MCP Profile
 
 - Added `ProtocolRuntime` as the explicit composition root for client, authorization-server, and resource-server facades.

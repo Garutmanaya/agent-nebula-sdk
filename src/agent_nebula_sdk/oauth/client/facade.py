@@ -7,7 +7,7 @@ storage remain owned by the consuming application.
 
 from __future__ import annotations
 
-from agent_nebula_sdk.client.models import (
+from agent_nebula_sdk.oauth.client.models import (
     ClientTokenRequest,
     ProtectedRequestArtifacts,
     TokenRequestArtifacts,
@@ -17,6 +17,11 @@ from agent_nebula_sdk.oauth.rfc7591 import (
     ClientMetadata,
     DynamicClientRegistrationClient,
     RegistrationResponse,
+)
+from agent_nebula_sdk.oauth.rfc7592 import (
+    ClientConfigurationResponse,
+    ClientRegistrationManagementClient,
+    ClientUpdateRequest,
 )
 from agent_nebula_sdk.oauth.rfc8707 import ResourceParameterCodec
 from agent_nebula_sdk.oauth.rfc9449 import (
@@ -37,7 +42,7 @@ class OAuthClientFacade:
 
     Standards
     ---------
-    RFC 7523, RFC 7591, RFC 8707, and RFC 9449.
+    RFC 7523, RFC 7591, RFC 7592, RFC 8707, and RFC 9449.
     """
 
     def __init__(
@@ -48,6 +53,7 @@ class OAuthClientFacade:
         dpop_builder: DpopProofBuilder,
         header_codec: DpopHttpHeaderCodec | None = None,
         registration_client: DynamicClientRegistrationClient | None = None,
+        registration_management_client: ClientRegistrationManagementClient | None = None,
     ) -> None:
         """Inject protocol components without constructing infrastructure implicitly."""
         self._assertion_builder = assertion_builder
@@ -55,6 +61,7 @@ class OAuthClientFacade:
         self._dpop_builder = dpop_builder
         self._header_codec = header_codec or DpopHttpHeaderCodec()
         self._registration_client = registration_client
+        self._registration_management_client = registration_management_client
 
     def register(
         self,
@@ -69,6 +76,27 @@ class OAuthClientFacade:
             metadata,
             initial_access_token=initial_access_token,
         )
+
+    def read_registration(self) -> ClientConfigurationResponse:
+        """Read current client registration through RFC 7592 when configured."""
+        if self._registration_management_client is None:
+            raise RuntimeError("registration_management_client is not configured")
+        return self._registration_management_client.read()
+
+    def update_registration(
+        self,
+        request: ClientUpdateRequest,
+    ) -> ClientConfigurationResponse:
+        """Replace current client registration through RFC 7592 when configured."""
+        if self._registration_management_client is None:
+            raise RuntimeError("registration_management_client is not configured")
+        return self._registration_management_client.update(request)
+
+    def delete_registration(self) -> None:
+        """Delete current client registration through RFC 7592 when configured."""
+        if self._registration_management_client is None:
+            raise RuntimeError("registration_management_client is not configured")
+        self._registration_management_client.delete()
 
     def build_token_request(
         self,

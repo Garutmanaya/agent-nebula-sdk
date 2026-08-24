@@ -1,4 +1,4 @@
-"""Unit tests for OAuth metadata URL construction and retrieval."""
+"""Unit tests for RFC 8414 and RFC 9728 metadata discovery."""
 
 from __future__ import annotations
 
@@ -7,9 +7,12 @@ import json
 import pytest
 
 from agent_nebula_sdk.core.errors import ExternalServiceError, ProtocolValidationError
-from agent_nebula_sdk.metadata import (
-    OAuthMetadataClient,
+from agent_nebula_sdk.oauth.rfc8414 import (
+    AuthorizationServerMetadataClient,
     authorization_server_metadata_url,
+)
+from agent_nebula_sdk.oauth.rfc9728 import (
+    ProtectedResourceMetadataClient,
     protected_resource_metadata_urls,
 )
 from agent_nebula_sdk.ports.http import HttpResponse
@@ -66,8 +69,8 @@ def test_resource_urls_return_path_specific_then_root() -> None:
     )
 
 
-def test_client_falls_back_from_path_metadata_to_root() -> None:
-    """Use root metadata after a path-specific 404 response."""
+def test_resource_client_falls_back_from_path_metadata_to_root() -> None:
+    """Use root RFC 9728 metadata after a path-specific 404 response."""
     resource = "https://mcp.example/public/mcp"
     _, root = protected_resource_metadata_urls(resource)
     transport = StaticTransport(
@@ -82,13 +85,13 @@ def test_client_falls_back_from_path_metadata_to_root() -> None:
             )
         }
     )
-    metadata = OAuthMetadataClient(transport=transport).fetch_protected_resource(resource)
+    metadata = ProtectedResourceMetadataClient(transport=transport).fetch(resource)
     assert metadata.resource == resource
     assert transport.requested_urls[-1] == root
 
 
-def test_client_rejects_wrong_issuer_in_metadata() -> None:
-    """Reject an authorization-server impersonation response."""
+def test_authorization_server_client_rejects_wrong_issuer_in_metadata() -> None:
+    """Reject an RFC 8414 authorization-server impersonation response."""
     issuer = "https://nebula.example.com"
     url = authorization_server_metadata_url(issuer)
     transport = StaticTransport(
@@ -102,24 +105,24 @@ def test_client_rejects_wrong_issuer_in_metadata() -> None:
         }
     )
     with pytest.raises(ProtocolValidationError) as exc_info:
-        OAuthMetadataClient(transport=transport).fetch_authorization_server(issuer)
+        AuthorizationServerMetadataClient(transport=transport).fetch(issuer)
     assert exc_info.value.code == "issuer_metadata_mismatch"
 
 
-def test_client_rejects_non_json_content_type() -> None:
-    """Reject metadata delivered with an unexpected media type."""
+def test_authorization_server_client_rejects_non_json_content_type() -> None:
+    """Reject RFC 8414 metadata delivered with an unexpected media type."""
     issuer = "https://nebula.example.com"
     url = authorization_server_metadata_url(issuer)
     transport = StaticTransport(
         {url: HttpResponse(status_code=200, headers={"content-type": "text/html"}, body=b"{}")}
     )
     with pytest.raises(ExternalServiceError) as exc_info:
-        OAuthMetadataClient(transport=transport).fetch_authorization_server(issuer)
+        AuthorizationServerMetadataClient(transport=transport).fetch(issuer)
     assert exc_info.value.code == "metadata_content_type_error"
 
 
-def test_client_rejects_oversized_metadata() -> None:
-    """Apply the configured response-size boundary before JSON parsing."""
+def test_authorization_server_client_rejects_oversized_metadata() -> None:
+    """Apply the configured RFC 8414 response-size boundary before JSON parsing."""
     issuer = "https://nebula.example.com"
     url = authorization_server_metadata_url(issuer)
     transport = StaticTransport(
@@ -132,14 +135,15 @@ def test_client_rejects_oversized_metadata() -> None:
         }
     )
     with pytest.raises(ExternalServiceError) as exc_info:
-        OAuthMetadataClient(
-            transport=transport, maximum_response_bytes=16
-        ).fetch_authorization_server(issuer)
+        AuthorizationServerMetadataClient(
+            transport=transport,
+            maximum_response_bytes=16,
+        ).fetch(issuer)
     assert exc_info.value.code == "metadata_response_too_large"
 
 
-def test_client_rejects_non_object_json() -> None:
-    """Reject arrays because OAuth metadata responses must be JSON objects."""
+def test_authorization_server_client_rejects_non_object_json() -> None:
+    """Reject arrays because RFC 8414 metadata responses must be JSON objects."""
     issuer = "https://nebula.example.com"
     url = authorization_server_metadata_url(issuer)
     transport = StaticTransport(
@@ -152,12 +156,12 @@ def test_client_rejects_non_object_json() -> None:
         }
     )
     with pytest.raises(ExternalServiceError) as exc_info:
-        OAuthMetadataClient(transport=transport).fetch_authorization_server(issuer)
+        AuthorizationServerMetadataClient(transport=transport).fetch(issuer)
     assert exc_info.value.code == "metadata_json_error"
 
 
 def test_invalid_issuer_and_resource_urls_are_rejected() -> None:
-    """Reject insecure or ambiguous discovery identifiers."""
+    """Reject insecure or ambiguous RFC 8414/RFC 9728 discovery identifiers."""
     with pytest.raises(ProtocolValidationError):
         authorization_server_metadata_url("http://auth.example.com")
     with pytest.raises(ProtocolValidationError):

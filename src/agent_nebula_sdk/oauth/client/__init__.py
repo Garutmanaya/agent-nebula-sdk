@@ -1,7 +1,7 @@
-"""Public client-role facade for Agent Nebula SDK consumers."""
+"""Public OAuth client-role facade and orchestration models."""
 
-from agent_nebula_sdk.client.facade import OAuthClientFacade
-from agent_nebula_sdk.client.models import (
+from agent_nebula_sdk.oauth.client.facade import OAuthClientFacade
+from agent_nebula_sdk.oauth.client.models import (
     ClientTokenRequest,
     ProtectedRequestArtifacts,
     TokenRequestArtifacts,

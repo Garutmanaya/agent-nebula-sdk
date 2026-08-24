@@ -9,9 +9,9 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from agent_nebula_sdk.client import OAuthClientFacade
 from agent_nebula_sdk.core.errors import ExternalServiceError
 from agent_nebula_sdk.mcp.models import McpHttpRequest, McpHttpResponse
+from agent_nebula_sdk.oauth.client import OAuthClientFacade
 from agent_nebula_sdk.oauth.rfc9449 import DpopSigningKey
 from agent_nebula_sdk.ports.http import HttpTransport
 

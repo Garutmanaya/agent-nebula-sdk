@@ -12,9 +12,9 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import TypeVar
 
-from agent_nebula_sdk.authorization_server import AuthorizationServerFacade
-from agent_nebula_sdk.client import OAuthClientFacade
-from agent_nebula_sdk.resource_server import ResourceServerFacade
+from agent_nebula_sdk.oauth.authorization_server import AuthorizationServerFacade
+from agent_nebula_sdk.oauth.client import OAuthClientFacade
+from agent_nebula_sdk.oauth.resource_server import ResourceServerFacade
 from agent_nebula_sdk.runtime.plugin import ProtocolRuntimePlugin
 from agent_nebula_sdk.runtime.registry import ProtocolComponentRegistry
 

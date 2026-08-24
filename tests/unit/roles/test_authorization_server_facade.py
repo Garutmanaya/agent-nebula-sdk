@@ -3,8 +3,11 @@
 from datetime import UTC, datetime
 from unittest.mock import Mock
 
-from agent_nebula_sdk.authorization_server import AuthorizationServerFacade, TokenIssuanceRequest
 from agent_nebula_sdk.jose.jwk.parser import JwkParser
+from agent_nebula_sdk.oauth.authorization_server import (
+    AuthorizationServerFacade,
+    TokenIssuanceRequest,
+)
 from agent_nebula_sdk.oauth.rfc7523 import AuthenticatedClient, ClientAuthenticationRequest
 from agent_nebula_sdk.oauth.rfc9068 import AccessTokenClaims, IssuedAccessToken
 from agent_nebula_sdk.oauth.rfc9449 import DpopProofClaims, ValidatedDpopProof

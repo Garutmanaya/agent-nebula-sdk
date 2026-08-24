@@ -4,11 +4,12 @@ Top-level packages are organized by functional category rather than a generic pr
 
 ```text
 jose/                  JWK, JWKS, thumbprints
-oauth/                 OAuth RFC modules
-metadata/              Authorization and protected-resource metadata
-client/                Client role composition
-authorization_server/  Authorization-server composition
-resource_server/       Protected-resource composition
+oauth/                 OAuth RFC modules and OAuth role composition
+  rfc8414/             Authorization Server Metadata
+  rfc9728/             Protected Resource Metadata
+  client/              OAuth client composition
+  authorization_server/ Authorization Server composition
+  resource_server/     Resource Server composition
 a2a/                   A2A HTTP security integration
 mcp/                   MCP OAuth security integration
 ports/                  Infrastructure contracts

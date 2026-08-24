@@ -32,6 +32,7 @@ The SDK owns protocol models, validation, token construction, role facades, meta
 | RFC 7638 | JWK thumbprints | Implemented |
 | RFC 7523 | JWT assertions and `private_key_jwt` | Implemented |
 | RFC 7591 | Dynamic Client Registration | Implemented |
+| RFC 7592 | Dynamic Client Registration Management | Implemented |
 | RFC 8707 | Resource Indicators | Implemented |
 | RFC 9068 | JWT access-token profile | Implemented |
 | RFC 9449 | DPoP | Implemented |
@@ -47,11 +48,18 @@ See `docs/standards/STANDARDS_MAPPING.md` and `docs/phase1/PHASE1_COMPLETION_REP
 ```text
 src/agent_nebula_sdk/
 ├── jose/                  # JWK, JWKS, thumbprints
-├── oauth/                 # RFC 7523, 7591, 8707, 9068, 9449
-├── metadata/              # RFC 8414 and RFC 9728
-├── client/                # Client role facade
-├── authorization_server/  # Authorization-server role facade
-├── resource_server/       # Resource-server role facade
+├── oauth/                 # OAuth RFC modules and role composition
+│   ├── rfc7523/           # JWT assertions / private_key_jwt
+│   ├── rfc7591/           # Dynamic Client Registration
+│   ├── rfc7592/           # Registration Management
+│   ├── rfc8414/           # Authorization Server Metadata
+│   ├── rfc8707/           # Resource Indicators
+│   ├── rfc9068/           # JWT Access Token Profile
+│   ├── rfc9449/           # DPoP
+│   ├── rfc9728/           # Protected Resource Metadata
+│   ├── client/            # OAuth client role composition
+│   ├── authorization_server/ # Authorization Server role composition
+│   └── resource_server/   # Resource Server role composition
 ├── a2a/                   # A2A HTTP security adapters
 ├── mcp/                   # Current MCP OAuth security profile
 ├── runtime/               # Protocol composition root and plugin registry

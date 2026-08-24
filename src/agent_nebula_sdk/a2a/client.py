@@ -11,8 +11,8 @@ import json
 from typing import Any
 
 from agent_nebula_sdk.a2a.models import A2AHttpRequest, A2AHttpResponse
-from agent_nebula_sdk.client import OAuthClientFacade
 from agent_nebula_sdk.core.errors import ExternalServiceError
+from agent_nebula_sdk.oauth.client import OAuthClientFacade
 from agent_nebula_sdk.oauth.rfc9449 import DpopSigningKey
 from agent_nebula_sdk.ports.http import HttpTransport
 

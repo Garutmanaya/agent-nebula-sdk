@@ -35,4 +35,4 @@ RFC 7591 permits additional metadata members. The SDK preserves them and delegat
 - Open registrations receive `UNVERIFIED` trust status.
 - Controlled registrations use an initial access token through a policy adapter.
 - Duplicate software identity enforcement is optional because RFC 7591 does not require uniqueness.
-- RFC 7592 registration management remains a future additive plugin.
+- RFC 7592 registration management is implemented as the additive `oauth/rfc7592` module.

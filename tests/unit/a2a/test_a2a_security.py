@@ -6,7 +6,8 @@ import pytest
 
 from agent_nebula_sdk.a2a import A2ASecurityProfileBuilder, A2ASecurityProfileValidator
 from agent_nebula_sdk.core.errors import ProtocolValidationError
-from agent_nebula_sdk.metadata import AuthorizationServerMetadata, ProtectedResourceMetadata
+from agent_nebula_sdk.oauth.rfc8414 import AuthorizationServerMetadata
+from agent_nebula_sdk.oauth.rfc9728 import ProtectedResourceMetadata
 
 
 def build_metadata() -> tuple[AuthorizationServerMetadata, ProtectedResourceMetadata]:

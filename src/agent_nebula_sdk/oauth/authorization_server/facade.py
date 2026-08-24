@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from agent_nebula_sdk.authorization_server.models import (
+from agent_nebula_sdk.oauth.authorization_server.models import (
     TokenIssuanceRequest,
     TokenIssuanceResult,
 )
@@ -11,6 +11,11 @@ from agent_nebula_sdk.oauth.rfc7591 import (
     DynamicClientRegistrationService,
     RegistrationRequest,
     RegistrationResponse,
+)
+from agent_nebula_sdk.oauth.rfc7592 import (
+    ClientConfigurationResponse,
+    ClientRegistrationManagementService,
+    ClientUpdateRequest,
 )
 from agent_nebula_sdk.oauth.rfc8707 import ResourceIndicatorRequest, ResourceResolutionService
 from agent_nebula_sdk.oauth.rfc9068 import (
@@ -31,7 +36,7 @@ class AuthorizationServerFacade:
 
     Standards
     ---------
-    RFC 7523, RFC 7591, RFC 8707, RFC 9068, and RFC 9449.
+    RFC 7523, RFC 7591, RFC 7592, RFC 8707, RFC 9068, and RFC 9449.
     """
 
     def __init__(
@@ -42,6 +47,7 @@ class AuthorizationServerFacade:
         resource_service: ResourceResolutionService,
         token_issuer: JwtAccessTokenIssuer,
         dpop_validator: DpopProofValidator,
+        registration_management_service: ClientRegistrationManagementService | None = None,
     ) -> None:
         """Inject independently replaceable protocol services."""
         self._registration_service = registration_service
@@ -49,10 +55,56 @@ class AuthorizationServerFacade:
         self._resource_service = resource_service
         self._token_issuer = token_issuer
         self._dpop_validator = dpop_validator
+        self._registration_management_service = registration_management_service
 
     def register_client(self, request: RegistrationRequest) -> RegistrationResponse:
         """Delegate one RFC 7591 registration operation."""
         return self._registration_service.register(request)
+
+    def read_client_registration(
+        self,
+        *,
+        client_id: str,
+        registration_access_token: str,
+    ) -> ClientConfigurationResponse:
+        """Read an RFC 7592 client registration when management is configured."""
+        service = self._require_registration_management_service()
+        return service.read(
+            client_id=client_id,
+            registration_access_token=registration_access_token,
+        )
+
+    def update_client_registration(
+        self,
+        *,
+        request: ClientUpdateRequest,
+        registration_access_token: str,
+    ) -> ClientConfigurationResponse:
+        """Replace an RFC 7592 client registration when management is configured."""
+        service = self._require_registration_management_service()
+        return service.update(
+            request=request,
+            registration_access_token=registration_access_token,
+        )
+
+    def delete_client_registration(
+        self,
+        *,
+        client_id: str,
+        registration_access_token: str,
+    ) -> None:
+        """Delete an RFC 7592 client registration when management is configured."""
+        service = self._require_registration_management_service()
+        service.delete(
+            client_id=client_id,
+            registration_access_token=registration_access_token,
+        )
+
+    def _require_registration_management_service(self) -> ClientRegistrationManagementService:
+        """Return the configured RFC 7592 service or fail with a clear composition error."""
+        if self._registration_management_service is None:
+            raise RuntimeError("registration_management_service is not configured")
+        return self._registration_management_service
 
     def issue_resource_token(
         self,

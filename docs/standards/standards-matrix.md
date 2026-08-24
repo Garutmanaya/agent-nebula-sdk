@@ -11,7 +11,7 @@
 | RFC 9068 | JWT access tokens | 1 | `oauth.access_token` | signing key provider |
 | RFC 9449 | DPoP | 1 | `dpop` | replay store |
 | RFC 9728 | resource metadata | 1 | `metadata.protected_resource` | endpoint composition |
-| RFC 7592 | registration management | Future | `future.registration_management` | registration admin |
+| RFC 7592 | registration management | Implemented | `oauth/rfc7592` | registration lifecycle |
 | RFC 8705 | mTLS OAuth | Phase 2 | `future.mtls` | PKI/certificate store |
 | SPIFFE/SPIRE | workload identity | Phase 2 | `future.spiffe` | Workload API |
 | W3C DID/VC/VP | decentralized trust | Phase 3 | `future.decentralized_identity` | credential verifier |

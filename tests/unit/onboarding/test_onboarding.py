@@ -5,8 +5,8 @@ from datetime import UTC, datetime
 import pytest
 
 from agent_nebula_sdk.core.errors import ConfigurationError, UnsupportedProtocolError
-from agent_nebula_sdk.metadata.models import ProtectedResourceMetadata
 from agent_nebula_sdk.oauth.rfc7591.models import ClientMetadata, RegistrationRequest
+from agent_nebula_sdk.oauth.rfc9728 import ProtectedResourceMetadata
 from agent_nebula_sdk.onboarding import (
     AgentRegistrationInput,
     AgentRegistrationProfile,
@@ -185,7 +185,9 @@ def test_initial_access_token_is_consumed_before_commit():
 
 def test_software_statement_uses_rfc7591_verifier_contract():
     """Reuse the RFC 7591 statement verifier contract for trust establishment."""
-    service, _, _ = configured_service(SoftwareStatementOnboardingAuthenticator(StatementVerifier()))
+    service, _, _ = configured_service(
+        SoftwareStatementOnboardingAuthenticator(StatementVerifier())
+    )
     result = service.onboard(
         provider_request(OnboardingAuthenticationMethod.SOFTWARE_STATEMENT, "signed")
     )

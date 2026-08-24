@@ -32,16 +32,17 @@ from cryptography.hazmat.primitives.asymmetric import ec, rsa
 from pydantic import BaseModel, ConfigDict
 
 from agent_nebula_sdk.a2a import A2AHttpSecurityClient, A2ARequestAuthenticator
-from agent_nebula_sdk.authorization_server import (
-    AuthorizationServerFacade,
-    TokenIssuanceRequest,
-    TokenIssuanceResult,
-)
-from agent_nebula_sdk.client import ClientTokenRequest, OAuthClientFacade
 from agent_nebula_sdk.core.encoding import encode_base64url
 from agent_nebula_sdk.jose.jwk.models import SupportedPublicJwk
 from agent_nebula_sdk.jose.jwk.parser import JwkParser
 from agent_nebula_sdk.jose.jwks.models import JwkSet
+from agent_nebula_sdk.oauth.authorization_server import (
+    AuthorizationServerFacade,
+    TokenIssuanceRequest,
+    TokenIssuanceResult,
+)
+from agent_nebula_sdk.oauth.client import ClientTokenRequest, OAuthClientFacade
+from agent_nebula_sdk.oauth.resource_server import ResourceServerFacade
 from agent_nebula_sdk.oauth.rfc7523 import (
     ClientAssertionBuilder,
     InMemoryAssertionReplayStore,
@@ -87,7 +88,6 @@ from agent_nebula_sdk.oauth.rfc9449 import (
 )
 from agent_nebula_sdk.ports.clock import Clock
 from agent_nebula_sdk.ports.http import HttpResponse, HttpTransport
-from agent_nebula_sdk.resource_server import ResourceServerFacade
 
 
 @dataclass(slots=True)

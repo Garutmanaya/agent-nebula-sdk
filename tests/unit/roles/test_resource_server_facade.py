@@ -3,9 +3,9 @@
 from unittest.mock import Mock
 
 from agent_nebula_sdk.jose.jwk.parser import JwkParser
+from agent_nebula_sdk.oauth.resource_server import ResourceServerFacade
 from agent_nebula_sdk.oauth.rfc9068 import AccessTokenClaims, ValidatedAccessToken
 from agent_nebula_sdk.oauth.rfc9449 import DpopProofClaims, ValidatedDpopProof
-from agent_nebula_sdk.resource_server import ResourceServerFacade
 
 
 def test_authenticate_request_returns_provider_security_context(

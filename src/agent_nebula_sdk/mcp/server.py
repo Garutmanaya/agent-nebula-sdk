@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from agent_nebula_sdk.core.errors import ClientAuthenticationError
-from agent_nebula_sdk.metadata import OAuthChallengeCodec, ProtectedResourceMetadata
+from agent_nebula_sdk.oauth.resource_server import ResourceSecurityContext, ResourceServerFacade
 from agent_nebula_sdk.oauth.rfc9449 import DpopHttpHeaderCodec
-from agent_nebula_sdk.resource_server import ResourceSecurityContext, ResourceServerFacade
+from agent_nebula_sdk.oauth.rfc9728 import OAuthChallengeCodec, ProtectedResourceMetadata
 
 
 class McpRequestAuthenticator:

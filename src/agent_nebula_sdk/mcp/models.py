@@ -12,7 +12,8 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
-from agent_nebula_sdk.metadata import AuthorizationServerMetadata, ProtectedResourceMetadata
+from agent_nebula_sdk.oauth.rfc8414 import AuthorizationServerMetadata
+from agent_nebula_sdk.oauth.rfc9728 import ProtectedResourceMetadata
 
 
 class McpAuthorizationDiscovery(BaseModel):

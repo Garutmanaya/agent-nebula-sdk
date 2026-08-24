@@ -6,7 +6,7 @@
 future/mtls/                  RFC 8705
 future/spiffe/                SPIFFE ID, X.509-SVID, JWT-SVID
 future/spire/                 Workload API adapter
-future/registration_mgmt/     RFC 7592
+oauth/rfc7592/                  RFC 7592 — implemented
 ```
 
 ## Phase 3

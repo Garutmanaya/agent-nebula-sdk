@@ -6,7 +6,7 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 from agent_nebula_sdk.mcp import McpHttpSecurityClient, McpRequestAuthenticator
-from agent_nebula_sdk.metadata import ProtectedResourceMetadata
+from agent_nebula_sdk.oauth.rfc9728 import ProtectedResourceMetadata
 
 
 def test_mcp_client_sets_protocol_and_session_headers() -> None:

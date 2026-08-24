@@ -2,7 +2,7 @@
 
 from unittest.mock import Mock
 
-from agent_nebula_sdk.client import ClientTokenRequest, OAuthClientFacade
+from agent_nebula_sdk.oauth.client import ClientTokenRequest, OAuthClientFacade
 from agent_nebula_sdk.oauth.rfc7523 import ClientAuthenticationRequest
 from agent_nebula_sdk.oauth.rfc9449 import BuiltDpopProof, DpopProofClaims
 

@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
+from agent_nebula_sdk.oauth.resource_server.models import ResourceSecurityContext
 from agent_nebula_sdk.oauth.rfc8707 import ResourceAudienceValidator
 from agent_nebula_sdk.oauth.rfc9068 import JwtAccessTokenValidator
 from agent_nebula_sdk.oauth.rfc9449 import DpopProofValidator, DpopTokenBindingService
-from agent_nebula_sdk.resource_server.models import ResourceSecurityContext
 
 
 class ResourceServerFacade:
