@@ -185,6 +185,21 @@ class AgentProfileResult(BaseModel):
     external_agent_id: str = Field(min_length=1, max_length=255)
 
 
+class ClientEnrollmentProfileResult(BaseModel):
+    """Return Registry enterprise CLIENT enrollment identity.
+
+    AGENT NEBULA ADDITIONAL FUNCTIONALITY: this result represents the
+    enterprise trust enrollment performed before standard RFC 7591 DCR. It is
+    deliberately not an OAuth ``client_id`` issued by an Authorization Server.
+    """
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    client_enrollment_id: str = Field(min_length=1, max_length=255)
+    public_key_thumbprints: tuple[str, ...] = ()
+    jwks_uri: str | None = None
+
+
 class OAuthClientProfileResult(BaseModel):
     """Return internal and RFC-facing OAuth client identifiers distinctly."""
 
@@ -195,16 +210,19 @@ class OAuthClientProfileResult(BaseModel):
 
 
 class ProtectedResourceProfileResult(BaseModel):
-    """Return internal and RFC 8707 protected-resource identifiers."""
+    """Return Registry and RFC 9728 protected-resource identifiers."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    oauth_protected_resource_id: str = Field(min_length=1, max_length=255)
+    protected_resource_id: str = Field(min_length=1, max_length=255)
     resource_identifier: str = Field(min_length=1)
 
 
 OnboardingProfileResult = (
-    AgentProfileResult | OAuthClientProfileResult | ProtectedResourceProfileResult
+    AgentProfileResult
+    | ClientEnrollmentProfileResult
+    | OAuthClientProfileResult
+    | ProtectedResourceProfileResult
 )
 
 

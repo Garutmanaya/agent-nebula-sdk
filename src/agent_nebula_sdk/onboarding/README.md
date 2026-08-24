@@ -36,3 +36,14 @@ Matching Agent identity, Agent Card URI, roles, public-key identity, RFC 7591
 metadata, and protected-resource metadata resolve to the existing registration.
 Conflicting public keys or metadata fail closed rather than replacing a
 registration implicitly.
+
+## Enterprise CLIENT enrollment result
+
+`ClientEnrollmentProfileResult` is a protocol-neutral result contract used by
+Agent Nebula to report a Registry enterprise CLIENT enrollment before RFC 7591
+DCR.
+
+**AGENT NEBULA ADDITIONAL FUNCTIONALITY:** the enrollment identifier is not an
+OAuth `client_id`; Authorization Servers remain responsible for issuing
+`client_id`.
+

@@ -16,6 +16,7 @@ from agent_nebula_sdk.onboarding.constants import (
 from agent_nebula_sdk.onboarding.models import (
     AgentProfileResult,
     AgentRegistrationInput,
+    ClientEnrollmentProfileResult,
     OAuthClientProfileResult,
     OAuthClientRegistrationInput,
     OnboardingAuthenticationInput,
@@ -45,6 +46,7 @@ __all__ = [
     "AgentRegistrationProfile",
     "AgentRole",
     "ApiKeyOnboardingAuthenticator",
+    "ClientEnrollmentProfileResult",
     "InitialAccessTokenOnboardingAuthenticator",
     "MtlsOnboardingAuthenticator",
     "OAuthClientProfileResult",

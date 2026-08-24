@@ -1,27 +1,32 @@
-"""Tests for typed onboarding identifiers."""
+"""Tests for typed onboarding identifiers after OAuth externalization."""
 
 from datetime import UTC, datetime
 
 from agent_nebula_sdk.onboarding import (
-    OAuthClientProfileResult,
+    ClientEnrollmentProfileResult,
     OnboardingCommitResult,
     RegistrationProfileType,
 )
 
 
-def test_oauth_result_keeps_internal_and_protocol_identifiers_distinct() -> None:
-    """Keep internal OAuth IDs distinct from protocol client identifiers."""
+def test_client_enrollment_result_does_not_expose_oauth_client_id() -> None:
+    """Verify Registry onboarding returns enrollment identity, not OAuth identity."""
     result = OnboardingCommitResult(
         onboarding_id="onb-1",
         entity_id="agent-1",
         profiles={
-            RegistrationProfileType.OAUTH_CLIENT: OAuthClientProfileResult(
-                oauth_client_id="uuid-1",
-                client_id="neb_client_1",
+            RegistrationProfileType.OAUTH_CLIENT: ClientEnrollmentProfileResult(
+                client_enrollment_id="enrollment-1",
+                public_key_thumbprints=("thumbprint-1",),
+                jwks_uri="https://client.example/jwks.json",
             )
         },
         committed_at=datetime.now(UTC),
     )
     payload = result.model_dump(mode="json")
-    assert payload["profiles"]["OAUTH_CLIENT"]["oauth_client_id"] == "uuid-1"
-    assert payload["profiles"]["OAUTH_CLIENT"]["client_id"] == "neb_client_1"
+    client_profile = payload["profiles"]["OAUTH_CLIENT"]
+
+    assert client_profile["client_enrollment_id"] == "enrollment-1"
+    assert client_profile["public_key_thumbprints"] == ["thumbprint-1"]
+    assert "client_id" not in client_profile
+    assert "oauth_client_id" not in client_profile
