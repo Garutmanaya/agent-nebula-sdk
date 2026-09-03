@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 
 import pytest
 
-from agent_nebula_sdk.core.errors import ConfigurationError, UnsupportedProtocolError
+from agent_nebula_sdk.core.errors import ConfigurationError
 from agent_nebula_sdk.oauth.rfc7591.models import ClientMetadata, RegistrationRequest
 from agent_nebula_sdk.oauth.rfc9728 import ProtectedResourceMetadata
 from agent_nebula_sdk.onboarding import (
@@ -13,7 +13,6 @@ from agent_nebula_sdk.onboarding import (
     AgentRole,
     ApiKeyOnboardingAuthenticator,
     InitialAccessTokenOnboardingAuthenticator,
-    MtlsOnboardingAuthenticator,
     OAuthClientRegistrationInput,
     OAuthClientRegistrationProfile,
     OnboardingAuthenticationInput,
@@ -193,14 +192,6 @@ def test_software_statement_uses_rfc7591_verifier_contract():
     )
     assert result.principal.subject == "parking"
     assert result.principal.claims["iss"] == "publisher"
-
-
-def test_mtls_fails_explicitly_until_rfc8705_exists():
-    """Reject mTLS onboarding until complete RFC 8705 support exists."""
-    service, transaction, _ = configured_service(MtlsOnboardingAuthenticator())
-    with pytest.raises(UnsupportedProtocolError):
-        service.onboard(provider_request(OnboardingAuthenticationMethod.MTLS, "certificate"))
-    assert transaction.calls == []
 
 
 def test_duplicate_component_registration_is_rejected():

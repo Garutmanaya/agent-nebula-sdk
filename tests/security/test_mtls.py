@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
@@ -9,7 +9,7 @@ from agent_nebula_sdk.security import MtlsClientCertificateAuthenticator, MtlsTr
 
 
 def _certificates() -> tuple[x509.Certificate, x509.Certificate]:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     ca_key = ec.generate_private_key(ec.SECP256R1())
     ca_name = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, "Test CA")])
     ca = (

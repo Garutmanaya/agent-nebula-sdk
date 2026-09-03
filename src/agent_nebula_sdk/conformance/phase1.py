@@ -9,7 +9,8 @@ protected-resource request without Agent Nebula or Agent Genesis product code.
 
 Standards
 ---------
-RFC 7517, RFC 7638, RFC 7523, RFC 7591, RFC 8707, RFC 9068, RFC 9449, and generic OAuth protected-resource security.
+RFC 7517, RFC 7638, RFC 7523, RFC 7591, RFC 8707, RFC 9068, RFC 9449,
+and generic OAuth protected-resource security.
 
 Security boundary
 -----------------

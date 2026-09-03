@@ -8,7 +8,7 @@ The OAuth package groups standards and role composition without embedding produc
 - `rfc7591` — Dynamic Client Registration
 - `rfc7592` — Dynamic Client Registration Management
 - `rfc8414` — Authorization Server Metadata
-- `rfc8705` — Mutual-TLS placeholder
+- `rfc8705` — OAuth 2.0 mutual-TLS certificate-bound access-token validation
 - `rfc8707` — Resource Indicators
 - `rfc9068` — JWT Access Token Profile
 - `rfc9396` — Rich Authorization Requests placeholder

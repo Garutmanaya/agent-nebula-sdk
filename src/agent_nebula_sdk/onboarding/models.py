@@ -1,6 +1,7 @@
 """Immutable models for authenticated, multi-profile agent onboarding.
 
-The models are protocol-neutral orchestration contracts. Normative OAuth, MCP, JOSE, and TLS data remains owned by the existing SDK modules.
+The models are protocol-neutral orchestration contracts. Normative OAuth, MCP,
+JOSE, and TLS data remains owned by the existing SDK modules.
 """
 
 from __future__ import annotations

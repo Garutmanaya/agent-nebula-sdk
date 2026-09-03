@@ -18,7 +18,7 @@ The onboarding package is the SDK entry point for secure registration of dynamic
 
 ## Authentication
 
-Open, API key, initial access token, and software statement strategies are pluggable. API-key storage and initial-access-token lifecycle are application responsibilities supplied through ports. mTLS is an explicit placeholder until RFC 8705 is implemented.
+Open, API key, initial access token, software statement, and mTLS strategies are pluggable. API-key storage and initial-access-token lifecycle are application responsibilities supplied through ports. mTLS authentication reuses the generic X.509 trust validator; OAuth certificate-bound token validation is implemented by the RFC 8705 module.
 
 ## Product boundary
 

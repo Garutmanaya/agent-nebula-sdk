@@ -10,7 +10,7 @@ from agent_nebula_sdk.oauth.rfc9449 import DpopProofBuildRequest, DpopSigningKey
 
 
 def test_complete_phase1_flow_succeeds() -> None:
-    """Open registration, token issuance, and A2A invocation compose successfully."""
+    """Open registration, token issuance, and protected-resource invocation compose successfully."""
     result = Phase1AcceptanceHarness().run()
 
     assert result.audience == Phase1AcceptanceHarness.provider_endpoint

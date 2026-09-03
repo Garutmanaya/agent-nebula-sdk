@@ -24,7 +24,7 @@ class MtlsTrustPolicy:
         *,
         trust_bundle_pem: bytes,
         intermediates_pem: bytes | None = None,
-    ) -> "MtlsTrustPolicy":
+    ) -> MtlsTrustPolicy:
         """Parse PEM trust material into an immutable validation policy."""
         anchors = tuple(x509.load_pem_x509_certificates(trust_bundle_pem))
         if not anchors:
