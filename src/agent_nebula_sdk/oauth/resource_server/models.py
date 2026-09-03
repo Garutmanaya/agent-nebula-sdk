@@ -16,4 +16,4 @@ class ResourceSecurityContext(BaseModel):
     subject: str
     client_id: str
     claims: AccessTokenClaims
-    dpop_proof: ValidatedDpopProof
+    dpop_proof: ValidatedDpopProof | None = None

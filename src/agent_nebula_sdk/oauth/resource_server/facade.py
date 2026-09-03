@@ -29,6 +29,32 @@ class ResourceServerFacade:
         self._audience_validator = audience_validator
         self._binding_service = binding_service or DpopTokenBindingService()
 
+
+    def authenticate_bearer_request(
+        self,
+        *,
+        access_token: str,
+        expected_issuer: str,
+    ) -> ResourceSecurityContext:
+        """Validate an RFC 9068 bearer token and its RFC 8707 audience.
+
+        DPoP is intentionally not inferred from OAuth itself. Callers select
+        this path only when protected-resource policy does not require a
+        sender-constrained token.
+        """
+        token = self._token_validator.validate(
+            access_token,
+            expected_issuer=expected_issuer,
+            expected_audiences=(self._audience_validator.expected_audience,),
+        )
+        self._audience_validator.validate(token.claims.audiences())
+        return ResourceSecurityContext(
+            subject=token.claims.sub,
+            client_id=token.claims.client_id,
+            claims=token.claims,
+            dpop_proof=None,
+        )
+
     def authenticate_request(
         self,
         *,
