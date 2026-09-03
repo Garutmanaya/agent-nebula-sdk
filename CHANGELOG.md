@@ -1,3 +1,8 @@
+## Unreleased
+
+- Step 7: removed legacy/custom A2A code; A2A 1.0 official SDK path is authoritative.
+- Standardized repository Makefile developer targets.
+
 # Changelog
 
 ## 1.12.0 — OAuth Standards Normalization

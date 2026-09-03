@@ -18,5 +18,5 @@ Implemented controls:
 - bounded caching of valid documents only;
 - protocol-runtime plugin registration.
 
-RFC 7591 remains available under `oauth/rfc7591` for A2A and general OAuth
+RFC 7591 remains available under `oauth/rfc7591` for general OAuth
 registration but is not used by this MCP package.

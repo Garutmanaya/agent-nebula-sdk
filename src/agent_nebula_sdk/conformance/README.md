@@ -14,7 +14,7 @@ Agent Nebula or Agent Genesis product code.
 - RFC 8707 for protected-resource targeting
 - RFC 9068 for JWT access tokens
 - RFC 9449 for DPoP sender constraint and replay detection
-- A2A HTTP security integration
+- generic protected-resource security integration
 
 ## Boundary
 

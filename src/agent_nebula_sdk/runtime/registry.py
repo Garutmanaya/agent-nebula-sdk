@@ -2,7 +2,7 @@
 
 Purpose
 -------
-Provide one additive extension mechanism for future OAuth, A2A, MCP, identity,
+Provide one additive extension mechanism for future OAuth, MCP, identity,
 and transport components without forcing the runtime to change its constructor
 whenever a new protocol module is introduced.
 """

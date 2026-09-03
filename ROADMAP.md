@@ -15,7 +15,7 @@ Phase 1 is complete. The SDK now provides an independently verified Host → Aut
 | Step 6 | RFC 9068 JWT Access Token Profile | Complete |
 | Step 7 | RFC 9449 DPoP | Complete |
 | Step 8 | Client, authorization-server, and resource-server facades | Complete |
-| Step 9 | A2A and MCP security adapters | Complete |
+| Step 9 | protocol-neutral security adapters | Complete |
 | Step 10 | SDK-only Phase 1 acceptance flow | Complete |
 | Documentation Freeze | Phase 1 release and future-phase documentation | Complete |
 | Runtime/MCP Update | Protocol Runtime and current MCP Client ID Metadata profile | Complete |

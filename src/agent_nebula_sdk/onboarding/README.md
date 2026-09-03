@@ -1,6 +1,6 @@
 # Onboarding
 
-The onboarding package is the SDK entry point for secure registration of dynamic agents. It composes existing protocol modules and never reimplements OAuth, JOSE, JWT, JWK, A2A, MCP, TLS, or cryptographic behavior.
+The onboarding package is the SDK entry point for secure registration of dynamic agents. It composes existing protocol modules and never reimplements OAuth, JOSE, JWT, JWK, MCP, TLS, or cryptographic behavior.
 
 ## Processing flow
 

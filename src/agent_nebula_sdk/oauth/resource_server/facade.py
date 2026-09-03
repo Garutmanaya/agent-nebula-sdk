@@ -14,7 +14,7 @@ class ResourceServerFacade:
     """Validate a DPoP-bound access token before provider-local authorization.
 
     The facade establishes identity and proof-of-possession only. It does not
-    decide whether a caller may execute a provider-specific A2A or MCP action.
+    decide whether a caller may execute a provider-specific agent or MCP action.
     """
 
     def __init__(

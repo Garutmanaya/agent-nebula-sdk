@@ -101,7 +101,7 @@ def provider_request(method=OnboardingAuthenticationMethod.OPEN, credential=None
     """Build a combined Agent and protected-resource onboarding request."""
     return OnboardingRequest(
         entity_name="Parking Metro A",
-        roles=frozenset({AgentRole.A2A_PROVIDER, AgentRole.OAUTH_PROTECTED_RESOURCE}),
+        roles=frozenset({AgentRole.OAUTH_PROTECTED_RESOURCE}),
         authentication=OnboardingAuthenticationInput(method=method, credential=credential),
         agent=AgentRegistrationInput(
             agent_card_uri="https://metro.example/.well-known/agent-card.json"

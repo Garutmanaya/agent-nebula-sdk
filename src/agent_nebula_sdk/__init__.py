@@ -1,7 +1,7 @@
 """Public package for the Agent Nebula standards SDK.
 
 Step 2 provides the shared foundation and the JOSE key modules required by
-all later OAuth, DPoP, A2A, and MCP security profiles.
+all later OAuth, DPoP, and MCP security profiles.
 """
 
 from agent_nebula_sdk.jose.jwk.models import EcPublicJwk, OkpPublicJwk, RsaPublicJwk

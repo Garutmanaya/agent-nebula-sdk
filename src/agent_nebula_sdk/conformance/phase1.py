@@ -4,13 +4,12 @@ Purpose
 -------
 Compose every completed Phase 1 standards module through the public role
 facades. The harness demonstrates that the SDK can register identities,
-authenticate a Host, issue an audience-bound DPoP token, and authenticate an
-A2A provider request without Agent Nebula or Agent Genesis product code.
+authenticate a Host, issue an audience-bound DPoP token, and authenticate a
+protected-resource request without Agent Nebula or Agent Genesis product code.
 
 Standards
 ---------
-RFC 7517, RFC 7638, RFC 7523, RFC 7591, RFC 8707, RFC 9068, RFC 9449, and the
-A2A HTTP security model.
+RFC 7517, RFC 7638, RFC 7523, RFC 7591, RFC 8707, RFC 9068, RFC 9449, and generic OAuth protected-resource security.
 
 Security boundary
 -----------------
@@ -31,7 +30,6 @@ from typing import Any
 from cryptography.hazmat.primitives.asymmetric import ec, rsa
 from pydantic import BaseModel, ConfigDict
 
-from agent_nebula_sdk.a2a import A2AHttpSecurityClient, A2ARequestAuthenticator
 from agent_nebula_sdk.core.encoding import encode_base64url
 from agent_nebula_sdk.jose.jwk.models import SupportedPublicJwk
 from agent_nebula_sdk.jose.jwk.parser import JwkParser
@@ -123,10 +121,10 @@ class _AsymmetricKeyPair:
 
 
 class _ProviderLoopbackTransport(HttpTransport):
-    """Route one A2A HTTP request directly into the resource-server adapter.
+    """Route one protected-resource HTTP request into the resource server.
 
     This transport is intentionally local. It exercises the exact serialized
-    headers and body produced by the A2A client while avoiding a dependency on
+    headers and body produced by the OAuth client while avoiding a dependency on
     any web framework or product HTTP server.
     """
 
@@ -135,13 +133,13 @@ class _ProviderLoopbackTransport(HttpTransport):
         *,
         endpoint: str,
         expected_issuer: str,
-        authenticator: A2ARequestAuthenticator,
+        resource_server: ResourceServerFacade,
         operation_policy: Callable[[str, str], bool],
     ) -> None:
         """Configure the protected endpoint and provider-local policy callback."""
         self._endpoint = endpoint
         self._expected_issuer = expected_issuer
-        self._authenticator = authenticator
+        self._resource_server = resource_server
         self._operation_policy = operation_policy
 
     def get(self, url: str, *, headers: dict[str, str] | None = None) -> HttpResponse:
@@ -160,8 +158,14 @@ class _ProviderLoopbackTransport(HttpTransport):
         if url != self._endpoint:
             return self._json_response(404, {"error": "unknown_resource"})
         request_headers = headers or {}
-        security_context = self._authenticator.authenticate(
-            headers=request_headers,
+        authorization = request_headers.get("Authorization", "")
+        scheme, _, access_token = authorization.partition(" ")
+        dpop_proof = request_headers.get("DPoP", "")
+        if scheme.lower() != "dpop" or not access_token or not dpop_proof:
+            return self._json_response(401, {"error": "invalid_request"})
+        security_context = self._resource_server.authenticate_request(
+            access_token=access_token,
+            dpop_proof=dpop_proof,
             http_method="POST",
             target_uri=url,
             expected_issuer=self._expected_issuer,
@@ -187,7 +191,7 @@ class _ProviderLoopbackTransport(HttpTransport):
         """Decode the small JSON object used by the acceptance scenario."""
         parsed = json.loads(body)
         if not isinstance(parsed, dict):
-            raise ValueError("acceptance A2A payload must be a JSON object")
+            raise ValueError("acceptance protected-resource payload must be a JSON object")
         return parsed
 
     @staticmethod
@@ -207,7 +211,7 @@ class Phase1AcceptanceHarness:
     --------------
     Construct reference adapters, register a Host and Provider, bridge the
     resulting public registration data into RFC 7523 key resolution, issue a
-    resource-targeted DPoP token, and invoke a provider through the A2A adapter.
+    resource-targeted DPoP token, and invoke a generic OAuth protected resource.
 
     The bridge between RFC 7591 records and RFC 7523 stores represents the
     persistence adapter that Agent Nebula will implement in PostgreSQL.
@@ -215,7 +219,7 @@ class Phase1AcceptanceHarness:
 
     issuer = "https://nebula.example"
     token_endpoint = "https://nebula.example/oauth/token"
-    provider_endpoint = "https://metro.example/a2a"
+    provider_endpoint = "https://metro.example/resource"
 
     def __init__(self, *, clock: Clock | None = None) -> None:
         """Build all Phase 1 roles with deterministic reference infrastructure."""
@@ -317,38 +321,40 @@ class Phase1AcceptanceHarness:
         self._last_access_token: str | None = None
 
     def run(self) -> Phase1AcceptanceResult:
-        """Run registration, token issuance, and authenticated A2A invocation."""
+        """Run registration, token issuance, and authenticated resource invocation."""
         host_client_id, provider_client_id = self.register_default_entities()
         issuance = self.issue_host_token(host_client_id)
 
-        authenticator = A2ARequestAuthenticator(resource_server=self.resource_server)
         transport = _ProviderLoopbackTransport(
             endpoint=self.provider_endpoint,
             expected_issuer=self.issuer,
-            authenticator=authenticator,
+            resource_server=self.resource_server,
             operation_policy=lambda client_id, operation: (
                 client_id == host_client_id and operation == "parking.search"
             ),
         )
-        a2a_client = A2AHttpSecurityClient(oauth=self.client, transport=transport)
-        request = a2a_client.build_request(
-            endpoint=self.provider_endpoint,
+        artifacts = self.client.build_protected_request(
+            http_method="POST",
+            target_uri=self.provider_endpoint,
             access_token=issuance.access_token.token,
             dpop_key=self.host_dpop_signing_key,
-            payload={"operation": "parking.search"},
         )
-        response = a2a_client.send(request)
-        if response.status_code != 200 or not isinstance(response.payload, dict):
+        raw_response = transport.post(
+            self.provider_endpoint,
+            headers=artifacts.headers,
+            body=json.dumps({"operation": "parking.search"}).encode("utf-8"),
+        )
+        response_payload = json.loads(raw_response.body) if raw_response.body else None
+        if raw_response.status_code != 200 or not isinstance(response_payload, dict):
             raise RuntimeError("Phase 1 acceptance invocation did not succeed")
-
         self._last_access_token = issuance.access_token.token
         return Phase1AcceptanceResult(
             host_client_id=host_client_id,
             provider_client_id=provider_client_id,
             audience=issuance.audience,
-            authenticated_subject=str(response.payload["subject"]),
-            authenticated_client_id=str(response.payload["client_id"]),
-            response_payload=response.payload,
+            authenticated_subject=str(response_payload["subject"]),
+            authenticated_client_id=str(response_payload["client_id"]),
+            response_payload=response_payload,
         )
 
     def register_default_entities(self) -> tuple[str, str]:
@@ -421,7 +427,7 @@ class Phase1AcceptanceHarness:
 
     @property
     def host_dpop_signing_key(self) -> DpopSigningKey:
-        """Return the Host key used to sender-constrain token and A2A requests."""
+        """Return the Host key used to sender-constrain OAuth requests."""
         return DpopSigningKey(
             algorithm="ES256",
             private_key=self._host_dpop_key.private_key,

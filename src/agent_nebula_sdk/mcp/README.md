@@ -18,7 +18,7 @@ MCP-over-HTTP servers using the current MCP authorization profile.
 ## Registration boundary
 
 The MCP package does not use RFC 7591 Dynamic Client Registration. RFC 7591
-remains available under `oauth/rfc7591` for A2A and general OAuth clients.
+remains available under `oauth/rfc7591` for general OAuth clients.
 Pre-registered MCP clients remain a deployment option outside this package.
 
 ## Boundaries

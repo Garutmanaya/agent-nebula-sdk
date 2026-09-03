@@ -73,7 +73,7 @@ class HttpTransport(Protocol):
         """Issue an HTTPS POST request and return a transport-neutral response.
 
         The SDK passes already serialized protocol bodies so transport adapters
-        do not need to understand OAuth, JOSE, A2A, or MCP payload semantics.
+        do not need to understand OAuth, JOSE, or MCP payload semantics.
         """
         ...
     def put(

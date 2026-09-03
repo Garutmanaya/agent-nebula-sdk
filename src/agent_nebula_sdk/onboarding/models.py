@@ -1,7 +1,6 @@
 """Immutable models for authenticated, multi-profile agent onboarding.
 
-The models are protocol-neutral orchestration contracts. Normative OAuth,
-A2A, MCP, JOSE, and TLS data remains owned by the existing SDK modules.
+The models are protocol-neutral orchestration contracts. Normative OAuth, MCP, JOSE, and TLS data remains owned by the existing SDK modules.
 """
 
 from __future__ import annotations
@@ -149,8 +148,6 @@ class OnboardingRequest(BaseModel):
             and self.protected_resource is not None
         ):
             raise ValueError("protected_resource profile requires OAUTH_PROTECTED_RESOURCE role")
-        if ({AgentRole.A2A_PROVIDER, AgentRole.A2A_CALLER} & self.roles) and self.agent is None:
-            raise ValueError("A2A roles require an agent profile")
         return self
 
 

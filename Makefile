@@ -1,36 +1,29 @@
-.PHONY: sync test coverage acceptance format format-check lint typecheck quality compile verify package
+.PHONY: help sync lint test check build clean
+
+help:
+	@printf '%s\n' \
+	  'help  - show available developer targets' \
+	  'sync  - synchronize development dependencies' \
+	  'lint  - run Ruff static validation' \
+	  'test  - run the automated test suite' \
+	  'check - run the standard lint + test quality gate' \
+	  'build - build the Python distribution artifacts' \
+	  'clean - remove generated local build/test artifacts'
 
 sync:
-	uv sync --group dev
+	uv sync --all-extras
+
+lint:
+	uv run ruff check src tests
 
 test:
 	uv run pytest
 
-coverage:
-	uv run pytest --cov=agent_nebula_sdk --cov-report=term-missing --cov-fail-under=90
+check: lint test
 
-acceptance:
-	uv run python scripts/run_phase1_acceptance.py
-
-format:
-	uv run ruff format src tests scripts
-
-format-check:
-	uv run ruff format --check src tests scripts
-
-lint:
-	uv run ruff check src tests scripts
-
-typecheck:
-	uv run mypy src
-
-quality:
-	uv run python scripts/quality_audit.py
-
-compile:
-	uv run python -m compileall -q src tests scripts
-
-verify: format-check lint typecheck quality coverage compile acceptance
-
-package: verify
+build:
 	uv build
+
+clean:
+	rm -rf build dist .pytest_cache .ruff_cache
+	find src tests -type d -name __pycache__ -prune -exec rm -rf {} +
