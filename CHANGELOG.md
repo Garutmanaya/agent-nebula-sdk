@@ -45,3 +45,6 @@ Documentation-only release based on the completed Step 10 codebase.
 - Added negative tests for assertion replay, DPoP replay, wrong key, and wrong HTTP method.
 - Completed RFC 7517, 7638, 7523, 7591, 8707, 9068, 9449, 8414, and 9728 Phase 1 profile.
 - Completed A2A and MCP HTTP security adapters.
+
+- Added protocol-neutral API-key, HTTP authentication, OIDC JWT, and mTLS client-certificate authentication primitives.
+- Implemented RFC 8705 `x5t#S256` certificate-bound access-token validation and enabled mTLS onboarding through the shared certificate trust service.
