@@ -32,6 +32,21 @@ class AuthorizationServerMetadataClient:
             metadata_url=authorization_server_metadata_url(issuer),
         )
 
+    def fetch_url(self, metadata_url: str) -> AuthorizationServerMetadata:
+        """Fetch and validate metadata from an explicitly advertised RFC 8414 URL.
+
+        This form is used by protocols such as A2A that publish the metadata URL
+        directly instead of publishing only an issuer identifier.
+        """
+        try:
+            return AuthorizationServerMetadata.model_validate(self._get_json(metadata_url))
+        except ValidationError as exc:
+            raise ProtocolValidationError(
+                "authorization server metadata is invalid",
+                code="invalid_authorization_server_metadata",
+                details={"error_count": exc.error_count()},
+            ) from exc
+
     def fetch_with_openid_fallback(self, issuer: str) -> AuthorizationServerMetadata:
         """Fetch RFC 8414 first and then OpenID discovery compatibility URLs."""
         candidates = (authorization_server_metadata_url(issuer), *openid_configuration_urls(issuer))
