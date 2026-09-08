@@ -24,6 +24,8 @@ class RegistrationProfileType(StrEnum):
 class AgentRole(StrEnum):
     """Describe protocol roles that one dynamically onboarded agent may hold."""
 
+    A2A_PROVIDER = "A2A_PROVIDER"
+    A2A_CALLER = "A2A_CALLER"
     OAUTH_CLIENT = "OAUTH_CLIENT"
     OAUTH_PROTECTED_RESOURCE = "OAUTH_PROTECTED_RESOURCE"
     MCP_CLIENT = "MCP_CLIENT"

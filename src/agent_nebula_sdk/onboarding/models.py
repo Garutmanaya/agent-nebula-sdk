@@ -149,6 +149,8 @@ class OnboardingRequest(BaseModel):
             and self.protected_resource is not None
         ):
             raise ValueError("protected_resource profile requires OAUTH_PROTECTED_RESOURCE role")
+        if ({AgentRole.A2A_PROVIDER, AgentRole.A2A_CALLER} & self.roles) and self.agent is None:
+            raise ValueError("A2A roles require an agent profile")
         return self
 
 
