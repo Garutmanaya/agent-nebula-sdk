@@ -3,27 +3,6 @@ revision = 3
 requires-python = "==3.12.*"
 
 [[package]]
-name = "agent-nebula-dependencies"
-version = "1.1.6"
-source = { registry = "http://127.0.0.1:3141/agentnebula/private/+simple/" }
-dependencies = [
-    { name = "hatchling" },
-]
-sdist = { url = "http://127.0.0.1:3141/agentnebula/private/+f/048/eb56e87b791cb/agent_nebula_dependencies-1.1.6.tar.gz", hash = "sha256:048eb56e87b791cb4e21cb9a26b97cdc63b4c6103c264d8e2ca6135a64582c12" }
-wheels = [
-    { url = "http://127.0.0.1:3141/agentnebula/private/+f/68a/f995be429e384/agent_nebula_dependencies-1.1.6-py3-none-any.whl", hash = "sha256:68af995be429e384aef9545e2c170587817d16245003e2484957e68fef565c2b" },
-]
-
-[package.optional-dependencies]
-dev = [
-    { name = "mypy" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-cov" },
-    { name = "ruff" },
-]
-
-[[package]]
 name = "agent-nebula-sdk"
 version = "1.1.1"
 source = { editable = "." }
@@ -36,7 +15,10 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "agent-nebula-dependencies", extra = ["dev"] },
+    { name = "mypy" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "ruff" },
 ]
 
 [package.metadata]
@@ -48,7 +30,12 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "agent-nebula-dependencies", extras = ["dev"], specifier = ">=1.1.6,<2" }]
+dev = [
+    { name = "mypy", specifier = ">=1.15.0,<2" },
+    { name = "pytest", specifier = ">=8.3.0,<9" },
+    { name = "pytest-cov", specifier = ">=6.0.0,<7" },
+    { name = "ruff", specifier = ">=0.11.0,<1" },
+]
 
 [[package]]
 name = "annotated-types"
@@ -186,22 +173,6 @@ source = { registry = "http://127.0.0.1:3141/agentnebula/private/+simple/" }
 sdist = { url = "http://127.0.0.1:3141/root/pypi/+f/4e3/5b956cf45792e/h11-0.16.0.tar.gz", hash = "sha256:4e35b956cf45792e4caa5885e69fba00bdbc6ffafbfa020300e549b208ee5ff1" }
 wheels = [
     { url = "http://127.0.0.1:3141/root/pypi/+f/63c/f8bbe7522de3b/h11-0.16.0-py3-none-any.whl", hash = "sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86" },
-]
-
-[[package]]
-name = "hatchling"
-version = "1.32.4"
-source = { registry = "http://127.0.0.1:3141/agentnebula/private/+simple/" }
-dependencies = [
-    { name = "packaging" },
-    { name = "pathspec" },
-    { name = "pluggy" },
-    { name = "tomlkit" },
-    { name = "trove-classifiers" },
-]
-sdist = { url = "http://127.0.0.1:3141/root/pypi/+f/c44/68f73144c054d/hatchling-1.32.4.tar.gz", hash = "sha256:c4468f73144c054d2aab4ef0f0378c43b9878bf07f8ffd6b79690e970d375f07" }
-wheels = [
-    { url = "http://127.0.0.1:3141/root/pypi/+f/08e/cf7548fb48205/hatchling-1.32.4-py3-none-any.whl", hash = "sha256:08ecf7548fb48205e7f213d70c71e67b8271b7242093dc3f1da578b42c734a2c" },
 ]
 
 [[package]]
@@ -425,18 +396,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pytest-asyncio"
-version = "0.26.0"
-source = { registry = "http://127.0.0.1:3141/agentnebula/private/+simple/" }
-dependencies = [
-    { name = "pytest" },
-]
-sdist = { url = "http://127.0.0.1:3141/root/pypi/+f/c4d/f2a697648241f/pytest_asyncio-0.26.0.tar.gz", hash = "sha256:c4df2a697648241ff39e7f0e4a73050b03f123f760673956cf0d72a4990e312f" }
-wheels = [
-    { url = "http://127.0.0.1:3141/root/pypi/+f/7b5/1ed894f4fbea1/pytest_asyncio-0.26.0-py3-none-any.whl", hash = "sha256:7b51ed894f4fbea1340262bdae5135797ebbe21d8638978e35d31c6d19f72fb0" },
-]
-
-[[package]]
 name = "pytest-cov"
 version = "6.3.0"
 source = { registry = "http://127.0.0.1:3141/agentnebula/private/+simple/" }
@@ -473,24 +432,6 @@ wheels = [
     { url = "http://127.0.0.1:3141/root/pypi/+f/2a1/2e01cb9156c10/ruff-0.16.10-py3-none-win32.whl", hash = "sha256:2a12e01cb9156c10c466f63b46eaae5ecea28dfbd21b5836353ae498e7d1349a" },
     { url = "http://127.0.0.1:3141/root/pypi/+f/97f/2015c92aa9710/ruff-0.16.10-py3-none-win_amd64.whl", hash = "sha256:97f2015c92aa97105b0eab19eb5d224884399281cfc5da86a92db4ab5e7fb2ca" },
     { url = "http://127.0.0.1:3141/root/pypi/+f/25a/65fe998c4e686/ruff-0.16.10-py3-none-win_arm64.whl", hash = "sha256:25a65fe998c4e6861ec079ada5826a2fc605e6cbccbe9dcd7fac1f54e791621b" },
-]
-
-[[package]]
-name = "tomlkit"
-version = "0.15.1"
-source = { registry = "http://127.0.0.1:3141/agentnebula/private/+simple/" }
-sdist = { url = "http://127.0.0.1:3141/root/pypi/+f/e25/bbf3884300524/tomlkit-0.15.1.tar.gz", hash = "sha256:e25bbf38843005246210a12982776f27f99cb9be67160e14434d0c0d21ee1e97" }
-wheels = [
-    { url = "http://127.0.0.1:3141/root/pypi/+f/177/a05aece5a8ca5/tomlkit-0.15.1-py3-none-any.whl", hash = "sha256:177a05aece5a8ca5266fd3c448abb47b8d352f09d477d3ca8332db4d89b24304" },
-]
-
-[[package]]
-name = "trove-classifiers"
-version = "2026.9.21.13"
-source = { registry = "http://127.0.0.1:3141/agentnebula/private/+simple/" }
-sdist = { url = "http://127.0.0.1:3141/root/pypi/+f/0a9/ebc8d4e2f3e8a/trove_classifiers-2026.9.21.13.tar.gz", hash = "sha256:0a9ebc8d4e2f3e8a22848c5258033035bec17a3012ac3fea16dbaa764489eb71" }
-wheels = [
-    { url = "http://127.0.0.1:3141/root/pypi/+f/8b1/ff4f9c191b104/trove_classifiers-2026.9.21.13-py3-none-any.whl", hash = "sha256:8b1ff4f9c191b1040b71c37f1e445ab99732911e3cd91de52838453a854d7a17" },
 ]
 
 [[package]]
