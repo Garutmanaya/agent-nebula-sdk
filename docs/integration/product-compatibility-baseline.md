@@ -1,6 +1,6 @@
 # Product compatibility baseline
 
-Agent Nebula SDK Phase 1 is integrated into Agent Nebula and Agent Genesis using a strict compatibility baseline before any product behavior is replaced.
+Agent Nebula SDK current is integrated into Agent Nebula and Agent Genesis using a strict compatibility baseline before any product behavior is replaced.
 
 ## Required runtime
 

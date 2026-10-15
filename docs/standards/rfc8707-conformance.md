@@ -20,4 +20,4 @@
 
 The RFC permits multiple target resources, but Section 3 encourages using a
 single resource because a multi-audience bearer token requires strong trust
-between all recipients. Phase 1 therefore requires exactly one HTTPS resource.
+between all recipients. current therefore requires exactly one HTTPS resource.

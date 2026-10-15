@@ -15,6 +15,6 @@
 | Proof replay detection | Implemented through port | `DpopReplayStore` |
 | Authorization-server nonce | Implemented through port | `DpopNonceService`, `DpopNonceStore` |
 | Resource-server nonce | Implemented through same port | context-scoped nonce validation |
-| `use_dpop_nonce` response body mapping | Deferred to HTTP route adapters | Step 8/product integration |
+| `use_dpop_nonce` response body mapping | Deferred to HTTP route adapters | implementation/product integration |
 | Refresh-token sender constraint | Core key binding available; grant integration deferred | product token service |
 | Distributed replay persistence | Product adapter required | Agent Nebula/provider integration |

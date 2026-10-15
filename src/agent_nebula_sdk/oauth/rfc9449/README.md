@@ -36,4 +36,4 @@ client, authorization-server, and protected-resource roles.
 
 The SDK does not own private-key storage, HTTP routing, access-token storage,
 Redis/PostgreSQL schemas, or provider-local authorization policy. Products
-implement persistence ports and use the role facades introduced in Step 8.
+implement persistence ports and use the role facades introduced in implementation.

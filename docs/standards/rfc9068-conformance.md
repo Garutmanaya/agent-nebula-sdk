@@ -17,4 +17,4 @@
 | RFC 6750 `invalid_token` mapping | Stable SDK error implemented |
 | Encrypted JWT access tokens | Deferred; not required by RFC 9068 baseline |
 | RFC 8414 metadata publication | Reserved for metadata milestone |
-| Sender constraint / `cnf` | Step 7 RFC 9449 |
+| Sender constraint / `cnf` | implementation RFC 9449 |

@@ -17,7 +17,7 @@ The design has been reviewed against the project's primary constraints: modulari
 
 ## Main future-risk controls
 
-- Stable interfaces prevent Phase 2 identity mechanisms from modifying Phase 1 authentication services.
+- Stable interfaces prevent current identity mechanisms from modifying current authentication services.
 - Separate tables/adapters prevent future protocol evidence from overloading core OAuth records.
 - Versioned storage contracts detect incompatible Agent Nebula schema changes.
 - Plugin startup validation prevents partially implemented standards from becoming active.

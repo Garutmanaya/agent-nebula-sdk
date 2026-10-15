@@ -12,11 +12,11 @@
 | RFC 9449 | DPoP | 1 | `dpop` | replay store |
 | RFC 9728 | resource metadata | 1 | `metadata.protected_resource` | endpoint composition |
 | RFC 7592 | registration management | Implemented | `oauth/rfc7592` | registration lifecycle |
-| RFC 8705 | mTLS OAuth | Phase 2 | `future.mtls` | PKI/certificate store |
-| SPIFFE/SPIRE | workload identity | Phase 2 | `future.spiffe` | Workload API |
-| W3C DID/VC/VP | decentralized trust | Phase 3 | `future.decentralized_identity` | credential verifier |
-| RFC 9396 | RAR | Phase 3 | `future.rar` | policy handlers |
-| RFC 9635 | GNAP | Phase 3 | `future.gnap` | grant persistence |
+| RFC 8705 | mTLS OAuth | current | `future.mtls` | PKI/certificate store |
+| SPIFFE/SPIRE | workload identity | current | `future.spiffe` | Workload API |
+| W3C DID/VC/VP | decentralized trust | current | `future.decentralized_identity` | credential verifier |
+| RFC 9396 | RAR | current | `future.rar` | policy handlers |
+| RFC 9635 | GNAP | current | `future.gnap` | grant persistence |
 | RFC 9421 | HTTP Message Signatures | Candidate | `future.http_signatures` | key resolver |
 | A2A v1 security | agent transport | 1+ | `a2a` | Agent Card/HTTP server |
 | MCP authorization | MCP transport | 1+ | `mcp` | MCP server/client |

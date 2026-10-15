@@ -10,7 +10,7 @@ Agent Nebula SDK separates identity, token issuance, sender constraint, and prov
 - The provider validates the token and proof, then applies local policy.
 - The SDK never receives or persists product private keys unless a consuming product explicitly supplies a key adapter.
 
-## Phase 1 protections
+## Security controls
 
 - asymmetric client authentication through RFC 7523;
 - public key registration through RFC 7591 and RFC 7517;
@@ -34,11 +34,11 @@ Consuming products must provide:
 - provider-local authorization policies;
 - rate limiting, abuse prevention, and operational monitoring.
 
-## Known Phase 1 boundaries
+## Known current boundaries
 
-- mTLS and certificate-bound tokens are deferred to Phase 2.
-- SPIFFE/SPIRE workload identity is deferred to Phase 2.
-- RAR, DID/VC, GNAP, and federation are deferred to Phase 3.
+- mTLS and certificate-bound tokens are deferred to current.
+- SPIFFE/SPIRE workload identity is deferred to current.
+- RAR, DID/VC, GNAP, and federation are deferred to current.
 - Reference in-memory adapters are not production persistence.
 - The SDK does not make business-level authorization decisions.
 

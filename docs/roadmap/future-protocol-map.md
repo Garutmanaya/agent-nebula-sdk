@@ -1,6 +1,6 @@
 # Future Protocol Map
 
-## Phase 2
+## current
 
 ```text
 future/mtls/                  RFC 8705
@@ -9,7 +9,7 @@ future/spire/                 Workload API adapter
 oauth/rfc7592/                  RFC 7592 — implemented
 ```
 
-## Phase 3
+## current
 
 ```text
 future/rar/                   RFC 9396

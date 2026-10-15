@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This package proves that the independently implemented Phase 1 modules compose
+This package proves that the independently implemented current modules compose
 into one complete Host → authorization server → provider flow without importing
 Agent Nebula or Agent Genesis product code.
 

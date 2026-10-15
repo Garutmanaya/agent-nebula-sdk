@@ -8,4 +8,4 @@ SDK storage-contract version
 Agent Nebula schema version
 ```
 
-Startup must verify compatible versions before exposing token or registration endpoints. New optional protocols add new tables/adapters; they must not overload Phase 1 columns with unrelated meanings.
+Startup must verify compatible versions before exposing token or registration endpoints. New optional protocols add new tables/adapters; they must not overload current columns with unrelated meanings.

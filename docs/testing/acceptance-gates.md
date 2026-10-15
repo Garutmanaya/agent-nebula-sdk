@@ -11,7 +11,7 @@
 
 A module must pass formatting, linting, strict typing, tests, coverage, conformance mapping, documentation, and manual review before the next module starts.
 
-## Phase 1 SDK gate
+## current SDK gate
 
 The SDK-only test must complete:
 
