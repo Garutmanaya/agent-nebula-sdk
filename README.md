@@ -25,7 +25,7 @@ The SDK is used by [Agent Nebula Platform](https://github.com/garutmanaya/agent-
 | Demonstrating proof of possession | RFC 9449 (DPoP) |
 | A2A and MCP security | HTTP authentication/authorization integration |
 
-For implementation details, constraints, and conformance references, see [standards mapping](docs/standards/STANDARDS_MAPPING.md), [security model](docs/security/threat-model.md), and [documentation index](docs/INDEX.md). Additional protocol modules in the source tree should not be assumed to constitute a complete hosted service.
+For implementation details, constraints, and conformance references, see [standards mapping](https://github.com/garutmanaya/agent-nebula-sdk/blob/main/docs/standards/STANDARDS_MAPPING.md), [security model](https://github.com/garutmanaya/agent-nebula-sdk/blob/main/docs/security/threat-model.md), and [documentation index](https://github.com/garutmanaya/agent-nebula-sdk/blob/main/docs/INDEX.md). Additional protocol modules in the source tree should not be assumed to constitute a complete hosted service.
 
 ## Install
 
@@ -44,12 +44,12 @@ make verify
 
 ## Architecture and integrations
 
-The SDK implements security primitives and exposes contracts for application-owned persistence, credential storage, and authorization decisions. [Architecture](docs/architecture/sdk-overview.md) · [Public API](docs/architecture/public-api.md) · [Ports and adapters](docs/architecture/ports-and-adapters.md) · [Agent Nebula integration](docs/integration/agent-nebula.md).
+The SDK implements security primitives and exposes contracts for application-owned persistence, credential storage, and authorization decisions. [Architecture](https://github.com/garutmanaya/agent-nebula-sdk/blob/main/docs/architecture/sdk-overview.md) · [Public API](https://github.com/garutmanaya/agent-nebula-sdk/blob/main/docs/architecture/public-api.md) · [Ports and adapters](https://github.com/garutmanaya/agent-nebula-sdk/blob/main/docs/architecture/ports-and-adapters.md) · [Agent Nebula integration](https://github.com/garutmanaya/agent-nebula-sdk/blob/main/docs/integration/agent-nebula.md).
 
 ## Documentation
 
-Start with the [documentation index](docs/INDEX.md). It links to architecture, API facades, OAuth standards, authentication flows, configuration, testing, and integration guidance.
+Start with the [documentation index](https://github.com/garutmanaya/agent-nebula-sdk/blob/main/docs/INDEX.md). It links to architecture, API facades, OAuth standards, authentication flows, configuration, testing, and integration guidance.
 
 ## License
 
-Apache License 2.0. See [LICENSE](LICENSE).
+Apache License 2.0. See [LICENSE](https://github.com/garutmanaya/agent-nebula-sdk/blob/main/LICENSE).
