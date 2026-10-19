@@ -32,7 +32,7 @@ For implementation details, constraints, and conformance references, see [standa
 Requires Python 3.12.
 
 ```bash
-pip install agent-nebula-sdk==1.1.1
+pip install agent-nebula-sdk
 ```
 
 To develop from source:
